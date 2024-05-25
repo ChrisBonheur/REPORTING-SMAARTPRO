@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+    <title>Exemple de PDF avec Bootstrap</title>
+<link rel="stylesheet" href="./boot.css">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+        }
+
+        iframe{
+            width: 100%;
+            height: 760px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container border">
+        <div class="">
+            <header class="card rounded-0 p-2">
+                <div class="row">
+                    <div class="col-md-6 d-flex justify-content-start">
+                        <div class="">
+                            <img width="100" src="data:image/png;base64,{fiche['group']['groupeLogo']}" class="border" alt="logo">
+                        </div>
+                        <div class="ml-2 mt-1">
+                            <!--{fiche['group']['groupeName']}-->
+                            <h4 class="text-uppercase mb-0"><strong>Groupe scolaire Renaissance</strong></h4>
+                            <h5 class="mt-0 mb-0"></h5>
+                            <!--{fiche['site']['name']}-->
+                            <p class="mt-0 mb-0"></p>
+                            <!--{fiche['site']['phoneNumbers']}-->
+                            <p class="mt-0"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="d-flex text-secondary justify-content-end w-100 text-uppercase">reçu de caisse</h2>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <table>
+                            <tr>
+                                <td class="text-muted">Nom</td>
+                                <td>: MFOUNDOU Chris Bonheur chadrak koumbeba jules</td>
+                                <td class="text-muted pl-4">Prenoms</td>
+                                <td>: Bonheur maf christ</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Matricule</td>
+                                <td>: SMT0001</td>
+                                <td class="text-muted pl-4">Niveau</td>
+                                <td>: Sixieme</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </header>
+            
+
+            <div class="row mt-2">
+                <div class="col-7 pr-0">
+                    <div class="card border-top-0 border-right-0 rounded-0 p-2 bg-light">
+                        <table>
+                            <tr>
+                                <td><span class="text-secondary">Site </span></td>
+                                <td>: <span class="text-dark">Site de brazzaville 2</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-secondary">Adresse </span></td>
+                                <td>: <span class="text-dark">102 rue moukoulou</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-secondary">Tél </span></td>
+                                <td>: <span class="text-dark">411 capitaux</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-5  d-flex flex-column align-items-end justify-content-center pl-0">
+                    <div class="w-100 h-100 w-100 border border-left-0 bg-light">
+                        <div>
+                            <span class="text-secondary">Caisse :</span>
+                            <span class="text-dark">Caisse Bonheur</span>
+                        </div>
+                        <div>
+                            <span class="text-secondary">Année scolaire :</span>
+                            <span class="text-dark">2023 - 2024</span>
+                        </div>
+                        <div>
+                            <span class="text-secondary">Date :</span>
+                            <span class="text-dark">16/01/2023</span>
+                        </div>
+                        <div>
+                            <span class="text-secondary">N Reçu :</span>
+                            <span class="text-dark">0001673</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table w-100 table-bordered mt-2">
+                <thead>
+                    <tr class="bg-light p-0">
+                    <th scope="col">Libellé de l'opération</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Catégorie</th>
+                    <th scope="col">Paiement</th>
+                    <th scope="col">Montant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                    </tr>
+
+                    <tr>
+                        <td scope="row">2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>Thornton</td>
+                        <td>Thornton</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">3</td>
+                        <td colspan="">Larry the Bird</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">Total</td>
+                        
+                        <td class="bg-light"><strong>1 245 000 XAF</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="row">
+                <div class="col-6" style="font-size: 0.8em;">
+                    <div><span class="text-secondary">Imprimé par </span> Bonheur Mafoundou</div>
+                    <div style="margin-left: 60px;"> <span class="text-secondary">le</span> 16/08/2024</div>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Bénéficiaire</th>
+                            <th>Caissier</th>
+                        </tr>
+                        <tr style="height: 100px;">
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <hr class="mb-0">
+            
+            <div class="row mt-0">
+                <div class="col-6 text-start"><strong>smaartpro@zandosoft-2024</strong></div>
+            </div>
+            
+            </div>
+    </div>
+
+
+   
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+    <title>Exemple de PDF avec Bootstrap</title>
+<link rel="stylesheet" href="./boot.css">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+        }
+
+        iframe{
+            width: 100%;
+            height: 760px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container border">
+        <div class="">
+            <header class="card rounded-0 p-2">
+                <div class="row">
+                    <div class="col-md-6 d-flex justify-content-start">
+                        <div class="">
+                            <img width="100" src="data:image/png;base64,{fiche['group']['groupeLogo']}" class="border" alt="logo">
+                        </div>
+                        <div class="ml-2 mt-1">
+                            <!--{fiche['group']['groupeName']}-->
+                            <h4 class="text-uppercase mb-0"><strong>Groupe scolaire Renaissance</strong></h4>
+                            <h5 class="mt-0 mb-0"></h5>
+                            <!--{fiche['site']['name']}-->
+                            <p class="mt-0 mb-0"></p>
+                            <!--{fiche['site']['phoneNumbers']}-->
+                            <p class="mt-0"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="d-flex text-secondary justify-content-end w-100 text-uppercase">reçu de caisse</h2>
+                    </div>
+                </div>
+            </header>
+            
+
+            <div class="row mt-2">
+                <div class="col-7 pr-0">
+                    <div class="card border-top-0 border-right-0 rounded-0 p-2 bg-light">
+                        <table>
+                            <tr>
+                                <td><span class="text-secondary">Site </span></td>
+                                <td>: <span class="text-dark">Site de brazzaville 2</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-secondary">Adresse </span></td>
+                                <td>: <span class="text-dark">102 rue moukoulou</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="text-secondary">Tél </span></td>
+                                <td>: <span class="text-dark">411 capitaux</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-5  d-flex flex-column align-items-end justify-content-center pl-0">
+                    <div class="w-100 h-100 w-100 border border-left-0 bg-light">
+                        <div>
+                            <span class="text-secondary">Caisse :</span>
+                            <span class="text-dark">Caisse Bonheur</span>
+                        </div>
+                        <div>
+                            <span class="text-secondary">Année scolaire :</span>
+                            <span class="text-dark">2023 - 2024</span>
+                        </div>
+                        <div>
+                            <span class="text-secondary">Date :</span>
+                            <span class="text-dark">16/01/2023</span>
+                        </div>
+                        <div>
+                            <span class="text-secondary">N Reçu :</span>
+                            <span class="text-dark">0001673</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table w-100 table-bordered mt-2">
+                <thead>
+                    <tr class="bg-light p-0">
+                    <th scope="col">Libellé de l'opération</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Catégorie</th>
+                    <th scope="col">Paiement</th>
+                    <th scope="col">Montant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                    </tr>
+
+                    <tr>
+                        <td scope="row">2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>Thornton</td>
+                        <td>Thornton</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">3</td>
+                        <td colspan="">Larry the Bird</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">Total</td>
+                        
+                        <td class="bg-light"><strong>1 245 000 XAF</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="row">
+                <div class="col-6" style="font-size: 0.8em;">
+                    <div><span class="text-secondary">Imprimé par </span> Bonheur Mafoundou</div>
+                    <div style="margin-left: 60px;"> <span class="text-secondary">le</span> 16/08/2024</div>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Bénéficiaire</th>
+                            <th>Caissier</th>
+                        </tr>
+                        <tr style="height: 100px;">
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <hr class="mb-0">
+            
+            <div class="row mt-0">
+                <div class="col-6 text-start"><strong>smaartpro@zandosoft-2024</strong></div>
+            </div>
+            
+            </div>
+    </div>
+
+
+   
+</body>
+</html>
+
+
+<div class="my-5"></div>
+<!-----------Releve de caisse---------->
+<!DOCTYPE html>
+<html>
+    <title>Exemple de PDF avec Bootstrap</title>
+<link rel="stylesheet"  href="./boot.css">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+        }
+
+        iframe{
+            width: 100%;
+            height: 760px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container border">
+        <div class="">
+            <header class="card rounded-0 p-2">
+                <div class="row">
+                    <div class="col-md-6 d-flex justify-content-start">
+                        <div class="">
+                            <img width="100" src="data:image/png;base64,{fiche['group']['groupeLogo']}" class="border" alt="logo">
+                        </div>
+                        <div class="ml-2 mt-1">
+                            <!--{fiche['group']['groupeName']}-->
+                            <h4 class="text-uppercase mb-0"><strong>Groupe scolaire Renaissance</strong></h4>
+                            <h5 class="mt-0 mb-0"></h5>
+                            <!--{fiche['site']['name']}-->
+                            <p class="mt-0 mb-0"></p>
+                            <!--{fiche['site']['phoneNumbers']}-->
+                            <p class="mt-0"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="d-flex text-secondary justify-content-end w-100 text-uppercase">RELEVE de caisse</h2>
+                    </div>
+                </div>
+            </header>
+            
+
+            <div class="row">
+                <div class=" col-7 pr-0 my-2">
+                    <div class="card border border-right-0 bg-light rounded-0 p-2">
+                        <div>
+                            <span class="text-secondary">Site :</span>
+                            <span class="text-dark">Site de brazzaville 2</span>
+                        </div>
+                        <div>
+                            <span class="text-secondary">Année scolaire :</span>
+                            <span class="text-dark">2023 - 2024</span>
+                        </div>
+                        <div>
+                            <span class="text-secondary">N de compte :</span>
+                            <span class="text-dark">411 capitaux</span>
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-5 pl-0 my-2">
+                    <div class="card h-100 border pt-2 border-left-0 bg-light">
+                        <div><span class="text-secondary">Période du </span><span class="text-decoration-underline">16/03/2023 au 23/07/2023</span></div>
+                        <h3>CAISSE BONHEUR</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="my-2">
+                <span class="text-secondary">Solde d'ouverture :</span> <strong class="border p-1">200 000 XAF</strong>
+            </div>
+            <table class="table w-100 table-bordered">
+                <thead>
+                    <tr class="bg-light p-0">
+                    <th scope="col">Date operation</th>
+                    <th scope="col">Date valeur</th>
+                    <th scope="col">Libellé de l'opération</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Compte</th>
+                    <th scope="col">DEBIT</th>
+                    <th scope="col">CREDIT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td scope="row">1</td>
+                    <td>Markia</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">2</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">3</td>
+                    <td colspan="">Larry the Bird</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">Total</td>
+                        
+                        <td class="bg-light"><strong>2 500 599 XAF</strong></td>
+                        <td class="bg-light"><strong>1 245 000 XAF</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="row">
+                <div class="col-6" style="font-size: 0.8em;">
+                    <div><span class="text-secondary">Imprimé par </span> Bonheur Mafoundou</div>
+                    <div style="margin-left: 60px;"> <span class="text-secondary">le</span> 16/08/2024</div>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                    <div><span class="text-secondary">Solde de fermeture</span> <strong class="border p-1">1 245 000 XAF</strong></div>
+                </div>
+            </div>
+            <hr class="mb-0">
+            
+            <div class="row mt-0">
+                <div class="col-6 text-start"><strong>smaartpro@zandosoft-2024</strong></div>
+            </div>
+            
+            </div>
+    </div>
+
+
+   
+</body>
+</html>
