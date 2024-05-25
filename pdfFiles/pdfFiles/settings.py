@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-jy+u4-i#0-!=uyjz0m3id$!0j(7qcc2lr^flcu6&q_sxdkl2xk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "reporting-smaartpro.zandosoft.online",
+    "*"
+]
 
 
 # Application definition
