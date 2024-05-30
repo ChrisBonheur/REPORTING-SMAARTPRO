@@ -17,7 +17,6 @@ from .templatepdf.journal_caisse import journal_caisse
 from .templatepdf.recu_frais import recu_frais
 from drf_yasg.utils import swagger_auto_schema
 import base64
-from PIL import Image
 
 class FicheAgentView(APIView):
     @swagger_auto_schema(
