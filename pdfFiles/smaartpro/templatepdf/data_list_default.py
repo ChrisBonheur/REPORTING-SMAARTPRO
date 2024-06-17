@@ -11,7 +11,26 @@ def default_list(data):
             tr += f"<td>{i}</td>"
         tr += "</tr>"
         lignes += tr
-        
+
+    #set footer
+    tr = '<tr>'
+    i = 0
+    for item in data['heads']:
+        if i == 0:
+            value = "Total"
+        else:
+            value = ''
+            for thfoot in data['totalData']:
+                print(thfoot)
+                print(item)
+                if thfoot['key'] == item:
+                    value = thfoot['value']
+            
+        tr += f"<th>{value}</th>"
+        i += 1
+    tr += "</tr>"
+    lignes += tr
+    
     content = f"""
     <!DOCTYPE html>
         <html>
@@ -42,16 +61,24 @@ def default_list(data):
             <header class="d-flex justify-content-start">
                 
                 <div class="">
-                    <img width="100" src="data:image/png;base64,{data['group']['groupeLogo']}" class="border" alt="logo">
+                    <img width="100" 
+                        src="{data['group']['groupeLogo'] if f"data:image/png;base64,{data['group'].get('groupeLogo')}" else ''}" class="border" alt="logo">
                 </div>
                 <div class="ml-2 mt-1">
                     <h4 class="text-uppercase mb-0"><strong>{data['group']['groupeName']}</strong></h4>
-                    <h5 class="mt-0 mb-0">{''}</h5>
+                    <p class="text-uppercase mb-0"><strong>{data['group']['groupDevise']}</strong></p>
+                    <p class="text-uppercase mb-0"><strong>{data['group']['siteName']}</strong></p>
+                    <small>
+                        { '<span class="mr-2"></span>Tél: ' + data['group']['siteContact'] if data['group'].get('siteContact') else ''}
+                        <span class="">
+                            { ' / ' + data['group']['siteAddress'] if data['group'].get('siteAddress') else ''}
+                        </span>
+                    </small>
                 </div>
             </header>
         <hr>
         <div class="text-center">
-            <h2 class="text-center border p-2 bg-light">{data['title']}</h2>
+            <h4 class="text-center border p-2 bg-light">{data['title']}</h4>
         </div>
         <div class="">
             

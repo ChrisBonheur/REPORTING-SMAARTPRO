@@ -24,13 +24,18 @@ def default_profile(fiche):
         <header class="d-flex justify-content-start">
             
             <div class="">
-                <img width="100" src="data:image/png;base64,{fiche['group']['groupeLogo']}" class="border" alt="logo">
+                <img  width="100" src="{fiche['group']['groupeLogo'] if f"data:image/png;base64,{fiche['group'].get('groupeLogo')}" else ''}" class="border" alt="logo">
             </div>
             <div class="ml-2 mt-1">
-                <h4 class="text-uppercase mb-0"><strong>{fiche['group']['groupeName']}</strong></h4>
-                <h5 class="mt-0 mb-0">{''}</h5>
-                <p class="mt-0 mb-0">{fiche['site']['name']}</p>
-                <p class="mt-0">{fiche['site']['phoneNumbers']}</p>
+                   <h4 class="text-uppercase mb-0"><strong>{fiche['group']['groupeName']}</strong></h4>
+                    <p class="text-uppercase mb-0"><strong>{fiche['group']['groupDevise']}</strong></p>
+                    <p class="text-uppercase mb-0"><strong>{fiche['group']['siteName']}</strong></p>
+                    <small>
+                        { '<span class="mr-2"></span>Tél: ' + fiche['group']['siteContact'] if fiche['group'].get('siteContact') else ''}
+                        <span class="">
+                            { ' / ' + fiche['group']['siteAddress'] if fiche['group'].get('siteAddress') else ''}
+                        </span>
+                    </small>
             </div>
         </header>
         <hr>

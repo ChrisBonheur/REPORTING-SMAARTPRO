@@ -4,6 +4,10 @@ from rest_framework import serializers
 class GroupSerializer(Serializer):
     groupeLogo = serializers.CharField(allow_null=True, allow_blank=True)
     groupeName = serializers.CharField(allow_null=True, allow_blank=True)
+    groupDevise = serializers.CharField(allow_null=True, allow_blank=True)
+    siteName = serializers.CharField(allow_null=True, allow_blank=True)
+    siteContact = serializers.CharField(allow_null=True, allow_blank=True)
+    siteAddress = serializers.CharField(allow_null=True, allow_blank=True)
     
     
 class AgentSerializer(Serializer):
@@ -38,14 +42,18 @@ class FicheAgentSerializer(Serializer):
     
     
 #########DEFAULT LIST DATA##################
+class DataTotalListSerializer(Serializer):
+    key = serializers.CharField(allow_null=True, allow_blank=True)
+    value = serializers.CharField(allow_null=True, allow_blank=True)    
+    
 class DefaultDataListSerializer(Serializer):
     title = serializers.CharField()
     group = GroupSerializer()
     heads = serializers.ListField(child=serializers.CharField())
     dataList = serializers.ListField(child=serializers.ListField(child=serializers.CharField()))
     portrait = serializers.BooleanField(allow_null=True)
-    
-    
+    totalData = serializers.ListField(child=DataTotalListSerializer())
+
 
 #############RECU CAISSE##############################
 class CaisseTransactionSerializer(Serializer):
@@ -125,4 +133,26 @@ class RecuFraisScolaireSerializer(Serializer):
     transactions = CaisseTransactionSerializer(many=True)
     totalAmountTransaction = serializers.CharField(allow_null=True, allow_blank=True)
     isDebit = serializers.BooleanField(allow_null=True)
+  
+
+
+###########EMPLOI DU TEMPS######################3
+class DaysDataSerializer(Serializer):
+    matiere = serializers.CharField(allow_null=True, allow_blank=True)
+    salle = serializers.CharField(allow_null=True, allow_blank=True)
+    teacher = serializers.CharField(allow_null=True, allow_blank=True)
+
+class SlotLineSerializer(Serializer):
+    hour = serializers.CharField(allow_null=True, allow_blank=True)
+    monday = DaysDataSerializer()
+    tuesday = DaysDataSerializer()
+    wednesday = DaysDataSerializer()
+    thursday = DaysDataSerializer()
+    friday = DaysDataSerializer()
+    saturday = DaysDataSerializer()
+    sunday = DaysDataSerializer()
     
+class TimeTableSerializer(Serializer):
+    title = serializers.CharField(allow_null=True, allow_blank=True)
+    data = SlotLineSerializer(many=True)
+    group = GroupSerializer()
