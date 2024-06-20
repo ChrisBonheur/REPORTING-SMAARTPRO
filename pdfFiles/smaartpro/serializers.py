@@ -8,6 +8,7 @@ class GroupSerializer(Serializer):
     siteName = serializers.CharField(allow_null=True, allow_blank=True)
     siteContact = serializers.CharField(allow_null=True, allow_blank=True)
     siteAddress = serializers.CharField(allow_null=True, allow_blank=True)
+    schoolYear = serializers.CharField(allow_null=True, allow_blank=True)
     
     
 class AgentSerializer(Serializer):
@@ -156,3 +157,23 @@ class TimeTableSerializer(Serializer):
     title = serializers.CharField(allow_null=True, allow_blank=True)
     data = SlotLineSerializer(many=True)
     group = GroupSerializer()
+
+    
+class SoldCashSerializer(Serializer):
+    closureDateTime = serializers.CharField(allow_null=True, allow_blank=True)
+    openingBalance = serializers.CharField(allow_null=True, allow_blank=True)
+    totalCashIn = serializers.CharField(allow_null=True, allow_blank=True)
+    totalCashOut = serializers.CharField(allow_null=True, allow_blank=True)
+    closingBalance = serializers.CharField(allow_null=True, allow_blank=True)
+    currentSold = serializers.CharField(allow_null=True, allow_blank=True)
+    compte_caisse = serializers.CharField(allow_null=True, allow_blank=True)
+    caisse_name = serializers.CharField(allow_null=True, allow_blank=True)
+    
+class ClosedCashSerializer(Serializer):
+    group = GroupSerializer()
+    transactions = TransactionSerializer(many=True)
+    sold = SoldCashSerializer()
+    #totalDebit = serializers.CharField(allow_null=True, allow_blank=True)
+    #totalCredit = serializers.CharField(allow_null=True, allow_blank=True)
+    printerName = serializers.CharField(allow_null=True, allow_blank=True)
+    #losedSold = serializers.CharField(allow_null=True, allow_blank=True)

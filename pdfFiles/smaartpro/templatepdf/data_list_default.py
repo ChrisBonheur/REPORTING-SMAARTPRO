@@ -21,8 +21,6 @@ def default_list(data):
         else:
             value = ''
             for thfoot in data['totalData']:
-                print(thfoot)
-                print(item)
                 if thfoot['key'] == item:
                     value = thfoot['value']
             

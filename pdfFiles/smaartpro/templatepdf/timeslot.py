@@ -7,11 +7,11 @@ def generateTimeLine(day):
             {day['matiere']}
             <br>
             <div class="info-sup text-danger text-truncate my-1">
-                P: {day['teacher']}
+              {'P: ' + day['teacher'] if day.get('teacher') else ''}
             </div>
     
             <div class="info-sup text-primary text-truncate my-0">
-                S: {day['salle']}
+                {'S: ' + day['salle'] if day.get('salle') else ''}
             </div>
         </td>
     """

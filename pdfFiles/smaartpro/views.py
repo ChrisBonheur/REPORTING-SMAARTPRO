@@ -7,7 +7,7 @@ import base64
 from django.http import HttpResponse
 from .contentPrincipal import get_profile
 from rest_framework.views import APIView
-from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, TimeTableSerializer
+from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, TimeTableSerializer, ClosedCashSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .templatepdf.agent_default_profil import default_profile
@@ -16,6 +16,7 @@ from .templatepdf.recu_caisse import recu_caisse
 from .templatepdf.journal_caisse import journal_caisse
 from .templatepdf.recu_frais import recu_frais
 from .templatepdf.timeslot import timeslot
+from .templatepdf.closed_cash import closed_Cash
 from drf_yasg.utils import swagger_auto_schema
 import base64
 
@@ -99,6 +100,20 @@ class TimeSlotView(APIView):
         if serializer.is_valid():
             dataHTML = timeslot(serializer.data)
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True, 'orientation': 'Landscape'})
+            encoded_data = base64.b64encode(pdf_data).decode()
+            return Response({"base64_data": encoded_data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class ClosedCashView(APIView):
+    @swagger_auto_schema(
+        request_body=ClosedCashSerializer
+    )
+    def post(self, request, format=None):
+        serializer = ClosedCashSerializer(data=request.data)
+        if serializer.is_valid():
+            dataHTML = closed_Cash(serializer.data)
+            pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
