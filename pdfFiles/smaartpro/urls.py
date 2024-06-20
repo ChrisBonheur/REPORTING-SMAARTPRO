@@ -1,6 +1,6 @@
 from rest_framework import routers
 from django.urls import path, include
-from .views import FicheAgentView, DefaultDataListView, RecuCaisseView, JournalCaisseView, RecuFraisView, TimeSlotView, ClosedCashView
+from .views import FicheAgentView, DefaultDataListView, RecuCaisseView, JournalCaisseView, RecuFraisView, TimeSlotView, ClosedCashView, FicheEleveView
 
 urlpatterns = [
     path('fiche-agent', FicheAgentView.as_view()),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('operations-caisse', JournalCaisseView.as_view()),
     path('recu-frais', RecuFraisView.as_view()),
     path('timetable', TimeSlotView.as_view()),
-    path('closed-sold', ClosedCashView.as_view())
+    path('closed-sold', ClosedCashView.as_view()),
+    path('fiche-eleve', FicheEleveView.as_view()),
 ]

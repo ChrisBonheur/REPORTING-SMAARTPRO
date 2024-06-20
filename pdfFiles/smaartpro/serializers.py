@@ -27,7 +27,26 @@ class AgentSerializer(Serializer):
     roleName = serializers.CharField(allow_null=True, allow_blank=True)
     qrCode = serializers.CharField(allow_null=True, allow_blank=True)   
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)   
-    dateOfBirth = serializers.CharField(allow_null=True, allow_blank=True)   
+    dateOfBirth = serializers.CharField(allow_null=True, allow_blank=True)
+    
+class StudentSerializer(Serializer):
+    matricule = serializers.CharField(allow_null=True, allow_blank=True)
+    firstName = serializers.CharField(allow_null=True, allow_blank=True)
+    lastName = serializers.CharField(allow_null=True, allow_blank=True)
+    dateOfBirth = serializers.CharField(allow_null=True, allow_blank=True)
+    civility = serializers.CharField(allow_null=True, allow_blank=True)
+    address = serializers.CharField(allow_null=True, allow_blank=True)
+    photo = serializers.CharField(allow_null=True, allow_blank=True)
+    email = serializers.CharField(allow_null=True, allow_blank=True)
+    phone1 = serializers.CharField(allow_null=True, allow_blank=True)
+    phone2 = serializers.CharField(allow_null=True, allow_blank=True)
+    bloodGroup = serializers.CharField(allow_null=True, allow_blank=True)
+    inscriptionStatus = serializers.CharField(allow_null=True, allow_blank=True)
+    siteClassTitle = serializers.CharField(allow_null=True, allow_blank=True)
+    birthCity = serializers.CharField(allow_null=True, allow_blank=True)
+    nationalityName = serializers.CharField(allow_null=True, allow_blank=True)
+    cityName = serializers.CharField(allow_null=True, allow_blank=True)
+    cityArea = serializers.CharField(allow_null=True, allow_blank=True)
     
 class SiteSerializer(Serializer):
     name = serializers.CharField(allow_null=True, allow_blank=True) 
@@ -40,6 +59,11 @@ class FicheAgentSerializer(Serializer):
     group = GroupSerializer()
     agent = AgentSerializer()
     site = SiteSerializer()
+    
+class FicheEleveSerializer(Serializer):
+    group = GroupSerializer()
+    student = StudentSerializer()
+    
     
     
 #########DEFAULT LIST DATA##################
