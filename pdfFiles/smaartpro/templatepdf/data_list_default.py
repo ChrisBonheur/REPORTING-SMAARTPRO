@@ -13,21 +13,22 @@ def default_list(data):
         lignes += tr
 
     #set footer
-    tr = '<tr>'
-    i = 0
-    for item in data['heads']:
-        if i == 0:
-            value = "Total"
-        else:
-            value = ''
-            for thfoot in data['totalData']:
-                if thfoot['key'] == item:
-                    value = thfoot['value']
-            
-        tr += f"<th>{value}</th>"
-        i += 1
-    tr += "</tr>"
-    lignes += tr
+    if len(data['totalData']) > 0:
+        tr = '<tr>'
+        i = 0
+        for item in data['heads']:
+            if i == 0:
+                value = "Total"
+            else:
+                value = ''
+                for thfoot in data['totalData']:
+                    if thfoot['key'] == item:
+                        value = thfoot['value']
+                
+            tr += f"<th>{value}</th>"
+            i += 1
+        tr += "</tr>"
+        lignes += tr
     
     content = f"""
     <!DOCTYPE html>
