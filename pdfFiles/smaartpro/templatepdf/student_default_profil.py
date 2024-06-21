@@ -47,12 +47,20 @@ def default_profile_student(fiche):
                 <div class="d-flex justify-content-center bg-light">
                 <img
                     style="max-width: 200px; min-height: 220px;"
-                    src="{fiche['student']['photo']}"
+                    src="{fiche['student']['photo'] if f"data:image/png;base64,{fiche['student'].get('photo')}" else ''}"
                     class="card-img-top border rounded"
-                    alt="photo student"
+                    alt="photo élève"
                 />
                 </div>
 
+                <div class="d-flex justify-content-center mt-4">
+                    <img
+                    width="150px"
+                    src="data:image/png;base64,{fiche['student']['qrCode'] if f"data:image/png;base64,{fiche['student'].get('qrCode')}" else ''}"
+                    class="border rounded-0"
+                    alt="Qr-code"
+                    />
+                </div>
             </div>
 
         <div class="col-8">
@@ -95,19 +103,9 @@ def default_profile_student(fiche):
 
             <div class="form-group mb-4 col-12 row">
                 <div class="col-4"><label for="" class="mb-0 text-secondary">Nationalité (Pays) </label></div>
-                <div class="col-8">: {fiche['student']['nationalityName']}</div>
+                <div class="col-8">: {fiche['student']['nationalityTitle']}</div>
             </div>
 
-
-            <div class="form-group mb-4 col-12 row">
-                <div class="col-4"><label for="" class="mb-0 text-secondary">Ville de résidence :</label></div>
-                <div class="col-8">: { fiche['student']['cityName'] }</div>
-            </div>
-
-            <div class="form-group mb-4 col-12 row">
-                <div class="col-4"><label for="" class="mb-0 text-secondary">Arrondissement </label></div>
-                <div class="col-8">: {fiche['student']['cityArea']}</div>
-            </div>
 
             <div class="form-group mb-4 col-12 row">
                 <div class="col-4"><label for="" class="mb-0 text-secondary">Adresse </label></div>

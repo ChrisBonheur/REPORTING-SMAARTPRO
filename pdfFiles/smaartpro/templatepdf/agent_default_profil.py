@@ -55,7 +55,7 @@ def default_profile(fiche):
 
                 <div class="d-flex justify-content-center mt-4">
                     <img
-                    width="100"
+                    width="150px"
                     src="data:image/png;base64,{fiche['agent']['qrCode']}"
                     class="border rounded-0"
                     alt="Qr-code"
