@@ -131,7 +131,7 @@ def closed_Cash(data):
             <div class="row">
                 <div class="col-6" style="font-size: 0.8em;">
                     <div><span class="text-secondary">Imprimé par </span> {data['printerName']}</div>
-                    <div style="margin-left: 60px;"><span class="text-secondary">le</span> {get_current_datetime()}</div>
+                    <div style="margin-left: 60px;"><span class="text-secondary">le</span> -</div>
                 </div>
                 <div class="col-6 d-flex justify-content-end">
                     <div><span class="text-secondary">Solde de fermeture</span> <strong class="border p-1">{data['sold']['closingBalance']}</strong></div>
