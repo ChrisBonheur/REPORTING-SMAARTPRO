@@ -47,6 +47,26 @@ class StudentSerializer(Serializer):
     nationalityTitle = serializers.CharField(allow_null=True, allow_blank=True)
     #cityArea = serializers.CharField(allow_null=True, allow_blank=True)
     qrCode = serializers.CharField(allow_null=True, allow_blank=True)
+
+
+class TeacherSerializer(Serializer):
+    matricule = serializers.CharField(allow_null=True, allow_blank=True)
+    photo = serializers.CharField(allow_null=True, allow_blank=True)
+    civility = serializers.IntegerField()
+    nom = serializers.CharField(allow_null=True, allow_blank=True)
+    prenom = serializers.CharField(allow_null=True, allow_blank=True)
+    email = serializers.CharField(allow_null=True, allow_blank=True) 
+    address = serializers.CharField(allow_null=True, allow_blank=True) 
+    cityName = serializers.CharField(allow_null=True, allow_blank=True) 
+    cityArea = serializers.CharField(allow_null=True, allow_blank=True) 
+    street = serializers.CharField(allow_null=True, allow_blank=True) 
+    nationalityName = serializers.CharField(allow_null=True, allow_blank=True) 
+    phone1 = serializers.CharField(allow_null=True, allow_blank=True) 
+    phone2 = serializers.CharField(allow_null=True, allow_blank=True) 
+    roleName = serializers.CharField(allow_null=True, allow_blank=True)
+    qrCode = serializers.CharField(allow_null=True, allow_blank=True)   
+    birthCity = serializers.CharField(allow_null=True, allow_blank=True)   
+    birthDate = serializers.CharField(allow_null=True, allow_blank=True)
     
 class SiteSerializer(Serializer):
     name = serializers.CharField(allow_null=True, allow_blank=True) 
@@ -64,7 +84,14 @@ class FicheEleveSerializer(Serializer):
     group = GroupSerializer()
     student = StudentSerializer()
     
-    
+class MatiereNiveaux(Serializer):
+   matiere = serializers.CharField(allow_null=True, allow_blank=True) 
+   levels = serializers.ListField(child=serializers.CharField())
+   
+class FicheTeacherSerializer(Serializer):
+    group = GroupSerializer()
+    teacher = TeacherSerializer()
+    matieres = MatiereNiveaux(many=True)
     
 #########DEFAULT LIST DATA##################
 class DataTotalListSerializer(Serializer):

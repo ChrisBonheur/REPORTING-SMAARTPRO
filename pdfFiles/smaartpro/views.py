@@ -7,7 +7,7 @@ import base64
 from django.http import HttpResponse
 from .contentPrincipal import get_profile
 from rest_framework.views import APIView
-from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer
+from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .templatepdf.agent_default_profil import default_profile
@@ -18,6 +18,7 @@ from .templatepdf.recu_frais import recu_frais
 from .templatepdf.timeslot import timeslot
 from .templatepdf.closed_cash import closed_Cash
 from.templatepdf.student_default_profil import default_profile_student
+from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
 
@@ -127,6 +128,20 @@ class FicheEleveView(APIView):
         serializer = FicheEleveSerializer(data=request.data)
         if serializer.is_valid():
             dataHTML = default_profile_student(serializer.data)
+            pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            encoded_data = base64.b64encode(pdf_data).decode()
+            return Response({"base64_data": encoded_data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class FicheTeacherView(APIView):
+    @swagger_auto_schema(
+        request_body=FicheTeacherSerializer
+    )
+    def post(self, request, format=None):
+        serializer = FicheTeacherSerializer(data=request.data)
+        if serializer.is_valid():
+            dataHTML = default_profile_teacher(serializer.data)
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
