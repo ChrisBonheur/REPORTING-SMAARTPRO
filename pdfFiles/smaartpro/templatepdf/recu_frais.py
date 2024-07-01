@@ -26,8 +26,8 @@ def recu_frais(data):
                     }}
                     .receipt-main {{
                         background: #ffffff none repeat scroll 0 0;
-                        border-bottom: 12px solid #333333;
-                        border-top: 12px solid #9f181c;
+                        border-bottom: 2px solid #333333;
+                        border-top: 2px solid #9f181c;
                         margin-top: 50px;
                         margin-bottom: 50px;
                         padding: 40px 30px ;

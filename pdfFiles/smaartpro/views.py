@@ -87,6 +87,7 @@ class RecuFraisView(APIView):
         serializer = RecuFraisScolaireSerializer(data=request.data)
         if serializer.is_valid():
             dataHTML = recu_frais(serializer.data)
+            dataHTML = dataHTML + '<div class="my-2"></div>' + dataHTML #set booth for agent and beneficiare
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
