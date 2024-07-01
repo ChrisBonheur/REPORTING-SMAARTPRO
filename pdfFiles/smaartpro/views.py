@@ -1,6 +1,7 @@
 from io import BytesIO
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import pdfkit
 import base64
@@ -21,6 +22,10 @@ from.templatepdf.student_default_profil import default_profile_student
 from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
+from .templatepdf.bootstrap import bootstrap
+from smaartpro.models import FeesReceipt, TypeReceiptEnum
+from smaartpro.utils import traitement_html
+
 
 class FicheAgentView(APIView):
     @swagger_auto_schema(
@@ -85,9 +90,19 @@ class RecuFraisView(APIView):
     )
     def post(self, request, format=None):
         serializer = RecuFraisScolaireSerializer(data=request.data)
+        
         if serializer.is_valid():
-            dataHTML = recu_frais(serializer.data)
-            dataHTML = dataHTML + '<div class="my-2"></div>' + dataHTML #set booth for agent and beneficiare
+            templates = FeesReceipt.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = FeesReceipt.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+            data['bootstrap'] = bootstrap
+            dataHTML = traitement_html(templates, data)
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML + '<div class="my-3"></div>' + dataHTML
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
@@ -128,6 +143,7 @@ class FicheEleveView(APIView):
     def post(self, request, format=None):
         serializer = FicheEleveSerializer(data=request.data)
         if serializer.is_valid():
+            
             dataHTML = default_profile_student(serializer.data)
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
@@ -147,3 +163,43 @@ class FicheTeacherView(APIView):
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+
+def home(request):
+    templates = FeesReceipt.objects.filter(groupid=1)
+    if(templates.exists()):
+        templates = templates[0].content
+    else:
+        templates = FeesReceipt.objects.get(groupid=0).content
+    data = {
+        "groupeLogo": "string",
+        "groupeName": "string",
+        "groupeDevise": "string",
+        "siteName": "string",
+        "siteAdress": "string",
+        "siteContact": "string",
+        "caisse": "string",
+        "scholarYear": "string",
+        "dateRecu": "string",
+        "recuNumber": "string",
+        "printerAgent": "string",
+        "eleveName": "string",
+        "elevePrenom": "string",
+        "niveau": "string",
+        "matricule": "string",
+        "transactions": [
+            {
+                "label": "string",
+                "type": "string",
+                "typeRecipient": "string",
+                "payMode": "string",
+                "amount": "string"
+            }
+        ],
+        "totalAmountTransaction": "string",
+        "isDebit": True
+    }
+    return render(request, 'index.html', data)
+

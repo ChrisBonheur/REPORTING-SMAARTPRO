@@ -168,6 +168,7 @@ class JournalCaisseSerializer(Serializer):
     
 
 class RecuFraisScolaireSerializer(Serializer):
+    groupid = serializers.IntegerField(allow_null=True, default=0)
     groupeLogo = serializers.CharField(allow_null=True, allow_blank=True)
     groupeName = serializers.CharField(allow_null=True, allow_blank=True)
     groupeDevise = serializers.CharField(allow_null=True, allow_blank=True)
