@@ -182,6 +182,7 @@ class RecuFraisScolaireSerializer(Serializer):
     eleveName = serializers.CharField(allow_null=True, allow_blank=True)
     elevePrenom = serializers.CharField(allow_null=True, allow_blank=True)
     niveau = serializers.CharField(allow_null=True, allow_blank=True)
+    matricule = serializers.CharField(allow_null=True, allow_blank=True)
     transactions = CaisseTransactionSerializer(many=True)
     totalAmountTransaction = serializers.CharField(allow_null=True, allow_blank=True)
     isDebit = serializers.BooleanField(allow_null=True)
