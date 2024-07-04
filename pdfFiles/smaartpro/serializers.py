@@ -72,8 +72,7 @@ class SiteSerializer(Serializer):
     name = serializers.CharField(allow_null=True, allow_blank=True) 
     description = serializers.CharField(allow_null=True, allow_blank=True) 
     siteCode = serializers.CharField(allow_null=True, allow_blank=True) 
-    address = serializers.CharField(allow_null=True, allow_blank=True) 
-    phoneNumbers = serializers.CharField(allow_null=True, allow_blank=True) 
+    address = serializers.CharField(allow_null=True, allow_blank=True)
 
 class FicheAgentSerializer(Serializer):
     group = GroupSerializer()
