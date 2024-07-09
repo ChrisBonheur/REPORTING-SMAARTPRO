@@ -9,9 +9,20 @@ class TypeReceiptEnum(Enum):
     @classmethod
     def choices(cls):
         return [(key.value, key.name) for key in cls]
-
-class FeesReceipt(models.Model):
+    
+    
+class ReportingBase(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     groupid = models.IntegerField(default=0)
+    
+    class Meta:
+        abstract = True
+
+class FeesReceipt(ReportingBase):
     receipt_type = models.IntegerField(choices=TypeReceiptEnum.choices, default=TypeReceiptEnum.ORDINAIRE.value)
+    is_family = models.BooleanField(default=False)
+    
+    
+class DataList(ReportingBase):
+    list_type = models.IntegerField(default=0)

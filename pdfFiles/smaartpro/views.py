@@ -23,7 +23,7 @@ from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
-from smaartpro.models import FeesReceipt, TypeReceiptEnum
+from smaartpro.models import FeesReceipt, DataList
 from smaartpro.utils import traitement_html
 
 
@@ -48,7 +48,19 @@ class DefaultDataListView(APIView):
     def post(self, request, format=None):
         serializer = DefaultDataListSerializer(data=request.data)
         if serializer.is_valid():
-            dataHTML = default_list(serializer.data)
+            templates = DataList.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = DataList.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+            data['bootstrap'] = bootstrap
+            dataHTML = traitement_html(templates, data)
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML + '<div class="my-3"></div>' + dataHTML
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
             orientation = 'Portrait' if serializer.data['portrait'] == True else 'Landscape'
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True, 'orientation': orientation})
             encoded_data = base64.b64encode(pdf_data).decode()
@@ -102,7 +114,8 @@ class RecuFraisView(APIView):
             data['bootstrap'] = bootstrap
             dataHTML = traitement_html(templates, data)
              #set booth for agent and beneficiare
-            dataHTML = dataHTML + '<div class="my-3"></div>' + dataHTML
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
@@ -173,33 +186,39 @@ def home(request):
         templates = templates[0].content
     else:
         templates = FeesReceipt.objects.get(groupid=0).content
+    
     data = {
-        "groupeLogo": "string",
-        "groupeName": "string",
-        "groupeDevise": "string",
-        "siteName": "string",
-        "siteAdress": "string",
-        "siteContact": "string",
-        "caisse": "string",
-        "scholarYear": "string",
-        "dateRecu": "string",
-        "recuNumber": "string",
-        "printerAgent": "string",
-        "eleveName": "string",
-        "elevePrenom": "string",
-        "niveau": "string",
-        "matricule": "string",
-        "transactions": [
-            {
-                "label": "string",
-                "type": "string",
-                "typeRecipient": "string",
-                "payMode": "string",
-                "amount": "string"
-            }
+        "title": "string",
+        "group": {
+            "groupeLogo": "string",
+            "groupeName": "string",
+            "groupDevise": "string",
+            "siteName": "string",
+            "siteContact": "string",
+            "siteAddress": "string",
+            "schoolYear": "string"
+        },
+        "heads": [
+            "col",
+            "cell",
+            "cell2",
         ],
-        "totalAmountTransaction": "string",
-        "isDebit": True
+        "dataList": [
+            [
+            "test1",
+            "cell1",
+            '',
+            ]
+        ],
+        "portrait": True,
+        "totalData": [
+            {
+            "key": "cell2",
+            "value": "string"
+            }
+        ]
     }
+    data['bootstrap'] = bootstrap
     return render(request, 'index.html', data)
+
 

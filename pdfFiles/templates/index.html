@@ -14,8 +14,8 @@
             }
             .receipt-main {
                 background: #ffffff none repeat scroll 0 0;
-                border-bottom: 12px solid #333333;
-                border-top: 12px solid #9f181c;
+                border-bottom: 3px solid #333333;
+                border-top: 3px solid #9f181c;
                 margin-top: 50px;
                 margin-bottom: 50px;
                 padding: 40px 30px ;
@@ -97,15 +97,15 @@
         <div class="receipt-header row mt-0">
             <div class="col-12 d-flex">
                 <div class="receipt-left ">
-                    <img class="img-responsive mr-4" alt="iamgurdeeposahan" src="{group.groupeLogo}" style="width: 71px; border-radius: 43px; margin-left: 1em;">
+                    <img class="img-responsive mr-4" alt="iamgurdeeposahan" src="{{group.groupeLogo }}" style="width: 71px; border-radius: 43px; margin-left: 1em;">
                 </div>
                 <div class="">
                     <div class="receipt-right">
-                        <h4 class="text-end mb-0">{group.groupeName}</h4>
-                        <p>{group.groupDevise} <i class="fa fa-envelope-o"></i></p>
-                        <p><span class="mr-2"></span>Tél: '{group.siteContact} <i class="fa fa-phone"></i></p>
+                        <h4 class="text-end mb-0">{{ group.groupeName }}</h4>
+                        <p>{{ group.groupDevise }} <i class="fa fa-envelope-o"></i></p>
+                        <p><span class=""></span>Tél:  {{ group.siteContact }} <i class="fa fa-phone"></i></p>
                         
-                        <h5>{group.siteName} <i class="fa fa-location-arrow"></i></h5>
+                        <h5>{{group.siteName }} <i class="fa fa-location-arrow"></i></h5>
                     </div>
                 </div>
             </div>
@@ -116,7 +116,7 @@
         <div class="receipt-header receipt-header-mid row pl-1 w-100">
             <div class="col-12 text-left">
                 <div class="receipt-right">
-                    <h5 class="text-center">{data.title}</h5>
+                    <h5 class="text-center">{{title }}</h5>
                 </div>
             </div>
         </div>
@@ -126,17 +126,34 @@
     <table class="table table-bordered">
         <tr style="background-color: gray !important; color: white">
             {% for head in heads %}
-                <th style="background-color: gray !important; color: white">{head}</th>
+                <th style="background-color: gray !important; color: white">{{ head }}</th>
             {% endfor %}
         </tr>
-
         {% for line in dataList %}
             <tr>
                 {% for col in line %}
-                    <td>{col}</td>
+                    <td> {{ col }} </td>
                 {% endfor %}
             </tr>
         {% endfor %}
+        <tr>
+            {% for head in heads %}
+                {% if forloop.first %}
+                    <th>Total</th>
+                {% else  %}
+                    <th>
+                        {% for foot in totalData %}
+                            {% if foot.key == head %}
+                                {{ foot.value }}
+                            {% else %}
+                                
+                            {% endif %}
+                        {% endfor %}
+                    </th>
+                {% endif %}
+
+            {% endfor %}
+        </tr>
         
     </table>
     
@@ -145,7 +162,7 @@
             <div class="col-6">
                 <div class="col-12 text-left">
                     <div class="receipt-right">
-                        <h5 style="color: rgb(140, 140, 140);">smaartschool</h5>
+                        <h5 style="color: rgb(140, 140, 140);">Smaartschool</h5>
                     </div>
                 </div>
                 <div class="col-12">

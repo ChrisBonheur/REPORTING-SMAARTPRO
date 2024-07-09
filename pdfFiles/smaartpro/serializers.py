@@ -104,6 +104,7 @@ class DefaultDataListSerializer(Serializer):
     dataList = serializers.ListField(child=serializers.ListField(child=serializers.CharField()))
     portrait = serializers.BooleanField(allow_null=True)
     totalData = serializers.ListField(child=DataTotalListSerializer())
+    groupid = serializers.IntegerField(allow_null=True, default=0)
 
 
 #############RECU CAISSE##############################
