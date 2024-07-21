@@ -112,50 +112,122 @@
         </div>
     </div>
     <hr class="my-0 mt-1">
-    <div class="row">
-        <div class="receipt-header receipt-header-mid row pl-1 w-100">
-            <div class="col-12 text-left">
-                <div class="receipt-right">
-                    <h5 class="text-center">{{title }}</h5>
+    <div class="">
+        <div class="text-center">
+            <h2 class="text-center border p-2 bg-light">Fiche individuelle de l'enseignant</h2>
+        </div>
+        <div class="row ">
+            <div class="col-4 border-right bg-light">
+                <div class="d-flex justify-content-center bg-light">
+                <img
+                    style="max-width: 200px; min-height: 220px;"
+                    src="{{ teacher.photo }}"
+                    class="card-img-top border rounded"
+                    alt="photo agent"
+                />
+                </div>
+
+                <div class="d-flex justify-content-center mt-4">
+                    <img
+                    width="150px"
+                    src="data:image/png;base64,{{ teacher.qrCode }}"
+                    class="border rounded-0"
+                    alt="Qr-code"
+                    />
                 </div>
             </div>
-        </div>
-    </div>
+
+            <div class="col-8">
+                <div class="row">
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Matricule </label></div>
+                    <div class="col-8">: <strong>{{ teacher.matricule }}</strong></div>
+                </div>
+                
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Nom(s) </label></div>
+                    <div class="col-8">: <strong>{{ teacher.nom }}</strong></div>
+                </div>
     
-
-    <table class="table table-bordered">
-        <tr style="background-color: gray !important; color: white">
-            {% for head in heads %}
-                <th style="background-color: gray !important; color: white">{{ head }}</th>
-            {% endfor %}
-        </tr>
-        {% for line in dataList %}
-            <tr>
-                {% for col in line %}
-                    <td> {{ col }} </td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-        <tr>
-            {% for head in heads %}
-                {% if forloop.first %}
-                    <th>Total</th>
-                {% else  %}
-                    <th>
-                        {% for foot in totalData %}
-                            {% if foot.key == head %}
-                                {{ foot.value }}
-                            {% else %}
-                                
-                            {% endif %}
-                        {% endfor %}
-                    </th>
-                {% endif %}
-
-            {% endfor %}
-        </tr>
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Prénom(s) </label></div>
+                    <div class="col-8">: <strong>{{ teacher.prenom }}</strong></div>
+                </div>
+    
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Lieu de naissance </label></div>
+                    <div class="col-8">: <strong>{{ teacher.birthDate }}</strong></div>
+                </div>
+    
+    
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Civilité </label></div>
+                    <div class="col-8">:
+                        {% if teacher.civility == 1 %}
+                            Monsieur
+                        {% else %}
+                            Madame
+                        {% endif %}
+                    </div>
+                </div>
+    
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Email </label></div>
+                    <div class="col-8">: {{ teacher.email }}</div>
+                </div>
+    
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Rôle </label></div>
+                    <div class="col-8">: {{ teacher.roleName }}</div>
+                </div>
+    
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Nationalité (Pays) </label></div>
+                    <div class="col-8">: {{ teacher.nationalityName }}</div>
+                </div>
+    
+    
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Ville de résidence :</label></div>
+                    <div class="col-8">: {{ teacher.cityName }}</div>
+                </div>
+    
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Arrondissement </label></div>
+                    <div class="col-8">: {{ teacher.cityArea }}</div>
+                </div>
+    
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Adresse </label></div>
+                    <div class="col-8">: {{ teacher.address }}</div>
+                </div>
         
-    </table>
+                <div class="form-group mb-4 col-12 row">
+                    <div class="col-4"><label for="" class="mb-0 text-secondary">Contact(s) </label></div>
+                    <div class="col-8">: {{ teacher.phone1 }} / {{ teacher.phone2 }}</div>
+                </div>
+        
+                </div>
+            </div>
+
+        </div>
+        <div>Matières enseignées</div>
+        <table class="table table-info table-striped">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Matière </th>
+              <th scope="col">Niveau</th>
+            </tr>
+
+            {% for item in matieres %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.matiere }}</td>
+                <td>{{ item.levels }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
     
     <div class="row">
         <div class="receipt-header receipt-header-mid receipt-footer row w-100">

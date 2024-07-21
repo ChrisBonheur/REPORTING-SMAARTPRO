@@ -15,14 +15,24 @@ class ReportingBase(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     groupid = models.IntegerField(default=0)
+    type = models.IntegerField(default=0, unique=True)
     
     class Meta:
         abstract = True
 
 class FeesReceipt(ReportingBase):
-    receipt_type = models.IntegerField(choices=TypeReceiptEnum.choices, default=TypeReceiptEnum.ORDINAIRE.value)
+    receipt_type = models.IntegerField(choices=TypeReceiptEnum.choices(), default=TypeReceiptEnum.ORDINAIRE.value)
     is_family = models.BooleanField(default=False)
     
     
 class DataList(ReportingBase):
-    list_type = models.IntegerField(default=0)
+    pass
+
+class FicheAgent(ReportingBase):
+    pass
+
+class FicheEleve(ReportingBase):
+    pass
+
+class FicheTeacher(ReportingBase):
+    pass

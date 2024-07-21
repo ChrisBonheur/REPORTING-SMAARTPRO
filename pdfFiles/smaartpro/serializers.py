@@ -78,14 +78,16 @@ class FicheAgentSerializer(Serializer):
     group = GroupSerializer()
     agent = AgentSerializer()
     site = SiteSerializer()
+    groupid = serializers.IntegerField(allow_null=True, default=0)
     
 class FicheEleveSerializer(Serializer):
     group = GroupSerializer()
     student = StudentSerializer()
+    groupid = serializers.IntegerField(allow_null=True, default=0)
     
 class MatiereNiveaux(Serializer):
    matiere = serializers.CharField(allow_null=True, allow_blank=True) 
-   levels = serializers.ListField(child=serializers.CharField())
+   levels = serializers.CharField(allow_null=True, allow_blank=True) 
    
 class FicheTeacherSerializer(Serializer):
     group = GroupSerializer()
