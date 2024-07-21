@@ -50,7 +50,6 @@ class StudentSerializer(Serializer):
 
 
 class TeacherSerializer(Serializer):
-    matricule = serializers.CharField(allow_null=True, allow_blank=True)
     photo = serializers.CharField(allow_null=True, allow_blank=True)
     civility = serializers.IntegerField()
     nom = serializers.CharField(allow_null=True, allow_blank=True)
@@ -59,11 +58,10 @@ class TeacherSerializer(Serializer):
     address = serializers.CharField(allow_null=True, allow_blank=True) 
     cityName = serializers.CharField(allow_null=True, allow_blank=True) 
     cityArea = serializers.CharField(allow_null=True, allow_blank=True) 
-    street = serializers.CharField(allow_null=True, allow_blank=True) 
+    address = serializers.CharField(allow_null=True, allow_blank=True) 
     nationalityName = serializers.CharField(allow_null=True, allow_blank=True) 
     phone1 = serializers.CharField(allow_null=True, allow_blank=True) 
     phone2 = serializers.CharField(allow_null=True, allow_blank=True) 
-    roleName = serializers.CharField(allow_null=True, allow_blank=True)
     qrCode = serializers.CharField(allow_null=True, allow_blank=True)   
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)   
     birthDate = serializers.CharField(allow_null=True, allow_blank=True)
@@ -93,6 +91,7 @@ class FicheTeacherSerializer(Serializer):
     group = GroupSerializer()
     teacher = TeacherSerializer()
     matieres = MatiereNiveaux(many=True)
+    groupid = serializers.IntegerField(allow_null=True, default=0)
     
 #########DEFAULT LIST DATA##################
 class DataTotalListSerializer(Serializer):

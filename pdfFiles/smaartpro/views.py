@@ -23,7 +23,7 @@ from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
-from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve
+from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher
 from smaartpro.utils import traitement_html
 
 
@@ -195,7 +195,19 @@ class FicheTeacherView(APIView):
     def post(self, request, format=None):
         serializer = FicheTeacherSerializer(data=request.data)
         if serializer.is_valid():
-            dataHTML = default_profile_teacher(serializer.data)
+            templates = FicheTeacher.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = FicheTeacher.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+            data['bootstrap'] = bootstrap
+            dataHTML = traitement_html(templates, data)
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
