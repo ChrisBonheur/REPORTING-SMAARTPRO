@@ -41,3 +41,6 @@ class FicheEleve(ReportingBase):
 
 class FicheTeacher(ReportingBase):
     pass
+
+class TimeTable(ReportingBase):
+    pass

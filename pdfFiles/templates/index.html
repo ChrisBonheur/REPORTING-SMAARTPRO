@@ -35,9 +35,9 @@
           .receipt-main thead {
               background: #414143 none repeat scroll 0 0;
           }
-          .receipt-main thead th {
+          .receipt-main thead th, th {
               color:#fff;
-              background: gray;
+              background: gray ;
           }
           .receipt-right h5 {
               font-size: 16px;
@@ -122,102 +122,49 @@
           </div>
         </div>
         <hr class="my-0 mt-1" />
-        <div class="row">
-          <div class="receipt-header receipt-header-mid row pl-1 w-100">
-            <div class="col-7 text-left">
-              <div class="receipt-right">
-                <h1>Clôture de caisse</h1>
-                <p>Solde d'ouverture : <strong>{{sold.openingBalance}}</strong></p>
-                <p>Solde de fermeture : <strong>{{sold.closingBalance}} </strong></p>
-              </div>
-            </div>
-            <div class="col-5">
-              <div class="w-100">
-                <div class="receipt-right">
-                  <p>Agent : <b>{{printerName}}</b></p>
-                  <p>Caisse : <b>{{ sold.caisse_name }}</b></p>
-                  <p>Date : <b>{{ sold.closureDateTime }}</b></p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h3 class="text-center py-2">{{ title }}</h3>
         <table class="table table-bordered">
-          <tr style="background-color: gray !important; color: white">
-            <th style="background-color: gray !important; color: white">
-                Heure
-            </th>
-            <th style="background-color: gray !important; color: white">
-                Libellé de l'opération
-            </th>
-            <th style="background-color: gray !important; color: white">
-                DEBIT
-            </th>
-            <th style="background-color: gray !important; color: white">
-                CREDIT
-            </th>
-          </tr>
-          {% for line in transactions %}
-          <tr>
-            <td style="width: 70px">{{ line.transactionDate }}</td>
-            <td style="width: 50% !important">{{ line.description }}</td>
-            <td style="width: 100px">{{ line.debitAmount }}</td>
-            <td style="width: 100px">{{ line.creditAmount }}</td>
-          </tr>
-          {% endfor %}
-          <tr>
-            <td colspan="2" class="text-right">
-              <h2 style="font-size: 0.9em">Total:</h2>
-            </td>
-            <td style="width: 100px" class="text-left text-danger">
-              <strong> {{sold.totalCashOut}}</strong>
-            </td>
-            <td style="width: 100px" class="text-left text-danger">
-                <strong> {{sold.totalCashIn}}</strong>
-              </td>
-          </tr>
-        </table>
-        <div class="row">
-          <div
-            class="receipt-header receipt-header-mid receipt-footer row w-100"
-          >
-            <div class="col-7">
-             <div class="col-12">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Mode de paiement</th>
-                        <th>T. DEBIT</th>
-                        <th>T. CREDIT</th>
-                    </tr>
-                    {% for item in totalByMode %}
-                    <tr >
-                        <td class="py-0">{{ item.title }}</td>
-                        <td class="py-0">{{item.totalDebit  }}</td>
-                        <td class="py-0">{{item.totalCredit  }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-             </div>
-              <div class="col-12 text-left">
-                <div class="receipt-right">
-                  <h5 style="color: rgb(140, 140, 140)">smaartschool</h5>
-                </div>
-              </div>
-            </div>
-            <div class="col-5 d-flex justify-content-end">
-              <table class="table table-bordered">
+              <tr class="bg-secondary">
+                <th class="bg-light border-light" scope="col"></th>
+                <th class="bg-secondary text-dark" scope="col">Lundi</th>
+                <th class="bg-secondary text-dark" scope="col">Mardi</th>
+                <th class="bg-secondary text-dark" scope="col">Mercredi</th>
+                <th class="bg-secondary text-dark" scope="col">Jeudi</th>
+                <th class="bg-secondary text-dark" scope="col">Vendredi</th>
+                <th class="bg-secondary text-dark" scope="col">Samedi</th>
+                <th class="bg-secondary text-dark" scope="col">Dimanche</th>
+              </tr>
+                {% load custom_filter %}
+                {% for line in data %}
                 <tr>
-                  <th>Visa du responsable</th>
-                  <th>Caissier</th>
+                    <th class="pt-4 bg-secondary text-dark" style="width: 120px">  
+                        {{ line.hour }} 
+                    </th>
+                    {% for day in days %}
+                        {% with day as dynamic_key %}
+                            {% with line|get_item:dynamic_key as value %}
+                               {% if value and value.matiere %}
+                                <td style="width: 150px"> 
+                                    {{ value.matiere }}
+                                    <br>
+                                    <div class="info-sup text-danger text-truncate my-0">
+                                      P: {{ value.teacher }}
+                                    </div>
+                            
+                                    <div class="info-sup text-primary text-truncate my-0 py-0">
+                                        S: {{ value.salle }}
+                                    </div>    
+                                </td>
+                               {% else %}
+                               <td style="width: 150px">{{ value.otherValue }}</td>
+                               {% endif %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% endfor %}
                 </tr>
-                <tr style="height: 100px">
-                  <td></td>
-                  <td></td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
+                {% endfor %}
+          </table>
+
       </div>
     </div>
   </body>

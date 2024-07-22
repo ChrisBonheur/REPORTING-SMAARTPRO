@@ -23,7 +23,7 @@ from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
-from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash
+from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, TimeTable
 from smaartpro.utils import traitement_html
 
 
@@ -154,7 +154,20 @@ class TimeSlotView(APIView):
     def post(self, request, format=None):
         serializer = TimeTableSerializer(data=request.data)
         if serializer.is_valid():
-            dataHTML = timeslot(serializer.data)
+            templates = TimeTable.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = TimeTable.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+            data['bootstrap'] = bootstrap
+            data['days'] = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+            dataHTML = traitement_html(templates, data)
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True, 'orientation': 'Landscape'})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
@@ -248,6 +261,43 @@ def home(request):
         templates = FeesReceipt.objects.get(groupid=0).content
     
     data = {
+  "title": "string",
+  "data": [
+    {
+      "hour": "string",
+      "monday": {
+        "matiere": "string",
+        "salle": "string",
+        "teacher": "string"
+      },
+      "tuesday": {
+        "matiere": "string",
+        "salle": "string",
+        "teacher": "string"
+      },
+
+      "thursday": {
+        "matiere": "string",
+        "salle": "string",
+        "teacher": "string"
+      },
+      "friday": {
+        "matiere": "string",
+        "salle": "string",
+        "teacher": "string"
+      },
+      "saturday": {
+        "matiere": "string",
+        "salle": "string",
+        "teacher": "string"
+      },
+      "sunday": {
+        "matiere": "string",
+        "salle": "string",
+        "teacher": "string"
+      }
+    }
+  ],
   "group": {
     "groupeLogo": "string",
     "groupeName": "string",
@@ -256,40 +306,10 @@ def home(request):
     "siteContact": "string",
     "siteAddress": "string",
     "schoolYear": "string"
-  },
-  "transactions": [
-    {
-      "transactionDate": "string",
-      "valueDate": "string",
-      "description": "string",
-      "recipientTypeCodeLabel": "string",
-      "compte": "string",
-      "debitAmount": "string",
-      "creditAmount": "string",
-      "paymentMethod": "string"
-    }
-  ],
-  "sold": {
-    "closureDateTime": "string",
-    "openingBalance": "string",
-    "totalCashIn": "string",
-    "totalCashOut": "string",
-    "closingBalance": "string",
-    "currentSold": "string",
-    "compte_caisse": "string",
-    "caisse_name": "string"
-  },
-  "printerName": "string",
-  "totalByMode": [
-    {
-      "title": "string",
-      "totalCredit": "string",
-      "totalDebit": "string"
-    }
-  ]
+  }
 }
     data['bootstrap'] = bootstrap
-    
+    data['days'] = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     return render(request, 'index.html', data)
 
 

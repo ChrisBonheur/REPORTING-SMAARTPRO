@@ -205,9 +205,10 @@ class RecuFraisScolaireSerializer(Serializer):
 
 ###########EMPLOI DU TEMPS######################3
 class DaysDataSerializer(Serializer):
-    matiere = serializers.CharField(allow_null=True, allow_blank=True)
-    salle = serializers.CharField(allow_null=True, allow_blank=True)
-    teacher = serializers.CharField(allow_null=True, allow_blank=True)
+    matiere = serializers.CharField(allow_null=True, allow_blank=True, default="")
+    salle = serializers.CharField(allow_null=True, allow_blank=True, default="")
+    teacher = serializers.CharField(allow_null=True, allow_blank=True, default="")
+    otherValue = serializers.CharField(allow_null=True, allow_blank=True, default="")
 
 class SlotLineSerializer(Serializer):
     hour = serializers.CharField(allow_null=True, allow_blank=True)
@@ -223,6 +224,7 @@ class TimeTableSerializer(Serializer):
     title = serializers.CharField(allow_null=True, allow_blank=True)
     data = SlotLineSerializer(many=True)
     group = GroupSerializer()
+    groupid = serializers.IntegerField(allow_null=True, default=0)
 
     
 class SoldCashSerializer(Serializer):
