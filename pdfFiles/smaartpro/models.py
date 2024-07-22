@@ -24,11 +24,16 @@ class FeesReceipt(ReportingBase):
     receipt_type = models.IntegerField(choices=TypeReceiptEnum.choices(), default=TypeReceiptEnum.ORDINAIRE.value)
     is_family = models.BooleanField(default=False)
     
+class RecuCaisse(ReportingBase):
+    pass
     
 class DataList(ReportingBase):
     pass
 
 class FicheAgent(ReportingBase):
+    pass
+
+class CloseCash(ReportingBase):
     pass
 
 class FicheEleve(ReportingBase):

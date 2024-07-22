@@ -111,12 +111,14 @@ class DefaultDataListSerializer(Serializer):
 #############RECU CAISSE##############################
 class CaisseTransactionSerializer(Serializer):
     label = serializers.CharField(allow_null=True, allow_blank=True)
-    type = serializers.CharField(allow_null=True, allow_blank=True)
+    numerate = serializers.CharField(allow_null=True, allow_blank=True)
     typeRecipient = serializers.CharField(allow_null=True, allow_blank=True)
     payMode = serializers.CharField(allow_null=True, allow_blank=True)
     amount = serializers.CharField(allow_null=True, allow_blank=True)
     
 class RecuCaisseSerializer(Serializer):
+    groupid = serializers.IntegerField(allow_null=True, default=0)
+    modePay = serializers.CharField(allow_null=True, allow_blank=True)
     groupeLogo = serializers.CharField(allow_null=True, allow_blank=True)
     groupeName = serializers.CharField(allow_null=True, allow_blank=True)
     groupeDevise = serializers.CharField(allow_null=True, allow_blank=True)
@@ -141,8 +143,8 @@ class TransactionSerializer(Serializer):
     compte = serializers.CharField(allow_null=True, allow_blank=True)
     debitAmount = serializers.CharField(allow_null=True, allow_blank=True)
     creditAmount = serializers.CharField(allow_null=True, allow_blank=True)
-    """
     paymentMethod = serializers.CharField(allow_null=True, allow_blank=True)
+    """
     responsibleAgentName = serializers.CharField(allow_null=True, allow_blank=True)
     groupeTransactionTypeTitle = serializers.CharField(allow_null=True, allow_blank=True)
     cashAccountTitle = serializers.CharField(allow_null=True, allow_blank=True)
@@ -167,6 +169,13 @@ class JournalCaisseSerializer(Serializer):
     openSold = serializers.BooleanField(allow_null=True)
     closeSold = serializers.BooleanField(allow_null=True)
     
+class FeesCashTransactionSerializer(Serializer):
+    label = serializers.CharField(allow_null=True, allow_blank=True)
+    type = serializers.CharField(allow_null=True, allow_blank=True)
+    typeRecipient = serializers.CharField(allow_null=True, allow_blank=True)
+    amount = serializers.CharField(allow_null=True, allow_blank=True)
+    restPaied = serializers.CharField(allow_null=True, allow_blank=True)
+    paied = serializers.CharField(allow_null=True, allow_blank=True)
 
 class RecuFraisScolaireSerializer(Serializer):
     groupid = serializers.IntegerField(allow_null=True, default=0)
@@ -185,8 +194,11 @@ class RecuFraisScolaireSerializer(Serializer):
     elevePrenom = serializers.CharField(allow_null=True, allow_blank=True)
     niveau = serializers.CharField(allow_null=True, allow_blank=True)
     matricule = serializers.CharField(allow_null=True, allow_blank=True)
-    transactions = CaisseTransactionSerializer(many=True)
+    transactions = FeesCashTransactionSerializer(many=True)
     totalAmountTransaction = serializers.CharField(allow_null=True, allow_blank=True)
+    totalAmountPaied = serializers.CharField(allow_null=True, allow_blank=True)
+    totalAmountRest = serializers.CharField(allow_null=True, allow_blank=True)
+    modePay = serializers.CharField(allow_null=True, allow_blank=True)
     isDebit = serializers.BooleanField(allow_null=True)
   
 
@@ -222,12 +234,19 @@ class SoldCashSerializer(Serializer):
     currentSold = serializers.CharField(allow_null=True, allow_blank=True)
     compte_caisse = serializers.CharField(allow_null=True, allow_blank=True)
     caisse_name = serializers.CharField(allow_null=True, allow_blank=True)
+
+class TotalByMethod(Serializer):
+    title = serializers.CharField(allow_null=True, allow_blank=True)
+    totalCredit = serializers.CharField(allow_null=True, allow_blank=True)
+    totalDebit = serializers.CharField(allow_null=True, allow_blank=True)
     
 class ClosedCashSerializer(Serializer):
+    groupid = serializers.IntegerField(allow_null=True, default=0)
     group = GroupSerializer()
     transactions = TransactionSerializer(many=True)
     sold = SoldCashSerializer()
     #totalDebit = serializers.CharField(allow_null=True, allow_blank=True)
     #totalCredit = serializers.CharField(allow_null=True, allow_blank=True)
     printerName = serializers.CharField(allow_null=True, allow_blank=True)
+    totalByMode = TotalByMethod(many=True)
     #losedSold = serializers.CharField(allow_null=True, allow_blank=True)

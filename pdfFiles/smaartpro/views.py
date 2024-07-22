@@ -23,7 +23,7 @@ from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
-from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher
+from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash
 from smaartpro.utils import traitement_html
 
 
@@ -88,7 +88,19 @@ class RecuCaisseView(APIView):
     def post(self, request, format=None):
         serializer = RecuCaisseSerializer(data=request.data)
         if serializer.is_valid():
-            dataHTML = recu_caisse(serializer.data)
+            templates = RecuCaisse.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = RecuCaisse.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+            data['bootstrap'] = bootstrap
+            dataHTML = traitement_html(templates, data)
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
@@ -156,7 +168,19 @@ class ClosedCashView(APIView):
     def post(self, request, format=None):
         serializer = ClosedCashSerializer(data=request.data)
         if serializer.is_valid():
-            dataHTML = closed_Cash(serializer.data)
+            templates = CloseCash.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = CloseCash.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+            data['bootstrap'] = bootstrap
+            dataHTML = traitement_html(templates, data)
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
             pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
@@ -233,29 +257,34 @@ def home(request):
     "siteAddress": "string",
     "schoolYear": "string"
   },
-  "teacher": {
-    "matricule": "string",
-    "photo": "string",
-    "civility": 0,
-    "nom": "string",
-    "prenom": "string",
-    "email": "string",
-    "address": "string",
-    "cityName": "string",
-    "cityArea": "string",
-    "street": "string",
-    "nationalityName": "string",
-    "phone1": "string",
-    "phone2": "string",
-    "roleName": "string",
-    "qrCode": "string",
-    "birthCity": "string",
-    "birthDate": "string"
-  },
-  "matieres": [
+  "transactions": [
     {
-      "matiere": "string",
-      "levels": "string"
+      "transactionDate": "string",
+      "valueDate": "string",
+      "description": "string",
+      "recipientTypeCodeLabel": "string",
+      "compte": "string",
+      "debitAmount": "string",
+      "creditAmount": "string",
+      "paymentMethod": "string"
+    }
+  ],
+  "sold": {
+    "closureDateTime": "string",
+    "openingBalance": "string",
+    "totalCashIn": "string",
+    "totalCashOut": "string",
+    "closingBalance": "string",
+    "currentSold": "string",
+    "compte_caisse": "string",
+    "caisse_name": "string"
+  },
+  "printerName": "string",
+  "totalByMode": [
+    {
+      "title": "string",
+      "totalCredit": "string",
+      "totalDebit": "string"
     }
   ]
 }

@@ -1,254 +1,224 @@
-
-
 <!DOCTYPE html>
 <html>
-    <title>Caisse</title>
-<head>
+  <title>Caisse</title>
+  <head>
     <style>
-        {{bootstrap}}
-        body{
-            width: 100%;
-        }
-        .text-danger strong {
-                color: #9f181c;
-            }
-            .receipt-main {
-                background: #ffffff none repeat scroll 0 0;
-                border-bottom: 3px solid #333333;
-                border-top: 3px solid #9f181c;
-                margin-top: 50px;
-                margin-bottom: 50px;
-                padding: 40px 30px ;
-                box-shadow: 0 1px 21px #acacac;
-                color: #333333;
-                font-family: open sans;
-            }
-            .receipt-main p {
-                color: #333333;
-                font-family: open sans;
-                line-height: 1.42857;
-            }
-            .receipt-footer h1 {
-                font-size: 15px;
-                font-weight: 400 ;
-                margin: 0 ;
-            }
+      {{bootstrap}}
+      body{
+          width: 100%;
+      }
+      .text-danger strong {
+              color: #9f181c;
+          }
+          .receipt-main {
+              background: #ffffff none repeat scroll 0 0;
+              border-bottom: 3px solid #333333;
+              border-top: 3px solid #9f181c;
+              margin-top: 50px;
+              margin-bottom: 50px;
+              padding: 40px 30px ;
+              box-shadow: 0 1px 21px #acacac;
+              color: #333333;
+              font-family: open sans;
+          }
+          .receipt-main p {
+              color: #333333;
+              font-family: open sans;
+              line-height: 1.42857;
+          }
+          .receipt-footer h1 {
+              font-size: 15px;
+              font-weight: 400 ;
+              margin: 0 ;
+          }
 
-            .receipt-main thead {
-                background: #414143 none repeat scroll 0 0;
-            }
-            .receipt-main thead th {
-                color:#fff;
-                background: gray;
-            }
-            .receipt-right h5 {
-                font-size: 16px;
-                font-weight: bold;
-                margin: 0 0 7px 0;
-            }
-            .receipt-right p {
-                font-size: 12px;
-                margin: 0px;
-            }
-            .receipt-right p i {
-                text-align: center;
-                width: 18px;
-            }
-            .receipt-main td {
-                padding: 9px 20px ;
-            }
-            .receipt-main th {
-                padding: 5px 20px ;
-            }
-            .receipt-main td {
-                font-size: 13px;
-                font-weight: initial ;
-            }
-            .receipt-main td p:last-child {
-                margin: 0;
-                padding: 0;
-            }	
-            .receipt-main td h2 {
-                font-size: 20px;
-                font-weight: 900;
-                margin: 0;
-                text-transform: uppercase;
-            }
-            .receipt-header-mid .receipt-left h1 {
-                font-weight: 100;
-                text-align: right;
-                text-transform: uppercase;
-            }
-            .receipt-header-mid {
-                margin: 10px 0;
-                overflow: hidden;
-            }
-            
-            #container {
-                background-color: #dcdcdc;
-            }
+          .receipt-main thead {
+              background: #414143 none repeat scroll 0 0;
+          }
+          .receipt-main thead th {
+              color:#fff;
+              background: gray;
+          }
+          .receipt-right h5 {
+              font-size: 16px;
+              font-weight: bold;
+              margin: 0 0 7px 0;
+          }
+          .receipt-right p {
+              font-size: 12px;
+              margin: 0px;
+          }
+          .receipt-right p i {
+              text-align: center;
+              width: 18px;
+          }
+          .receipt-main td {
+              padding: 9px 20px ;
+          }
+          .receipt-main th {
+              padding: 5px 20px ;
+          }
+          .receipt-main td {
+              font-size: 13px;
+              font-weight: initial ;
+          }
+          .receipt-main td p:last-child {
+              margin: 0;
+              padding: 0;
+          }
+          .receipt-main td h2 {
+              font-size: 20px;
+              font-weight: 900;
+              margin: 0;
+              text-transform: uppercase;
+          }
+          .receipt-header-mid .receipt-left h1 {
+              font-weight: 100;
+              text-align: right;
+              text-transform: uppercase;
+          }
+          .receipt-header-mid {
+              margin: 10px 0;
+              overflow: hidden;
+          }
+
+          #container {
+              background-color: #dcdcdc;
+          }
+
+          th{
+            padding: 2px !important;
+            padding-left: 10px !important;
+            font-size: 0.8em !important;
+          }
+          td{
+            padding: 5px !important;
+          }
     </style>
-</head>
-<body>
-
-<div class="container col">
-<div class="receipt-main m-auto mt-0 ">
-    <div class="row mb-0">
-        <div class="receipt-header row mt-0">
+  </head>
+  <body>
+    <div class="container col">
+      <div class="receipt-main m-auto mt-0">
+        <div class="row mb-0">
+          <div class="receipt-header row mt-0">
             <div class="col-12 d-flex">
-                <div class="receipt-left ">
-                    <img class="img-responsive mr-4" alt="iamgurdeeposahan" src="{{group.groupeLogo }}" style="width: 71px; border-radius: 43px; margin-left: 1em;">
-                </div>
-                <div class="">
-                    <div class="receipt-right">
-                        <h4 class="text-end mb-0">{{ group.groupeName }}</h4>
-                        <p>{{ group.groupDevise }} <i class="fa fa-envelope-o"></i></p>
-                        <p><span class=""></span>Tél:  {{ group.siteContact }} <i class="fa fa-phone"></i></p>
-                        
-                        <h5>{{group.siteName }} <i class="fa fa-location-arrow"></i></h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <hr class="my-0 mt-1">
-    <div class="">
-        <div class="text-center">
-            <h2 class="text-center border p-2 bg-light">Fiche individuelle de l'enseignant</h2>
-        </div>
-        <div class="row ">
-            <div class="col-4 border-right bg-light">
-                <div class="d-flex justify-content-center bg-light">
+              <div class="receipt-left">
                 <img
-                    style="max-width: 200px; min-height: 220px;"
-                    src="{{ teacher.photo }}"
-                    class="card-img-top border rounded"
-                    alt="photo agent"
+                  class="img-responsive mr-4"
+                  alt="iamgurdeeposahan"
+                  src="{{groupeLogo}}"
+                  style="width: 71px; border-radius: 43px; margin-left: 1em"
                 />
+              </div>
+              <div class="">
+                <div class="receipt-right">
+                  <h4 class="text-end mb-0">{{ group.groupeName }}</h4>
+                  <p>{{group.groupeDevise}} <i class="fa fa-envelope-o"></i></p>
+                  <p>{{group.siteContact}} <i class="fa fa-phone"></i></p>
+                  <h5>{{group.siteName}} <i class="fa fa-location-arrow"></i></h5>
                 </div>
-
-                <div class="d-flex justify-content-center mt-4">
-                    <img
-                    width="150px"
-                    src="data:image/png;base64,{{ teacher.qrCode }}"
-                    class="border rounded-0"
-                    alt="Qr-code"
-                    />
-                </div>
+              </div>
             </div>
-
-            <div class="col-8">
-                <div class="row">
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Matricule </label></div>
-                    <div class="col-8">: <strong>{{ teacher.matricule }}</strong></div>
-                </div>
-                
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Nom(s) </label></div>
-                    <div class="col-8">: <strong>{{ teacher.nom }}</strong></div>
-                </div>
-    
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Prénom(s) </label></div>
-                    <div class="col-8">: <strong>{{ teacher.prenom }}</strong></div>
-                </div>
-    
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Lieu de naissance </label></div>
-                    <div class="col-8">: <strong>{{ teacher.birthDate }}</strong></div>
-                </div>
-    
-    
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Civilité </label></div>
-                    <div class="col-8">:
-                        {% if teacher.civility == 1 %}
-                            Monsieur
-                        {% else %}
-                            Madame
-                        {% endif %}
-                    </div>
-                </div>
-    
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Email </label></div>
-                    <div class="col-8">: {{ teacher.email }}</div>
-                </div>
-    
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Rôle </label></div>
-                    <div class="col-8">: {{ teacher.roleName }}</div>
-                </div>
-    
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Nationalité (Pays) </label></div>
-                    <div class="col-8">: {{ teacher.nationalityName }}</div>
-                </div>
-    
-    
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Ville de résidence :</label></div>
-                    <div class="col-8">: {{ teacher.cityName }}</div>
-                </div>
-    
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Arrondissement </label></div>
-                    <div class="col-8">: {{ teacher.cityArea }}</div>
-                </div>
-    
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Adresse </label></div>
-                    <div class="col-8">: {{ teacher.address }}</div>
-                </div>
-        
-                <div class="form-group mb-4 col-12 row">
-                    <div class="col-4"><label for="" class="mb-0 text-secondary">Contact(s) </label></div>
-                    <div class="col-8">: {{ teacher.phone1 }} / {{ teacher.phone2 }}</div>
-                </div>
-        
-                </div>
-            </div>
-
+          </div>
         </div>
-        {% if matieres %}
-        <div class="mt-3">Matières enseignées</div>
-        <table class="table table-info table-striped">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Matière </th>
-              <th scope="col">Niveau</th>
-            </tr>
-
-            {% for item in matieres %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ item.matiere }}</td>
-                <td>{{ item.levels }}</td>
-            </tr>
-            {% endfor %}
-
+        <hr class="my-0 mt-1" />
+        <div class="row">
+          <div class="receipt-header receipt-header-mid row pl-1 w-100">
+            <div class="col-7 text-left">
+              <div class="receipt-right">
+                <h1>Clôture de caisse</h1>
+                <p>Solde d'ouverture : <strong>{{sold.openingBalance}}</strong></p>
+                <p>Solde de fermeture : <strong>{{sold.closingBalance}} </strong></p>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="w-100">
+                <div class="receipt-right">
+                  <p>Agent : <b>{{printerName}}</b></p>
+                  <p>Caisse : <b>{{ sold.caisse_name }}</b></p>
+                  <p>Date : <b>{{ sold.closureDateTime }}</b></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="table table-bordered">
+          <tr style="background-color: gray !important; color: white">
+            <th style="background-color: gray !important; color: white">
+                Heure
+            </th>
+            <th style="background-color: gray !important; color: white">
+                Libellé de l'opération
+            </th>
+            <th style="background-color: gray !important; color: white">
+                DEBIT
+            </th>
+            <th style="background-color: gray !important; color: white">
+                CREDIT
+            </th>
+          </tr>
+          {% for line in transactions %}
+          <tr>
+            <td style="width: 70px">{{ line.transactionDate }}</td>
+            <td style="width: 50% !important">{{ line.description }}</td>
+            <td style="width: 100px">{{ line.debitAmount }}</td>
+            <td style="width: 100px">{{ line.creditAmount }}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="2" class="text-right">
+              <h2 style="font-size: 0.9em">Total:</h2>
+            </td>
+            <td style="width: 100px" class="text-left text-danger">
+              <strong> {{sold.totalCashOut}}</strong>
+            </td>
+            <td style="width: 100px" class="text-left text-danger">
+                <strong> {{sold.totalCashIn}}</strong>
+              </td>
+          </tr>
         </table>
-        {% endif %}
-    
-    <div class="row">
-        <div class="receipt-header receipt-header-mid receipt-footer row w-100">
-            <div class="col-6">
-                <div class="col-12 text-left">
-                    <div class="receipt-right">
-                        <h5 style="color: rgb(140, 140, 140);">Smaartschool</h5>
-                    </div>
+        <div class="row">
+          <div
+            class="receipt-header receipt-header-mid receipt-footer row w-100"
+          >
+            <div class="col-7">
+             <div class="col-12">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Mode de paiement</th>
+                        <th>T. DEBIT</th>
+                        <th>T. CREDIT</th>
+                    </tr>
+                    {% for item in totalByMode %}
+                    <tr >
+                        <td class="py-0">{{ item.title }}</td>
+                        <td class="py-0">{{item.totalDebit  }}</td>
+                        <td class="py-0">{{item.totalCredit  }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+             </div>
+              <div class="col-12 text-left">
+                <div class="receipt-right">
+                  <h5 style="color: rgb(140, 140, 140)">smaartschool</h5>
                 </div>
-                <div class="col-12">
-                    <a target="_blank" href="https://tutor.smaartschool.com/" title="ouvrir managersmaartpro">https://tutor.smaartschool.com/</a>
-                </div>
+              </div>
             </div>
-            
+            <div class="col-5 d-flex justify-content-end">
+              <table class="table table-bordered">
+                <tr>
+                  <th>Visa du responsable</th>
+                  <th>Caissier</th>
+                </tr>
+                <tr style="height: 100px">
+                  <td></td>
+                  <td></td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    
-</div>    
-</div>
-
-</body>
+  </body>
 </html>
