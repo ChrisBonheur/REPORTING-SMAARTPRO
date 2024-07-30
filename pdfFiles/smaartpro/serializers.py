@@ -1,6 +1,7 @@
 from rest_framework.serializers import Serializer
 from rest_framework import serializers
 
+
 class GroupSerializer(Serializer):
     groupeLogo = serializers.CharField(allow_null=True, allow_blank=True)
     groupeName = serializers.CharField(allow_null=True, allow_blank=True)
@@ -28,7 +29,8 @@ class AgentSerializer(Serializer):
     qrCode = serializers.CharField(allow_null=True, allow_blank=True)   
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)   
     dateOfBirth = serializers.CharField(allow_null=True, allow_blank=True)
-    
+
+
 class StudentSerializer(Serializer):
     matricule = serializers.CharField(allow_null=True, allow_blank=True)
     firstName = serializers.CharField(allow_null=True, allow_blank=True)
@@ -45,7 +47,7 @@ class StudentSerializer(Serializer):
     siteClassTitle = serializers.CharField(allow_null=True, allow_blank=True)
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)
     nationalityTitle = serializers.CharField(allow_null=True, allow_blank=True)
-    #cityArea = serializers.CharField(allow_null=True, allow_blank=True)
+    # cityArea = serializers.CharField(allow_null=True, allow_blank=True)
     qrCode = serializers.CharField(allow_null=True, allow_blank=True)
 
 
@@ -65,11 +67,13 @@ class TeacherSerializer(Serializer):
     qrCode = serializers.CharField(allow_null=True, allow_blank=True)   
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)   
     birthDate = serializers.CharField(allow_null=True, allow_blank=True)
-    
+
+
+
 class SiteSerializer(Serializer):
-    name = serializers.CharField(allow_null=True, allow_blank=True) 
-    description = serializers.CharField(allow_null=True, allow_blank=True) 
-    siteCode = serializers.CharField(allow_null=True, allow_blank=True) 
+    name = serializers.CharField(allow_null=True, allow_blank=True)
+    description = serializers.CharField(allow_null=True, allow_blank=True)
+    siteCode = serializers.CharField(allow_null=True, allow_blank=True)
     address = serializers.CharField(allow_null=True, allow_blank=True)
 
 class FicheAgentSerializer(Serializer):
@@ -77,27 +81,33 @@ class FicheAgentSerializer(Serializer):
     agent = AgentSerializer()
     site = SiteSerializer()
     groupid = serializers.IntegerField(allow_null=True, default=0)
-    
+
+
 class FicheEleveSerializer(Serializer):
     group = GroupSerializer()
     student = StudentSerializer()
     groupid = serializers.IntegerField(allow_null=True, default=0)
-    
+
+
 class MatiereNiveaux(Serializer):
    matiere = serializers.CharField(allow_null=True, allow_blank=True) 
    levels = serializers.CharField(allow_null=True, allow_blank=True) 
-   
+
+
 class FicheTeacherSerializer(Serializer):
     group = GroupSerializer()
     teacher = TeacherSerializer()
     matieres = MatiereNiveaux(many=True)
     groupid = serializers.IntegerField(allow_null=True, default=0)
     
-#########DEFAULT LIST DATA##################
+# ########DEFAULT LIST DATA##################
+
+
 class DataTotalListSerializer(Serializer):
     key = serializers.CharField(allow_null=True, allow_blank=True)
     value = serializers.CharField(allow_null=True, allow_blank=True)    
-    
+
+
 class DefaultDataListSerializer(Serializer):
     title = serializers.CharField()
     group = GroupSerializer()
@@ -109,13 +119,16 @@ class DefaultDataListSerializer(Serializer):
 
 
 #############RECU CAISSE##############################
+
+
 class CaisseTransactionSerializer(Serializer):
     label = serializers.CharField(allow_null=True, allow_blank=True)
     numerate = serializers.CharField(allow_null=True, allow_blank=True)
     typeRecipient = serializers.CharField(allow_null=True, allow_blank=True)
     payMode = serializers.CharField(allow_null=True, allow_blank=True)
     amount = serializers.CharField(allow_null=True, allow_blank=True)
-    
+
+
 class RecuCaisseSerializer(Serializer):
     groupid = serializers.IntegerField(allow_null=True, default=0)
     modePay = serializers.CharField(allow_null=True, allow_blank=True)
@@ -150,7 +163,8 @@ class TransactionSerializer(Serializer):
     cashAccountTitle = serializers.CharField(allow_null=True, allow_blank=True)
     creatorAgentName = serializers.CharField(allow_null=True, allow_blank=True)
     """
-    
+
+
 class JournalCaisseSerializer(Serializer):
     title = serializers.CharField(allow_null=True, allow_blank=True)
     scholarYear = serializers.CharField(allow_null=True, allow_blank=True)
@@ -168,14 +182,16 @@ class JournalCaisseSerializer(Serializer):
     totalDebit = serializers.BooleanField(allow_null=True)
     openSold = serializers.BooleanField(allow_null=True)
     closeSold = serializers.BooleanField(allow_null=True)
-    
+
+
 class FeesCashTransactionSerializer(Serializer):
     label = serializers.CharField(allow_null=True, allow_blank=True)
-    type = serializers.CharField(allow_null=True, allow_blank=True)
+    receipt_type = serializers.CharField(allow_null=True, allow_blank=True, default=0)
     typeRecipient = serializers.CharField(allow_null=True, allow_blank=True)
     amount = serializers.CharField(allow_null=True, allow_blank=True)
     restPaied = serializers.CharField(allow_null=True, allow_blank=True)
     paied = serializers.CharField(allow_null=True, allow_blank=True)
+
 
 class RecuFraisScolaireSerializer(Serializer):
     groupid = serializers.IntegerField(allow_null=True, default=0)
