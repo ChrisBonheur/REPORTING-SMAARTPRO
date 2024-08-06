@@ -52,3 +52,7 @@ class FicheTeacher(ReportingBase):
 
 class TimeTable(ReportingBase):
     pass
+
+
+class Bulletin(ReportingBase):
+    pass

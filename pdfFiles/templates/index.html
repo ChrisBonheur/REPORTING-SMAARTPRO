@@ -97,75 +97,135 @@
     </style>
   </head>
   <body>
-    <div class="container col">
-      <div class="receipt-main m-auto mt-0">
-        <div class="row mb-0">
-          <div class="receipt-header row mt-0">
-            <div class="col-12 d-flex">
-              <div class="receipt-left">
-                <img
-                  class="img-responsive mr-4"
-                  alt="iamgurdeeposahan"
-                  src="{{groupeLogo}}"
-                  style="width: 71px; border-radius: 43px; margin-left: 1em"
-                />
+    <section>
+      <div class="Facture">
+        <div class="header">
+          <div class="row">
+            <div class="logo" style="display: flex">
+              <img
+                class="img-responsive"
+                
+                alt="logo"
+                src="{{groupeLogo}}"
+                style="width: 71px;border: 1px solid gray; margin-right: 1em"
+              />
+              <div class="info-school">
+                <h4 class="text-end mb-0"> {{ groupeName }}</h4>
+                <h5>{{ groupeDevise }}</p>
+                <h5>{{siteContact}} </p>
+                <h5>{{siteName}} </h5>
               </div>
-              <div class="">
+            </div>
+            <div class="title">
+              <h2>BULLETIN DE PAIE</h2>
+              <div class="col-7 text-left">
                 <div class="receipt-right">
-                  <h4 class="text-end mb-0">{{ group.groupeName }}</h4>
-                  <p>{{group.groupeDevise}} <i class="fa fa-envelope-o"></i></p>
-                  <p>{{group.siteContact}} <i class="fa fa-phone"></i></p>
-                  <h5>{{group.siteName}} <i class="fa fa-location-arrow"></i></h5>
+                   <p>Mois : <b>{{eleveName}}</b></p>
+                   <p>Année scolaire : <b>{{elevePrenom}} </b></p>
+                   <p>Date de paiement : <b>{{matricule}} </b></p>
+                   <p>AgentPayeur : <b>{{niveau}} </b></p>
+                </div>
+             </div>
+              </p>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6">
+                <div class="card border-secondary mb-3" style="width: 100%">
+                  <div class="card-header">Remunération(s)</div>
+                  <div class="card-body text-secondary">
+                    {% for rem in  remunerations  %}
+                      <div class="row">
+                        <div class="row">
+                          <div class="col card-text text-end">{{ rem.label }}</div>
+                          <div class="col card-text text-end">{{ rem.amount }}</div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>            
+              </div>
+    
+              <div class="col-md-6">
+                <div class="card border-secondary mb-3" style="width: 100%">
+                  <div class="card-header">Déduction(s)</div>
+                  <div class="card-body text-secondary">
+                      <div class="row">
+                        <div class="col card-text text-end">Nom et Prénoms: <strong>{{ recipient.fullname }}</strong></div>
+                        <div class="col card-text text-end">Fonction: <strong>{{ recipient.fonction }}</strong></div>
+                        <div class="col card-text text-end">Matricule: <strong>{{ recipient.matricule }}</strong></div>
+                      </div>
+                  </div>
+                </div>             
+              </div>
+          </div>
+        </div>
+        <div class="body">
+          <div class="table">
+            <div class="table_head">
+              <div class="row">
+                <div class="col ligne">
+                  <p class="p_title">DESCRIPTION</p>
+                </div>
+                
+                <div class="col ligne2">
+                  <p class="p_title">MONTANT</p>
                 </div>
               </div>
             </div>
+            <div class="table_body">
+              {% for line in transactions %}  
+                <div class="row">
+                  <div class="col ligne">
+                    <p>{{ line.label }}</p>
+                  </div>
+                  <div class="col ligne1">
+                    <p>{{ line.paied }}</p>
+                  </div>
+                </div>
+              {% endfor %} 
+            </div>
+            <div class="table_foot">
+              <div class="row">
+                <div class="col ligne1">
+                  <p></p>
+                </div>
+                <div class="col ligne">
+                  <p></p>
+                </div>
+                <div class="col ligne1">
+                  <p class="p_title">Total :</p>
+                </div>
+                <div class="col ligne1">
+                  <p>{{totalAmountPaied}}</p>
+                 
+                </div>
+              </div>
+             
+            </div>
           </div>
         </div>
-        <hr class="my-0 mt-1" />
-        <h3 class="text-center py-2">{{ title }}</h3>
-        <table class="table table-bordered">
-              <tr class="bg-secondary">
-                <th class="bg-light border-light" scope="col"></th>
-                <th class="bg-secondary text-dark" scope="col">Lundi</th>
-                <th class="bg-secondary text-dark" scope="col">Mardi</th>
-                <th class="bg-secondary text-dark" scope="col">Mercredi</th>
-                <th class="bg-secondary text-dark" scope="col">Jeudi</th>
-                <th class="bg-secondary text-dark" scope="col">Vendredi</th>
-                <th class="bg-secondary text-dark" scope="col">Samedi</th>
-                <th class="bg-secondary text-dark" scope="col">Dimanche</th>
-              </tr>
-                {% load custom_filter %}
-                {% for line in data %}
-                <tr>
-                    <th class="pt-4 bg-secondary text-dark" style="width: 120px">  
-                        {{ line.hour }} 
-                    </th>
-                    {% for day in days %}
-                        {% with day as dynamic_key %}
-                            {% with line|get_item:dynamic_key as value %}
-                               {% if value and value.matiere %}
-                                <td style="width: 150px"> 
-                                    {{ value.matiere }}
-                                    <br>
-                                    <div class="info-sup text-danger text-truncate my-0">
-                                      P: {{ value.teacher }}
-                                    </div>
-                            
-                                    <div class="info-sup text-primary text-truncate my-0 py-0">
-                                        S: {{ value.salle }}
-                                    </div>    
-                                </td>
-                               {% else %}
-                               <td style="width: 150px">{{ value.otherValue }}</td>
-                               {% endif %}
-                            {% endwith %}
-                        {% endwith %}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-          </table>
-
+        <div class="footer">
+          <div class="row">
+            <div class="col">
+                <div class="col ">
+                    <p class="">Agent: {{printerAgent}} </p>
+                    <p class="">Caisse: {{ caisse }}</p>
+                    <p class="">Date: {{dateRecu }}</p>
+                  </div>
+            </div>
+            <div class="col w_50 text_right">
+              <p>
+                Mode paiement: 
+                <stroing>
+                {{ modePay }}</strong>
+             </p>
+              <p class="p_title">Signature</p>
+              
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   </body>
 </html>

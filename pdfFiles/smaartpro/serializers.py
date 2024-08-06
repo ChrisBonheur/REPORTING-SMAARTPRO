@@ -195,6 +195,7 @@ class FeesCashTransactionSerializer(Serializer):
 
 class RecuFraisScolaireSerializer(Serializer):
     groupid = serializers.IntegerField(allow_null=True, default=0)
+    receipt_type = serializers.IntegerField(allow_null=True, default=0)
     groupeLogo = serializers.CharField(allow_null=True, allow_blank=True)
     groupeName = serializers.CharField(allow_null=True, allow_blank=True)
     groupeDevise = serializers.CharField(allow_null=True, allow_blank=True)
@@ -268,3 +269,40 @@ class ClosedCashSerializer(Serializer):
     printerName = serializers.CharField(allow_null=True, allow_blank=True)
     totalByMode = TotalByMethod(many=True)
     #losedSold = serializers.CharField(allow_null=True, allow_blank=True)
+    
+    
+    
+###############################BULLETIN
+class BulletinCalculSerializer(Serializer):
+    base_salary = serializers.CharField(allow_null=True, allow_blank=True)
+    base_salary_horaire = serializers.CharField(allow_null=True, allow_blank=True)
+    volume_horaire_mensuel = serializers.CharField(allow_null=True, allow_blank=True)
+    day_work_number = serializers.CharField(allow_null=True, allow_blank=True)
+    late_justify = serializers.CharField(allow_null=True, allow_blank=True)
+    holiday = serializers.CharField(allow_null=True, allow_blank=True)
+    
+
+class BulletinRecipientAgentOrEnsignantSerializer(Serializer):
+    fullname = serializers.CharField(allow_null=True, allow_blank=True)
+    fonction = serializers.CharField(allow_null=True, allow_blank=True)
+    matricule = serializers.CharField(allow_null=True, allow_blank=True)
+    
+class BulletinDetailsSerializer(Serializer):
+    label = serializers.CharField(allow_null=True, allow_blank=True)
+    amount = serializers.CharField(allow_null=True, allow_blank=True)
+    
+class BulletinPaieSerializer(Serializer):
+    group = GroupSerializer()
+    groupid = serializers.IntegerField(allow_null=True, default=0)
+    recipient = serializers.CharField(allow_null=True, default=0)
+    month = serializers.CharField(allow_null=True, allow_blank=True)
+    date = serializers.CharField(allow_null=True, allow_blank=True)
+    agent = serializers.CharField(allow_null=True, allow_blank=True)
+    recipient = BulletinRecipientAgentOrEnsignantSerializer()
+    remunerations = BulletinDetailsSerializer(many=True)
+    deductions = BulletinDetailsSerializer(many=True)
+    total_remuneration = serializers.CharField(allow_null=True, allow_blank=True)
+    total_deduction = serializers.CharField(allow_null=True, allow_blank=True)
+    brut_salary = serializers.CharField(allow_null=True, allow_blank=True)
+    net_to_pay = serializers.CharField(allow_null=True, allow_blank=True)
+    

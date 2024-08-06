@@ -8,7 +8,7 @@ import base64
 from django.http import HttpResponse
 from .contentPrincipal import get_profile
 from rest_framework.views import APIView
-from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer
+from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .templatepdf.agent_default_profil import default_profile
@@ -23,7 +23,7 @@ from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
-from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, TimeTable
+from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, TimeTable, TypeReceiptEnum, Bulletin
 from smaartpro.utils import traitement_html
 
 
@@ -129,11 +129,15 @@ class RecuFraisView(APIView):
         serializer = RecuFraisScolaireSerializer(data=request.data)
         
         if serializer.is_valid():
-            templates = FeesReceipt.objects.filter(groupid=serializer.data['groupid'])
+            
+            if(serializer.data.get('receipt_type') and serializer.data['receipt_type'] == TypeReceiptEnum.CAISSE.value):
+                templates = FeesReceipt.objects.filter(groupid=serializer.data['groupid'], receipt_type=TypeReceiptEnum.CAISSE.value)
+            else:
+                templates = FeesReceipt.objects.filter(groupid=serializer.data['groupid'], receipt_type=TypeReceiptEnum.ORDINAIRE.value)
+           
             if(templates.exists()):
                 templates = templates[0].content
-            else:
-                templates = FeesReceipt.objects.get(groupid=0).content
+                
             #add bootstrap
             data = serializer.data
             data['bootstrap'] = bootstrap
@@ -141,7 +145,7 @@ class RecuFraisView(APIView):
              #set booth for agent and beneficiare
             dataHTML = dataHTML.replace('\n', '')
             dataHTML = dataHTML.replace('None', '')
-            pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            pdf_data = pdfkit.from_string(dataHTML + '<div class="my-2"></div>' + dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -252,64 +256,73 @@ class FicheTeacherView(APIView):
     
 
 
+class BulletinView(APIView):
+    @swagger_auto_schema(
+        request_body=BulletinPaieSerializer
+    )
+    def post(self, request, format=None):
+        serializer = BulletinPaieSerializer(data=request.data)
+        if serializer.is_valid():
+            templates = Bulletin.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = Bulletin.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+            data['bootstrap'] = bootstrap
+            dataHTML = traitement_html(templates, data)
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
+            pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            encoded_data = base64.b64encode(pdf_data).decode()
+            return Response({"base64_data": encoded_data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+
 
 def home(request):
     templates = FeesReceipt.objects.filter(groupid=1)
     if(templates.exists()):
         templates = templates[0].content
     else:
-        templates = FeesReceipt.objects.get(groupid=0).content
+        templates = FeesReceipt.objects.filter(groupid=0)[0]
     
     data = {
-  "title": "string",
-  "data": [
-    {
-      "hour": "string",
-      "monday": {
-        "matiere": "string",
-        "salle": "string",
-        "teacher": "string"
-      },
-      "tuesday": {
-        "matiere": "string",
-        "salle": "string",
-        "teacher": "string"
-      },
-
-      "thursday": {
-        "matiere": "string",
-        "salle": "string",
-        "teacher": "string"
-      },
-      "friday": {
-        "matiere": "string",
-        "salle": "string",
-        "teacher": "string"
-      },
-      "saturday": {
-        "matiere": "string",
-        "salle": "string",
-        "teacher": "string"
-      },
-      "sunday": {
-        "matiere": "string",
-        "salle": "string",
-        "teacher": "string"
-      }
-    }
-  ],
-  "group": {
-    "groupeLogo": "string",
-    "groupeName": "string",
-    "groupDevise": "string",
-    "siteName": "string",
-    "siteContact": "string",
-    "siteAddress": "string",
-    "schoolYear": "string"
-  }
-}
-    data['bootstrap'] = bootstrap
-    data['days'] = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        "group": {
+            "groupeLogo": "string",
+            "groupeName": "string",
+            "groupDevise": "string",
+            "siteName": "string",
+            "siteContact": "string",
+            "siteAddress": "string",
+            "schoolYear": "string"
+        },
+        "groupid": 0,
+        "month": "string",
+        "date": "string",
+        "agent": "string",
+        "recipient": {
+            "fullname": "string",
+            "fonction": "string",
+            "matricule": "string"
+        },
+        "remuneration": {
+            "label": "string",
+            "amount": "string"
+        },
+        "Deduction": {
+            "label": "string",
+            "amount": "string"
+        },
+        "total_remuneration": "string",
+        "total_deduction": "string",
+        "brut_salary": "string",
+        "net_to_pay": "string"
+        }
+    
+    #data['bootstrap'] = bootstrap
     return render(request, 'index.html', data)
 
 
