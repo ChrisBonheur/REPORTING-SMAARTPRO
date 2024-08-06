@@ -301,6 +301,7 @@ class BulletinPaieSerializer(Serializer):
     recipient = BulletinRecipientAgentOrEnsignantSerializer()
     remunerations = BulletinDetailsSerializer(many=True)
     deductions = BulletinDetailsSerializer(many=True)
+    base_calcul = BulletinDetailsSerializer(many=True)
     total_remuneration = serializers.CharField(allow_null=True, allow_blank=True)
     total_deduction = serializers.CharField(allow_null=True, allow_blank=True)
     brut_salary = serializers.CharField(allow_null=True, allow_blank=True)

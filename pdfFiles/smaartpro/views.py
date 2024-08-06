@@ -290,39 +290,43 @@ def home(request):
         templates = FeesReceipt.objects.filter(groupid=0)[0]
     
     data = {
-        "group": {
-            "groupeLogo": "string",
-            "groupeName": "string",
-            "groupDevise": "string",
-            "siteName": "string",
-            "siteContact": "string",
-            "siteAddress": "string",
-            "schoolYear": "string"
-        },
-        "groupid": 0,
-        "month": "string",
-        "date": "string",
-        "agent": "string",
-        "recipient": {
-            "fullname": "string",
-            "fonction": "string",
-            "matricule": "string"
-        },
-        "remuneration": {
-            "label": "string",
-            "amount": "string"
-        },
-        "Deduction": {
-            "label": "string",
-            "amount": "string"
-        },
-        "total_remuneration": "string",
-        "total_deduction": "string",
-        "brut_salary": "string",
-        "net_to_pay": "string"
-        }
+  "group": {
+    "groupeLogo": "string",
+    "groupeName": "string",
+    "groupDevise": "string",
+    "siteName": "string",
+    "siteContact": "string",
+    "siteAddress": "string",
+    "schoolYear": "string"
+  },
+  "groupid": 0,
+  "month": "string",
+  "date": "string",
+  "agent": "string",
+  "recipient": {
+    "fullname": "string",
+    "fonction": "string",
+    "matricule": "string"
+  },
+  "remunerations": [
+    {
+      "label": "string",
+      "amount": "string"
+    }
+  ],
+  "deductions": [
+    {
+      "label": "string",
+      "amount": "string"
+    }
+  ],
+  "total_remuneration": "string",
+  "total_deduction": "string",
+  "brut_salary": "string",
+  "net_to_pay": "string"
+}
     
-    #data['bootstrap'] = bootstrap
+    data['bootstrap'] = bootstrap
     return render(request, 'index.html', data)
 
 
