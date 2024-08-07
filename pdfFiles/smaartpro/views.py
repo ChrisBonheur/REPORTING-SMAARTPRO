@@ -129,8 +129,9 @@ class RecuFraisView(APIView):
         serializer = RecuFraisScolaireSerializer(data=request.data)
         
         if serializer.is_valid():
-            
+            type_recu = TypeReceiptEnum.ORDINAIRE.value
             if(serializer.data.get('receipt_type') and serializer.data['receipt_type'] == TypeReceiptEnum.CAISSE.value):
+                type_recu = TypeReceiptEnum.CAISSE.value
                 templates = FeesReceipt.objects.filter(groupid=serializer.data['groupid'], receipt_type=TypeReceiptEnum.CAISSE.value)
             else:
                 templates = FeesReceipt.objects.filter(groupid=serializer.data['groupid'], receipt_type=TypeReceiptEnum.ORDINAIRE.value)
@@ -145,7 +146,11 @@ class RecuFraisView(APIView):
              #set booth for agent and beneficiare
             dataHTML = dataHTML.replace('\n', '')
             dataHTML = dataHTML.replace('None', '')
-            pdf_data = pdfkit.from_string(dataHTML + '<div class="my-2"></div>' + dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            #set two receipt if ordinaire
+            if(type_recu == TypeReceiptEnum.ORDINAIRE.value):
+               dataHTML += '<div class="my-2 col-12"></div>' + dataHTML
+               
+            pdf_data = pdfkit.from_string(dataHTML , False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
