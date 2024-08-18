@@ -24,7 +24,7 @@ from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
 from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, TimeTable, TypeReceiptEnum, Bulletin
-from smaartpro.utils import traitement_html
+from smaartpro.utils import traitement_html, generate_qr_code
 
 
 class FicheAgentView(APIView):
@@ -142,14 +142,12 @@ class RecuFraisView(APIView):
             #add bootstrap
             data = serializer.data
             data['bootstrap'] = bootstrap
+            data['qrcode'] = generate_qr_code("REC" + data['recuNumber'])
             dataHTML = traitement_html(templates, data)
              #set booth for agent and beneficiare
             dataHTML = dataHTML.replace('\n', '')
             dataHTML = dataHTML.replace('None', '')
             #set two receipt if ordinaire
-            if(type_recu == TypeReceiptEnum.ORDINAIRE.value):
-               dataHTML += '<div class="my-2 col-12"></div>' + dataHTML
-               
             pdf_data = pdfkit.from_string(dataHTML , False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
@@ -295,43 +293,53 @@ def home(request):
         templates = FeesReceipt.objects.filter(groupid=0)[0]
     
     data = {
-  "group": {
-    "groupeLogo": "string",
-    "groupeName": "string",
-    "groupDevise": "string",
-    "siteName": "string",
-    "siteContact": "string",
-    "siteAddress": "string",
-    "schoolYear": "string"
-  },
   "groupid": 0,
-  "month": "string",
-  "date": "string",
-  "agent": "string",
-  "recipient": {
-    "fullname": "string",
-    "fonction": "string",
-    "matricule": "string"
-  },
-  "remunerations": [
+  "receipt_type": 0,
+  "groupeLogo": "string",
+  "groupeName": "string",
+  "groupeDevise": "string",
+  "siteName": "string",
+  "siteAdress": "string",
+  "siteContact": "string",
+  "caisse": "string",
+  "scholarYear": "string",
+  "dateRecu": "string",
+  "recuNumber": "string",
+  "printerAgent": "string",
+  "eleveName": "string",
+  "elevePrenom": "string",
+  "niveau": "string",
+  "matricule": "string",
+  "transactions": [
     {
       "label": "string",
-      "amount": "string"
+      "receipt_type": "0",
+      "typeRecipient": "string",
+      "amount": "string",
+      "restPaied": "string",
+      "paied": "string"
     }
   ],
-  "deductions": [
+  "totalAmountTransaction": "string",
+  "totalAmountPaied": "string",
+  "totalAmountRest": "string",
+  "modePay": "string",
+  "isDebit": True,
+  "eleveFees": [
     {
-      "label": "string",
-      "amount": "string"
+      "standardAmount": "string",
+      "totalAmountPaid": "string",
+      "transactionTypeTitle": "string",
+      "restToPay": "string"
     }
   ],
-  "total_remuneration": "string",
-  "total_deduction": "string",
-  "brut_salary": "string",
-  "net_to_pay": "string"
+  "totalstandardAmount": "string",
+  "totaltotalAmountPaid": "string",
+  "totalrestToPay": "string",  
 }
     
     data['bootstrap'] = bootstrap
-    return render(request, 'index.html', data)
+    data['qrcode'] = generate_qr_code("RCP" + data['recuNumber'])
+    return render(request, 'work.html', data)
 
 

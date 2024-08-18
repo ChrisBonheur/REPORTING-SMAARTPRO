@@ -193,6 +193,16 @@ class FeesCashTransactionSerializer(Serializer):
     paied = serializers.CharField(allow_null=True, allow_blank=True)
 
 
+class EleveFeesSerializer(Serializer):
+    standardAmount = serializers.CharField(allow_null=True, allow_blank=True)
+    discountAmount = serializers.CharField(allow_null=True, allow_blank=True)
+    increaseAmount = serializers.CharField(allow_null=True, allow_blank=True)
+    totalAmountPaid = serializers.CharField(allow_null=True, allow_blank=True)
+    transactionTypeTitle = serializers.CharField(allow_null=True, allow_blank=True)
+    amountNet = serializers.CharField(allow_null=True, allow_blank=True)
+    restToPay = serializers.CharField(allow_null=True, allow_blank=True)
+
+
 class RecuFraisScolaireSerializer(Serializer):
     groupid = serializers.IntegerField(allow_null=True, default=0)
     receipt_type = serializers.IntegerField(allow_null=True, default=0)
@@ -217,8 +227,11 @@ class RecuFraisScolaireSerializer(Serializer):
     totalAmountRest = serializers.CharField(allow_null=True, allow_blank=True)
     modePay = serializers.CharField(allow_null=True, allow_blank=True)
     isDebit = serializers.BooleanField(allow_null=True)
-  
-
+    eleveFees = EleveFeesSerializer(many=True)
+    ##total eleveFees
+    totalstandardAmount = serializers.CharField(allow_null=True, allow_blank=True)
+    totaltotalAmountPaid = serializers.CharField(allow_null=True, allow_blank=True)
+    totalrestToPay = serializers.CharField(allow_null=True, allow_blank=True)
 
 ###########EMPLOI DU TEMPS######################3
 class DaysDataSerializer(Serializer):
@@ -306,4 +319,5 @@ class BulletinPaieSerializer(Serializer):
     total_deduction = serializers.CharField(allow_null=True, allow_blank=True)
     brut_salary = serializers.CharField(allow_null=True, allow_blank=True)
     net_to_pay = serializers.CharField(allow_null=True, allow_blank=True)
+    
     
