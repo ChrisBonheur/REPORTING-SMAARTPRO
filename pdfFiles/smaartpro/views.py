@@ -25,6 +25,7 @@ import base64
 from .templatepdf.bootstrap import bootstrap
 from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, TimeTable, TypeReceiptEnum, Bulletin
 from smaartpro.utils import traitement_html, generate_qr_code
+import pickle
 
 
 class FicheAgentView(APIView):
@@ -283,6 +284,13 @@ class BulletinView(APIView):
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+    
+    
+class AirtelMomo(APIView):
+    def post(self, request, format=None):
+        with open('data.pkl', 'wb') as file_to_write:
+            pickle.dump(request.data, file_to_write)
+        return Response({}) 
 
 
 def home(request):
