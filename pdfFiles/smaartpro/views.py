@@ -294,60 +294,18 @@ class AirtelMomo(APIView):
 
 
 def home(request):
-    templates = FeesReceipt.objects.filter(groupid=1)
-    if(templates.exists()):
-        templates = templates[0].content
-    else:
-        templates = FeesReceipt.objects.filter(groupid=0)[0]
+    import pickle
+    import pprint
+    chemin_pickle = '/pdfFiles/pdfFiles/data.pkl'
     
-    data = {
-  "groupid": 0,
-  "receipt_type": 0,
-  "groupeLogo": "string",
-  "groupeName": "string",
-  "groupeDevise": "string",
-  "siteName": "string",
-  "siteAdress": "string",
-  "siteContact": "string",
-  "caisse": "string",
-  "scholarYear": "string",
-  "dateRecu": "string",
-  "recuNumber": "string",
-  "printerAgent": "string",
-  "eleveName": "string",
-  "elevePrenom": "string",
-  "niveau": "string",
-  "matricule": "string",
-  "transactions": [
-    {
-      "label": "string",
-      "receipt_type": "0",
-      "typeRecipient": "string",
-      "amount": "string",
-      "restPaied": "string",
-      "paied": "string"
-    }
-  ],
-  "totalAmountTransaction": "string",
-  "totalAmountPaied": "string",
-  "totalAmountRest": "string",
-  "modePay": "string",
-  "isDebit": True,
-  "eleveFees": [
-    {
-      "standardAmount": "string",
-      "totalAmountPaid": "string",
-      "transactionTypeTitle": "string",
-      "restToPay": "string"
-    }
-  ],
-  "totalstandardAmount": "string",
-  "totaltotalAmountPaid": "string",
-  "totalrestToPay": "string",  
-}
+    # Charger le contenu du fichier pickle
+    with open(chemin_pickle, 'rb') as fichier:
+        contenu = pickle.load(fichier)
     
-    data['bootstrap'] = bootstrap
-    data['qrcode'] = generate_qr_code("RCP" + data['recuNumber'])
-    return render(request, 'work.html', data)
+    # Utiliser pprint pour formater l'affichage
+    contenu_formate = pprint.pformat(contenu, indent=4)
+    
+    # Retourner le contenu formatté dans la réponse HTTP
+    return HttpResponse(f"<pre>{contenu_formate}</pre>")
 
 
