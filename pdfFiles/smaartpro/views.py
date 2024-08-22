@@ -296,7 +296,7 @@ class AirtelMomo(APIView):
 def home(request):
     import pickle
     import pprint
-    chemin_pickle = 'pdfFiles/data.pkl'
+    chemin_pickle = '/home/bonheur/reporting/pdfFiles/pdfFiles/data.pkl'
     
     # Charger le contenu du fichier pickle
     with open(chemin_pickle, 'rb') as fichier:
