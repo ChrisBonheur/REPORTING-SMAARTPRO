@@ -98,6 +98,7 @@ class RecuCaisseView(APIView):
             #add bootstrap
             data = serializer.data
             data['bootstrap'] = bootstrap
+            data['qrcode'] = generate_qr_code(RECEIPT_TRANSACTION_PREFIX + data['recuNumber'])
             dataHTML = traitement_html(templates, data)
              #set booth for agent and beneficiare
             dataHTML = dataHTML
@@ -144,7 +145,7 @@ class RecuFraisView(APIView):
             #add bootstrap
             data = serializer.data
             data['bootstrap'] = bootstrap
-            data['qrcode'] = generate_qr_code("REC" + data['recuNumber'])
+            data['qrcode'] = generate_qr_code(RECEIPT_FEES_PREFIX + data['recuNumber'])
             dataHTML = traitement_html(templates, data)
              #set booth for agent and beneficiare
             dataHTML = dataHTML.replace('\n', '')
@@ -297,16 +298,6 @@ class AirtelMomo(APIView):
 
 
 def home(request):
-    
-    import pickle
-
-    # Ouvrir le fichier en mode binaire pour lecture ('rb' pour read binary)
-    with open('mon_objet.pkl', 'rb') as fichier:
-        # Utiliser pickle.load() pour désérialiser l'objet depuis le fichier
-        objet_charge = pickle.load(fichier)
-
-    # Afficher l'objet chargé
-    print(objet_charge)
 
     return render(request, 'work.html', {})
 
