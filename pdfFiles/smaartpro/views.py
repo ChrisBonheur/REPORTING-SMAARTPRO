@@ -24,7 +24,7 @@ from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
 from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, TimeTable, TypeReceiptEnum, Bulletin
-from smaartpro.utils import traitement_html, generate_qr_code
+from smaartpro.utils import traitement_html, generate_qr_code, AGENT_PREFIX, TEACHER_PREFIX,STUDENT_PREFIX, RECEIPT_FEES_PREFIX, RECEIPT_TRANSACTION_PREFIX
 import pickle
 
 
@@ -42,6 +42,7 @@ class FicheAgentView(APIView):
                 templates = FicheAgent.objects.get(groupid=0).content
             #add bootstrap
             data = serializer.data
+            data['agent']['qrCode'] = generate_qr_code(AGENT_PREFIX + data['agent']['id'])
             data['bootstrap'] = bootstrap
             dataHTML = traitement_html(templates, data)
              #set booth for agent and beneficiare
@@ -222,6 +223,7 @@ class FicheEleveView(APIView):
             #add bootstrap
             data = serializer.data
             data['bootstrap'] = bootstrap
+            data['student']['qrCode'] = generate_qr_code(STUDENT_PREFIX + data['student']['id'])
             dataHTML = traitement_html(templates, data)
              #set booth for agent and beneficiare
             dataHTML = dataHTML
@@ -248,6 +250,7 @@ class FicheTeacherView(APIView):
             #add bootstrap
             data = serializer.data
             data['bootstrap'] = bootstrap
+            data['teacher']['qrCode'] = generate_qr_code(TEACHER_PREFIX + data['teacher']['id'])
             dataHTML = traitement_html(templates, data)
              #set booth for agent and beneficiare
             dataHTML = dataHTML
@@ -294,18 +297,17 @@ class AirtelMomo(APIView):
 
 
 def home(request):
+    
     import pickle
-    import pprint
-    chemin_pickle = '/home/bonheur/reporting/pdfFiles/pdfFiles/data.pkl'
-    
-    # Charger le contenu du fichier pickle
-    with open(chemin_pickle, 'rb') as fichier:
-        contenu = pickle.load(fichier)
-    
-    # Utiliser pprint pour formater l'affichage
-    contenu_formate = pprint.pformat(contenu, indent=4)
-    
-    # Retourner le contenu formatté dans la réponse HTTP
-    return HttpResponse(f"<pre>{contenu_formate}</pre>")
+
+    # Ouvrir le fichier en mode binaire pour lecture ('rb' pour read binary)
+    with open('mon_objet.pkl', 'rb') as fichier:
+        # Utiliser pickle.load() pour désérialiser l'objet depuis le fichier
+        objet_charge = pickle.load(fichier)
+
+    # Afficher l'objet chargé
+    print(objet_charge)
+
+    return render(request, 'work.html', {})
 
 

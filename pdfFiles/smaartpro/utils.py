@@ -8,6 +8,13 @@ from django.template import Template, Context
 from django.utils.safestring import mark_safe
 
 
+AGENT_PREFIX = "AG"
+TEACHER_PREFIX = "ES"
+STUDENT_PREFIX = "LV"
+RECEIPT_FEES_PREFIX = "REC"
+RECEIPT_TRANSACTION_PREFIX = "TRN"
+
+
 week_days = [
     "monday",
     "tuesday",

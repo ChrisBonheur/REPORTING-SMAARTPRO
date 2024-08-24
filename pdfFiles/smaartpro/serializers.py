@@ -14,6 +14,7 @@ class GroupSerializer(Serializer):
     
 class AgentSerializer(Serializer):
     photo = serializers.CharField(allow_null=True, allow_blank=True)
+    id = serializers.CharField(allow_null=True, allow_blank=True, default=0)
     civility = serializers.IntegerField()
     nom = serializers.CharField(allow_null=True, allow_blank=True)
     prenom = serializers.CharField(allow_null=True, allow_blank=True)
@@ -26,13 +27,14 @@ class AgentSerializer(Serializer):
     phone1 = serializers.CharField(allow_null=True, allow_blank=True) 
     phone2 = serializers.CharField(allow_null=True, allow_blank=True) 
     roleName = serializers.CharField(allow_null=True, allow_blank=True)
-    qrCode = serializers.CharField(allow_null=True, allow_blank=True)   
+    qrCode = serializers.CharField(allow_null=True, allow_blank=True, default='')
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)   
     dateOfBirth = serializers.CharField(allow_null=True, allow_blank=True)
 
 
 class StudentSerializer(Serializer):
     matricule = serializers.CharField(allow_null=True, allow_blank=True)
+    id = serializers.CharField(allow_null=True, allow_blank=True, default=0)
     firstName = serializers.CharField(allow_null=True, allow_blank=True)
     lastName = serializers.CharField(allow_null=True, allow_blank=True)
     dateOfBirth = serializers.CharField(allow_null=True, allow_blank=True)
@@ -48,11 +50,12 @@ class StudentSerializer(Serializer):
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)
     nationalityTitle = serializers.CharField(allow_null=True, allow_blank=True)
     # cityArea = serializers.CharField(allow_null=True, allow_blank=True)
-    qrCode = serializers.CharField(allow_null=True, allow_blank=True)
+    qrCode = serializers.CharField(allow_null=True, allow_blank=True, default="")
 
 
 class TeacherSerializer(Serializer):
     photo = serializers.CharField(allow_null=True, allow_blank=True)
+    id = serializers.CharField(allow_null=True, allow_blank=True, default=0)
     civility = serializers.IntegerField()
     nom = serializers.CharField(allow_null=True, allow_blank=True)
     prenom = serializers.CharField(allow_null=True, allow_blank=True)
@@ -64,7 +67,7 @@ class TeacherSerializer(Serializer):
     nationalityName = serializers.CharField(allow_null=True, allow_blank=True) 
     phone1 = serializers.CharField(allow_null=True, allow_blank=True) 
     phone2 = serializers.CharField(allow_null=True, allow_blank=True) 
-    qrCode = serializers.CharField(allow_null=True, allow_blank=True)   
+    qrCode = serializers.CharField(allow_null=True, allow_blank=True, default='')
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)   
     birthDate = serializers.CharField(allow_null=True, allow_blank=True)
 
