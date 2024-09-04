@@ -153,7 +153,14 @@ class RecuFraisView(APIView):
             dataHTML = dataHTML.replace('\n', '')
             dataHTML = dataHTML.replace('None', '')
             #set two receipt if ordinaire
-            pdf_data = pdfkit.from_string(dataHTML , False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            options = {
+                'encoding': 'UTF-8',
+                'enable-local-file-access': True,
+                'no-outline': None,
+            }
+            if type_recu == TypeReceiptEnum.CAISSE.value:
+                options['page-size'] = 'A6'
+            pdf_data = pdfkit.from_string(dataHTML , False, options=options)
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

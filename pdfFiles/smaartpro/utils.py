@@ -40,7 +40,6 @@ def get_current_datetime():
 def traitement_html(content, dataContext):
     templates = Template(content)
     context = Context(dataContext)
-    print(dataContext)
     rendered_html = templates.render(context)
     return mark_safe(rendered_html)
 
