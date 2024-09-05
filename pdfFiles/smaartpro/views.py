@@ -158,8 +158,6 @@ class RecuFraisView(APIView):
                 'enable-local-file-access': True,
                 'no-outline': None,
             }
-            if type_recu == TypeReceiptEnum.CAISSE.value:
-                options['page-size'] = 'A6'
             pdf_data = pdfkit.from_string(dataHTML , False, options=options)
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})

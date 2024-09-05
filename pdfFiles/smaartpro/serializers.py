@@ -325,3 +325,8 @@ class BulletinPaieSerializer(Serializer):
     net_to_pay = serializers.CharField(allow_null=True, allow_blank=True)
     
     
+
+class StudentCardSerializer(Serializer):
+    group = GroupSerializer()
+    groupid = serializers.IntegerField(allow_null=True, default=0)
+    students = StudentSerializer(many=True)

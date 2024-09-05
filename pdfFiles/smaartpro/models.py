@@ -56,3 +56,6 @@ class TimeTable(ReportingBase):
 
 class Bulletin(ReportingBase):
     pass
+
+class StudentCard(ReportingBase):
+    pass
