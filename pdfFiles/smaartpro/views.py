@@ -98,9 +98,7 @@ class RecuCaisseView(APIView):
             #add bootstrap
             data = serializer.data
             data['bootstrap'] = bootstrap
-            if len(data['transactions']) > 0:
-                data['qrcode'] = generate_qr_code(RECEIPT_TRANSACTION_PREFIX + data['transactions'][0]['id'])
-                
+            data['qrcode'] = generate_qr_code(RECEIPT_TRANSACTION_PREFIX + data['recuNumber'])
             dataHTML = traitement_html(templates, data)
              #set booth for agent and beneficiare
             dataHTML = dataHTML
