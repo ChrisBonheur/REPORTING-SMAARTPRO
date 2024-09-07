@@ -412,7 +412,7 @@ def home(request):
     return render(request, 'work.html', data)
 
 
-
+"""
 @csrf_exempt
 def export_to_excel(request):
     #if request.method == 'POST':
@@ -441,3 +441,4 @@ def export_to_excel(request):
             return JsonResponse({'error': str(e)}, status=500)
     #else:
         #return JsonResponse({'error': 'Only POST method is allowed'}, status=405)
+"""
