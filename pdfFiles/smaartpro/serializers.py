@@ -47,6 +47,7 @@ class StudentSerializer(Serializer):
     bloodGroup = serializers.CharField(allow_null=True, allow_blank=True)
     inscriptionStatus = serializers.CharField(allow_null=True, allow_blank=True)
     siteClassTitle = serializers.CharField(allow_null=True, allow_blank=True)
+    siteClassCode = serializers.CharField(allow_null=True, allow_blank=True)	
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)
     nationalityTitle = serializers.CharField(allow_null=True, allow_blank=True)
     # cityArea = serializers.CharField(allow_null=True, allow_blank=True)

@@ -66,3 +66,5 @@ def generate_qr_code(data: str):
     img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
 
     return img_base64
+
+
