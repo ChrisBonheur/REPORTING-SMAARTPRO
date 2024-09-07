@@ -135,7 +135,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_CREDENTIALS = True
-
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',
+    'https://manager.smaartschool.com',
+    'https://managertest.smaartschool.com',
+]
 CORS_ALLOW_HEADERS = ['*']
 
 SWAGGER_SETTINGS = {
