@@ -138,9 +138,19 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
     'https://manager.smaartschool.com',
+    'https://tutor.smaartschool.com',
+    'https://teacher.smaartschool.com',
     'https://managertest.smaartschool.com',
 ]
 CORS_ALLOW_HEADERS = ['*']
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:4200',
+    'https://manager.smaartschool.com',
+    'https://tutor.smaartschool.com',
+    'https://teacher.smaartschool.com',
+    'https://managertest.smaartschool.com',
+]
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
