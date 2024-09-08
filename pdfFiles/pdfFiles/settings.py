@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "reporting-smaartpro.zandosoft.online",
+    "http://localhost:4200"
     "*"
 ]
 
