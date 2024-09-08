@@ -1,4 +1,7 @@
 from io import BytesIO
+import pandas as pd
+from django.http import JsonResponse, HttpResponse
+import json
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -8,7 +11,7 @@ import base64
 from django.http import HttpResponse
 from .contentPrincipal import get_profile
 from rest_framework.views import APIView
-from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer
+from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, StudentCardSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .templatepdf.agent_default_profil import default_profile
@@ -23,9 +26,10 @@ from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
-from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, TimeTable, TypeReceiptEnum, Bulletin
+from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, StudentCard, TimeTable, TypeReceiptEnum, Bulletin
 from smaartpro.utils import traitement_html, generate_qr_code, AGENT_PREFIX, TEACHER_PREFIX,STUDENT_PREFIX, RECEIPT_FEES_PREFIX, RECEIPT_TRANSACTION_PREFIX
 import pickle
+#from django.views.decorators.csrf import csrf_exempt
 
 
 class FicheAgentView(APIView):
@@ -98,7 +102,9 @@ class RecuCaisseView(APIView):
             #add bootstrap
             data = serializer.data
             data['bootstrap'] = bootstrap
-            data['qrcode'] = generate_qr_code(RECEIPT_TRANSACTION_PREFIX + data['recuNumber'])
+            if len(data['transactions']) > 0:
+                data['qrcode'] = generate_qr_code(RECEIPT_TRANSACTION_PREFIX + data['transactions'][0]['id'])
+                
             dataHTML = traitement_html(templates, data)
              #set booth for agent and beneficiare
             dataHTML = dataHTML
@@ -295,6 +301,33 @@ class BulletinView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
     
     
+class StudentCardView(APIView):
+    @swagger_auto_schema(
+        request_body=StudentCardSerializer
+    )
+    def post(self, request, format=None):
+        serializer = StudentCardSerializer(data=request.data)
+        if serializer.is_valid():
+            templates = StudentCard.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = StudentCard.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+            for student in data['students']:
+                student['qrCode'] = 'data:application/pdf;base64,' + generate_qr_code(STUDENT_PREFIX + student['id'])
+           
+            dataHTML = traitement_html(templates, data)
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
+            pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            encoded_data = base64.b64encode(pdf_data).decode()
+            return Response({"base64_data": encoded_data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
 class AirtelMomo(APIView):
     def post(self, request, format=None):
         with open('data.pkl', 'wb') as file_to_write:
@@ -303,7 +336,109 @@ class AirtelMomo(APIView):
 
 
 def home(request):
+    data = {
+    "group": {
+        "groupeLogo": "string",
+        "groupeName": "Complexe scolaire saint-denis de Dieu pour l'amour de Dieu",
+        "groupDevise": "string",
+        "siteName": "string",
+        "siteContact": "string",
+        "siteAddress": "string",    
+        "schoolYear": "string"
+    },
+    "groupid": 0,
+    "students": [
+        {
+        "matricule": "string",
+        "id": "0",
+        "firstName": "string",
+        "lastName": "string",
+        "dateOfBirth": "string",
+        "civility": "string",
+        "address": "string",
+        "photo": "string",
+        "email": "string",
+        "phone1": "string",
+        "phone2": "string",
+        "bloodGroup": "string",
+        "inscriptionStatus": "string",
+        "siteClassTitle": "string",
+        "birthCity": "string",
+        "nationalityTitle": "string",
+        "qrCode": ""
+        },
+            {
+        "matricule": "string",
+        "id": "0",
+        "firstName": "string",
+        "lastName": "string",
+        "dateOfBirth": "string",
+        "civility": "string",
+        "address": "string",
+        "photo": "string",
+        "email": "string",
+        "phone1": "string",
+        "phone2": "string",
+        "bloodGroup": "string",
+        "inscriptionStatus": "string",
+        "siteClassTitle": "string",
+        "birthCity": "string",
+        "nationalityTitle": "string",
+        "qrCode": ""
+        },
+        {
+        "matricule": "string",
+        "id": "0",
+        "firstName": "string",
+        "lastName": "string",
+        "dateOfBirth": "string",
+        "civility": "string",
+        "address": "string",
+        "photo": "string",
+        "email": "string",
+        "phone1": "string",
+        "phone2": "string",
+        "bloodGroup": "string",
+        "inscriptionStatus": "string",
+        "siteClassTitle": "string",
+        "birthCity": "string",
+        "nationalityTitle": "string",
+        "qrCode": ""
+        }  
+    ]
+    }
+    for i in range(10):
+        data['students'].append(data['students'][0])
+    return render(request, 'work.html', data)
 
-    return render(request, 'work.html', {})
 
+"""
+@csrf_exempt
+def export_to_excel(request):
+    #if request.method == 'POST':
+        try:
+            # Lire les données JSON du corps de la requête
+            body = json.loads(request.body)
+            data_list = body.get('dataList', [])
+            title = body.get('title') if  body.get('title')  else 'data'
 
+            # Convertir la liste en DataFrame
+            df = pd.DataFrame(data_list)
+
+            # Créer un fichier Excel en mémoire
+            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = f'attachment; filename={title}.xlsx'
+
+            # Écrire le DataFrame dans le fichier Excel
+            with pd.ExcelWriter(response, engine='openpyxl') as writer:
+                df.to_excel(writer, index=False, sheet_name='Sheet1')
+
+            return response
+        
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    #else:
+        #return JsonResponse({'error': 'Only POST method is allowed'}, status=405)
+"""
