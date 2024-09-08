@@ -29,7 +29,7 @@ from .templatepdf.bootstrap import bootstrap
 from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, StudentCard, TimeTable, TypeReceiptEnum, Bulletin
 from smaartpro.utils import traitement_html, generate_qr_code, AGENT_PREFIX, TEACHER_PREFIX,STUDENT_PREFIX, RECEIPT_FEES_PREFIX, RECEIPT_TRANSACTION_PREFIX
 import pickle
-#from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 
 
 class FicheAgentView(APIView):
@@ -412,7 +412,6 @@ def home(request):
     return render(request, 'work.html', data)
 
 
-"""
 @csrf_exempt
 def export_to_excel(request):
     #if request.method == 'POST':
@@ -441,4 +440,3 @@ def export_to_excel(request):
             return JsonResponse({'error': str(e)}, status=500)
     #else:
         #return JsonResponse({'error': 'Only POST method is allowed'}, status=405)
-"""
