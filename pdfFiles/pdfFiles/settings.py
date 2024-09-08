@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "reporting-smaartpro.zandosoft.online",
-    "http://localhost:4200"
     "*"
 ]
 
@@ -138,7 +137,7 @@ CORS_ALLOW_CREDENTIALS = True  # Autorise les cookies et les informations d'iden
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200'
 ]
-CORS_ALLOW_HEADERS = [
+"""CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',
     'x-csrftoken',
@@ -147,7 +146,7 @@ CORS_ALLOW_HEADERS = [
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:4200'
 ]
-
+"""
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'Token': {

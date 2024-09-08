@@ -6,7 +6,7 @@ from drf_yasg import openapi
 from rest_framework import permissions, routers
 from django.conf.urls.static import static
 from django.conf import settings
-from smaartpro.views import home, export_to_excel
+from smaartpro.views import home
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -27,5 +27,5 @@ urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('', export_to_excel),
+    path('', home),
 ]
