@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     "rest_framework",
     'drf_yasg',
-    'smaartpro',
+    'smaartpro'
 ]
 
 MIDDLEWARE = [
@@ -132,21 +132,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_ALLOW_ALL = True  # Permet toutes les origines
-CORS_ALLOW_CREDENTIALS = True  # Autorise les cookies et les informations d'identification
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:4200'
-]
-"""CORS_ALLOW_HEADERS = [
-    'content-type',
-    'authorization',
-    'x-csrftoken',
-    # Ajoutez d'autres en-têtes nécessaires ici
-]
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:4200'
-]
-"""
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'Token': {
