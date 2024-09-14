@@ -103,14 +103,15 @@ class RecuCaisseView(APIView):
             data = serializer.data
             data['bootstrap'] = bootstrap
             if len(data['transactions']) > 0:
-                data['qrcode'] = generate_qr_code(RECEIPT_TRANSACTION_PREFIX + data['transactions'][0]['id'])
+                data['qrcode'] = generate_qr_code(RECEIPT_TRANSACTION_PREFIX + str(data['transactions'][0]['id']))
                 
             dataHTML = traitement_html(templates, data)
              #set booth for agent and beneficiare
             dataHTML = dataHTML
             dataHTML = dataHTML.replace('\n', '')
             dataHTML = dataHTML.replace('None', '')
-            pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            double_dataHTML = f"{dataHTML}{dataHTML}"
+            pdf_data = pdfkit.from_string(double_dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
             encoded_data = base64.b64encode(pdf_data).decode()
             return Response({"base64_data": encoded_data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -156,6 +157,9 @@ class RecuFraisView(APIView):
              #set booth for agent and beneficiare
             dataHTML = dataHTML.replace('\n', '')
             dataHTML = dataHTML.replace('None', '')
+            if type_recu == TypeReceiptEnum.ORDINAIRE.value:
+                sup = "<div style='page-break-after: always'></div>" if len(data['transactions']) > 4 else '<div></div>' 
+                dataHTML = dataHTML + sup + dataHTML
             #set two receipt if ordinaire
             options = {
                 'encoding': 'UTF-8',

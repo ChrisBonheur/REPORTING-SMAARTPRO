@@ -125,6 +125,7 @@ class DefaultDataListSerializer(Serializer):
 
 
 class CaisseTransactionSerializer(Serializer):
+    id = serializers.IntegerField()
     label = serializers.CharField(allow_null=True, allow_blank=True)
     numerate = serializers.CharField(allow_null=True, allow_blank=True)
     typeRecipient = serializers.CharField(allow_null=True, allow_blank=True)
