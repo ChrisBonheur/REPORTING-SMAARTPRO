@@ -13,3 +13,12 @@ def chunk_list(value, chunk_size):
     if not isinstance(value, list):
         return value
     return [value[i:i + chunk_size] for i in range(0, len(value), chunk_size)]
+
+
+@register.filter
+def key_in_dict(dict_data, key):
+    #import pdb; pdb.set_trace()
+    for item in dict_data:
+        if key in item.values():
+            return True
+    return False
