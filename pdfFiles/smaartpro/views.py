@@ -142,7 +142,7 @@ class RecuFraisView(APIView):
             type_recu = TypeReceiptEnum.ORDINAIRE.value
             if(serializer.data.get('receipt_type') and serializer.data['receipt_type'] == TypeReceiptEnum.CAISSE.value):
                 type_recu = TypeReceiptEnum.CAISSE.value
-                templates = FeesReceipt.objects.filter(groupid=serializer.data['groupid'], receipt_type=TypeReceiptEnum.CAISSE.value)
+                templates = FeesReceipt.objects.filter(groupid=serializer.data['groupid'], receipt_type=TypeReceiptEnum.CAISSE.value, type=3)
             else:
                 templates = FeesReceipt.objects.filter(groupid=serializer.data['groupid'], receipt_type=TypeReceiptEnum.ORDINAIRE.value)
            
