@@ -59,3 +59,6 @@ class Bulletin(ReportingBase):
 
 class StudentCard(ReportingBase):
     pass
+
+class AvisPaiement(ReportingBase):
+    pass

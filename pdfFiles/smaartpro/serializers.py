@@ -330,3 +330,24 @@ class StudentCardSerializer(Serializer):
     group = GroupSerializer()
     groupid = serializers.IntegerField(allow_null=True, default=0)
     students = StudentSerializer(many=True)
+    
+
+class InscriptionFeesStateSerializer(Serializer):
+    eleveNom = serializers.CharField()
+    elevePrenom = serializers.CharField()
+    eleveMatricule = serializers.CharField()
+    siteClassCode = serializers.CharField()
+    totalAmountPlanned = serializers.CharField()
+    totalAmountReceived = serializers.CharField()
+    totalAmountExpected  = serializers.CharField()
+
+
+class dataAvisSerializer(Serializer):
+    inscription = InscriptionFeesStateSerializer()
+    fees = EleveFeesSerializer(many=True)
+
+class AvisPaiementSerializer(Serializer):
+    group = GroupSerializer()
+    message = serializers.CharField(allow_null=True)
+    groupid = serializers.IntegerField(allow_null=True, default=0)
+    data_avis = dataAvisSerializer(many=True)

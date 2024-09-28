@@ -11,7 +11,7 @@ import base64
 from django.http import HttpResponse
 from .contentPrincipal import get_profile
 from rest_framework.views import APIView
-from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, StudentCardSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer
+from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, StudentCardSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer, AvisPaiementSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .templatepdf.agent_default_profil import default_profile
@@ -26,7 +26,7 @@ from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
-from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, StudentCard, TimeTable, TypeReceiptEnum, Bulletin
+from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, StudentCard, TimeTable, TypeReceiptEnum, Bulletin, AvisPaiement
 from smaartpro.utils import traitement_html, generate_qr_code, AGENT_PREFIX, TEACHER_PREFIX,STUDENT_PREFIX, RECEIPT_FEES_PREFIX, RECEIPT_TRANSACTION_PREFIX
 import pickle
 from django.views.decorators.csrf import csrf_exempt
@@ -332,6 +332,31 @@ class StudentCardView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
+class AvisPaiementView(APIView):
+    @swagger_auto_schema(
+        request_body=AvisPaiementSerializer
+    )
+    def post(self, request, format=None):
+        serializer = AvisPaiementSerializer(data=request.data)
+        if serializer.is_valid():
+            templates = AvisPaiement.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = AvisPaiement.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+           
+            dataHTML = traitement_html(templates, data)
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
+            pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            encoded_data = base64.b64encode(pdf_data).decode()
+            return Response({"base64_data": encoded_data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
 class AirtelMomo(APIView):
     def post(self, request, format=None):
         with open('data.pkl', 'wb') as file_to_write:
@@ -341,78 +366,41 @@ class AirtelMomo(APIView):
 
 def home(request):
     data = {
-    "group": {
-        "groupeLogo": "string",
-        "groupeName": "Complexe scolaire saint-denis de Dieu pour l'amour de Dieu",
-        "groupDevise": "string",
-        "siteName": "string",
-        "siteContact": "string",
-        "siteAddress": "string",    
-        "schoolYear": "string"
-    },
-    "groupid": 0,
-    "students": [
+  "group": {
+    "groupeLogo": "string",
+    "groupeName": "string",
+    "groupDevise": "string",
+    "siteName": "string",
+    "siteContact": "string",
+    "siteAddress": "string",
+    "schoolYear": "string"
+  },
+  "groupid": 0,
+  "data_avis": [
+    {
+      "inscription": {
+        "eleveNom": "string",
+        "elevePrenom": "string",
+        "eleveMatricule": "string",
+        "siteClassCode": "string",
+        "totalAmountPlanned": "string",
+        "totalAmountReceived": "string",
+        "totalAmountExpected": "string"
+      },
+      "fees": [
         {
-        "matricule": "string",
-        "id": "0",
-        "firstName": "string",
-        "lastName": "string",
-        "dateOfBirth": "string",
-        "civility": "string",
-        "address": "string",
-        "photo": "string",
-        "email": "string",
-        "phone1": "string",
-        "phone2": "string",
-        "bloodGroup": "string",
-        "inscriptionStatus": "string",
-        "siteClassTitle": "string",
-        "birthCity": "string",
-        "nationalityTitle": "string",
-        "qrCode": ""
-        },
-            {
-        "matricule": "string",
-        "id": "0",
-        "firstName": "string",
-        "lastName": "string",
-        "dateOfBirth": "string",
-        "civility": "string",
-        "address": "string",
-        "photo": "string",
-        "email": "string",
-        "phone1": "string",
-        "phone2": "string",
-        "bloodGroup": "string",
-        "inscriptionStatus": "string",
-        "siteClassTitle": "string",
-        "birthCity": "string",
-        "nationalityTitle": "string",
-        "qrCode": ""
-        },
-        {
-        "matricule": "string",
-        "id": "0",
-        "firstName": "string",
-        "lastName": "string",
-        "dateOfBirth": "string",
-        "civility": "string",
-        "address": "string",
-        "photo": "string",
-        "email": "string",
-        "phone1": "string",
-        "phone2": "string",
-        "bloodGroup": "string",
-        "inscriptionStatus": "string",
-        "siteClassTitle": "string",
-        "birthCity": "string",
-        "nationalityTitle": "string",
-        "qrCode": ""
-        }  
-    ]
+          "standardAmount": "string",
+          "discountAmount": "string",
+          "increaseAmount": "string",
+          "totalAmountPaid": "string",
+          "transactionTypeTitle": "string",
+          "amountNet": "string",
+          "restToPay": "string"
+        }
+      ]
     }
-    for i in range(10):
-        data['students'].append(data['students'][0])
+  ]
+}
     return render(request, 'work.html', data)
 
 
