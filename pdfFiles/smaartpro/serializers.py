@@ -30,6 +30,7 @@ class AgentSerializer(Serializer):
     qrCode = serializers.CharField(allow_null=True, allow_blank=True, default='')
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)   
     dateOfBirth = serializers.CharField(allow_null=True, allow_blank=True)
+    role = serializers.CharField(allow_null=True, allow_blank=True, default="")
 
 
 class StudentSerializer(Serializer):
@@ -199,11 +200,11 @@ class FeesCashTransactionSerializer(Serializer):
 
 class EleveFeesSerializer(Serializer):
     standardAmount = serializers.CharField(allow_null=True, allow_blank=True)
-    discountAmount = serializers.CharField(allow_null=True, allow_blank=True)
-    increaseAmount = serializers.CharField(allow_null=True, allow_blank=True)
+    discountAmount = serializers.CharField(allow_null=True, allow_blank=True, default=0)
+    increaseAmount = serializers.CharField(allow_null=True, allow_blank=True, default=0)
     totalAmountPaid = serializers.CharField(allow_null=True, allow_blank=True)
     transactionTypeTitle = serializers.CharField(allow_null=True, allow_blank=True)
-    amountNet = serializers.CharField(allow_null=True, allow_blank=True)
+    amountNet = serializers.CharField(allow_null=True, allow_blank=True, default=0)
     restToPay = serializers.CharField(allow_null=True, allow_blank=True)
 
 
@@ -331,6 +332,21 @@ class StudentCardSerializer(Serializer):
     groupid = serializers.IntegerField(allow_null=True, default=0)
     students = StudentSerializer(many=True)
     
+class TypeAgentChoices:
+    TEACHER = 'teacher'
+    AGENT = 'agent'
+    
+    CHOICES = [
+        (TEACHER, 'teacher'),
+        (AGENT, 'agent'),
+    ]
+    
+class AgentCardSerializer(Serializer):
+    group = GroupSerializer()
+    groupid = serializers.IntegerField(allow_null=True, default=0)
+    agents = AgentSerializer(many=True)
+    type_agent = serializers.ChoiceField(choices=TypeAgentChoices.CHOICES)
+    
 
 class InscriptionFeesStateSerializer(Serializer):
     eleveNom = serializers.CharField()
@@ -348,6 +364,6 @@ class dataAvisSerializer(Serializer):
 
 class AvisPaiementSerializer(Serializer):
     group = GroupSerializer()
-    message = serializers.CharField(allow_null=True)
+    message = serializers.CharField(allow_null=True, default=' ')
     groupid = serializers.IntegerField(allow_null=True, default=0)
     data_avis = dataAvisSerializer(many=True)

@@ -1,6 +1,6 @@
 from rest_framework import routers
 from django.urls import path, include
-from .views import FicheAgentView, DefaultDataListView, RecuCaisseView, JournalCaisseView, RecuFraisView, TimeSlotView, ClosedCashView, FicheEleveView, FicheTeacherView, BulletinView, AirtelMomo, StudentCardView, AvisPaiementView
+from .views import FicheAgentView, DefaultDataListView, RecuCaisseView, JournalCaisseView, RecuFraisView, TimeSlotView, ClosedCashView, FicheEleveView, FicheTeacherView, BulletinView, StudentCardView, AvisPaiementView, AgentCardView
 
 urlpatterns = [
     path('fiche-agent', FicheAgentView.as_view()),
@@ -13,7 +13,7 @@ urlpatterns = [
     path('closed-sold', ClosedCashView.as_view()),
     path('fiche-eleve', FicheEleveView.as_view()),
     path('fiche-teacher', FicheTeacherView.as_view()),
-    path('airtelmoney', AirtelMomo.as_view()),
     path('carte-scolaire-eleve', StudentCardView.as_view()),
+    path('carte-agent', AgentCardView.as_view()),
     path('avis-paiement', AvisPaiementView.as_view()),
 ]

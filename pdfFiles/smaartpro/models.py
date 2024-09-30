@@ -62,3 +62,6 @@ class StudentCard(ReportingBase):
 
 class AvisPaiement(ReportingBase):
     pass
+
+class AgentCard(ReportingBase):
+    pass

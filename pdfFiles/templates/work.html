@@ -2,56 +2,30 @@
 <html>
    <head>
       <title>Facture</title>
-      <style>                         
-         .row { display: flex;           
-                justify-content: space-between;          
-         } 
-      *{
-         color: black !important;
-         font-weight: bolder !important;
-      }  
-      #table-fees tr, #table-fees td{
-         border: 1px solid black;
-         padding-left: 5px;
-      } 
-      #table-fees{
-         width: 100%;
-         border-collapse: collapse;
-      }
-      .bg-th{
-         background: gray;
-         color: white !important;
-      }
-      .stay-up{
-         display: flex;
-         align-items: start;
-      }
-      </style>
+      <style>                                  .row { display: flex;                           justify-content: space-between;                   }       *{         color: black !important;         font-weight: bolder !important;      }        #table-fees tr, #table-fees td{         border: 1px solid black;         padding-left: 5px;      }       #table-fees{         width: 100%;         border-collapse: collapse;      }      .bg-th{         background: gray;         color: white !important;      }      .stay-up{         display: flex;         align-items: start;      }      </style>
    </head>
    <body >
-      {% for student in data_avis %}
-      <section class="b" style=" width: 100%">
+      {% for student in data_avis %}      
+      <section class="b" style="width: 100%; margin-bottom: 3em">
          <div class="Facture">
             <div class="header">
                <div class="row">
                   <div class="logo col-12" style="display: flex">
-                     <img class="img-responsive" alt="logo" src="{{ group.groupeLogo}}" style="width: 71px;border: 1px solid gray; margin-right: 1em"/>                                                                         
+                     <img class="img-responsive" alt="logo" src="{{ group.groupeLogo}}" style="width: 71px;border: 1px solid gray; margin-right: 1em"/>                                                                                              
                      <div class="info-school">
                         <h4 class="text-end mb-0"> {{ group.groupeName }}</h4>
                         <h5>
-                        {{ group.groupeDevise }}</p>                                                                                    
+                        {{ group.groupeDevise }}</p>                                                                                                            
                         <h5>
-                        {{ group.siteContact}} </p>                                                                                    
+                        {{ group.siteContact}} </p>                                                                                                            
                         <h5>{{ group.siteName}} </h5>
                      </div>
-                  </div>    
-
+                  </div>
                   <div style="width: 25%;">
-                     <h1 style="text-align: center">Avis de paiement des droits d'écolage</h1>
+                     <h1 style="text-align: center">Avis de paiement des droits d\'écolage</h1>
                   </div>
                </div>
                <hr/>
-               
                <table>
                   <tr>
                      <td>Année scolaire </td>
@@ -59,64 +33,57 @@
                   </tr>
                </table>
                <hr/>
-
                <div class="row">
                   <table style="width: 40%">
                      <tr>
                         <td class="stay-up">Matricule</td>
                         <td>: {{student.inscription.eleveMatricule}}</td>
                      </tr>
-   
                      <tr>
                         <td class="stay-up">Nom(s)</td>
-                        <td>: {{ student.inscription.eleveNom }}</td> 
+                        <td>: {{ student.inscription.eleveNom }}</td>
                      </tr>
-   
                      <tr >
                         <td class="stay-up">Prénom(s)</td>
                         <td>: {{ student.inscription.elevePrenom }}</td>
                      </tr>
-   
                      <tr>
                         <td class="stay-up">Classe</td>
                         <td>: {{ student.inscription.siteClassCode }}</td>
                      </tr>
                   </table>
-
-                  <div>
-                     <p style="text-align: justify">{{ message }}</p>
+                  <div style="width: 40%; border-left: 1px solid black; padding-left: 5px">
+                     <p style="text-align: justify; font-size: 1em; font-weight: normal">{{ message }}</p>
                   </div>
                </div>
-
                <table id="table-fees">
                   <tr>
                      <td class="bg-th">Description</td>
                      <td class="bg-th" style="width: 100px">Montant</td>
                      <td class="bg-th" style="width: 100px">Payé</td>
                      <td class="bg-th" style="width: 100px">Reste</td>
-                     <!--td>Reste à Payer</td-->
+                     <!--td>Reste à Payer</td-->                  
                   </tr>
-                  {% for line in student.fees %} 
+                  {% for line in student.fees %}                   
                   <tr>
                      <td>{{ line.transactionTypeTitle }}</td>
                      <td>{{ line.standardAmount }}</td>
                      <td>{{ line.totalAmountPaid }}</td>
                      <td>{{ line.restToPay }}</td>
                   </tr>
-                  {% endfor %} 
+                  {% endfor %}                   
                   <tr>
                      <td class="bg-th" style="text-align: end; padding-right: 2em">Total</td>
                      <td class="bg-th" style="width: 100px">{{ student.inscription.totalAmountPlanned }}</td>
                      <td class="bg-th" style="width: 100px">{{ student.inscription.totalAmountReceived }}</td>
                      <td class="bg-th" style="width: 100px">{{ student.inscription.totalAmountExpected }}</td>
-                     <!--td>Reste à Payer</td-->
+                     <!--td>Reste à Payer</td-->                  
                   </tr>
                </table>
             </div>
-            
             <hr/>
          </div>
       </section>
-      {% endfor %}
+      {% endfor %}   
    </body>
 </html>

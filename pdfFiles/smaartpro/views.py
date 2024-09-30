@@ -11,7 +11,7 @@ import base64
 from django.http import HttpResponse
 from .contentPrincipal import get_profile
 from rest_framework.views import APIView
-from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, StudentCardSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer, AvisPaiementSerializer
+from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, StudentCardSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer, AvisPaiementSerializer, AgentCardSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .templatepdf.agent_default_profil import default_profile
@@ -26,7 +26,7 @@ from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
-from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, StudentCard, TimeTable, TypeReceiptEnum, Bulletin, AvisPaiement
+from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, StudentCard, TimeTable, TypeReceiptEnum, Bulletin, AgentCard, AvisPaiement
 from smaartpro.utils import traitement_html, generate_qr_code, AGENT_PREFIX, TEACHER_PREFIX,STUDENT_PREFIX, RECEIPT_FEES_PREFIX, RECEIPT_TRANSACTION_PREFIX
 import pickle
 from django.views.decorators.csrf import csrf_exempt
@@ -356,12 +356,34 @@ class AvisPaiementView(APIView):
             return Response({"base64_data": encoded_data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
-class AirtelMomo(APIView):
+
+class AgentCardView(APIView):
+    @swagger_auto_schema(
+        request_body=AgentCardSerializer
+    )
     def post(self, request, format=None):
-        with open('data.pkl', 'wb') as file_to_write:
-            pickle.dump(request.data, file_to_write)
-        return Response({}) 
+        serializer = AgentCardSerializer(data=request.data)
+        if serializer.is_valid():
+            templates = AgentCard.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = AgentCard.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+            for agent in data['agents']:
+                prefix = AGENT_PREFIX if data['type_agent'] == 'agent' else TEACHER_PREFIX
+                agent['qrCode'] = 'data:application/pdf;base64,' + generate_qr_code(prefix + agent['id'])
+            dataHTML = traitement_html(templates, data)
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
+            pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            encoded_data = base64.b64encode(pdf_data).decode()
+            return Response({"base64_data": encoded_data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
 
 
 def home(request):
@@ -375,6 +397,7 @@ def home(request):
     "siteAddress": "string",
     "schoolYear": "string"
   },
+  "message": "",
   "groupid": 0,
   "data_avis": [
     {
