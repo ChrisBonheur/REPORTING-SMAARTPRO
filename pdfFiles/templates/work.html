@@ -1,89 +1,160 @@
 <!DOCTYPE html>
-<html>
-   <head>
-      <title>Facture</title>
-      <style>                                  .row { display: flex;                           justify-content: space-between;                   }       *{         color: black !important;         font-weight: bolder !important;      }        #table-fees tr, #table-fees td{         border: 1px solid black;         padding-left: 5px;      }       #table-fees{         width: 100%;         border-collapse: collapse;      }      .bg-th{         background: gray;         color: white !important;      }      .stay-up{         display: flex;         align-items: start;      }      </style>
-   </head>
-   <body >
-      {% for student in data_avis %}      
-      <section class="b" style="width: 100%; margin-bottom: 3em">
-         <div class="Facture">
-            <div class="header">
-               <div class="row">
-                  <div class="logo col-12" style="display: flex">
-                     <img class="img-responsive" alt="logo" src="{{ group.groupeLogo}}" style="width: 71px;border: 1px solid gray; margin-right: 1em"/>                                                                                              
-                     <div class="info-school">
-                        <h4 class="text-end mb-0"> {{ group.groupeName }}</h4>
-                        <h5>
-                        {{ group.groupeDevise }}</p>                                                                                                            
-                        <h5>
-                        {{ group.siteContact}} </p>                                                                                                            
-                        <h5>{{ group.siteName}} </h5>
-                     </div>
-                  </div>
-                  <div style="width: 25%;">
-                     <h1 style="text-align: center">Avis de paiement des droits d\'écolage</h1>
-                  </div>
-               </div>
-               <hr/>
-               <table>
-                  <tr>
-                     <td>Année scolaire </td>
-                     <td>: {{group.schoolYear}}</td>
-                  </tr>
-               </table>
-               <hr/>
-               <div class="row">
-                  <table style="width: 40%">
-                     <tr>
-                        <td class="stay-up">Matricule</td>
-                        <td>: {{student.inscription.eleveMatricule}}</td>
-                     </tr>
-                     <tr>
-                        <td class="stay-up">Nom(s)</td>
-                        <td>: {{ student.inscription.eleveNom }}</td>
-                     </tr>
-                     <tr >
-                        <td class="stay-up">Prénom(s)</td>
-                        <td>: {{ student.inscription.elevePrenom }}</td>
-                     </tr>
-                     <tr>
-                        <td class="stay-up">Classe</td>
-                        <td>: {{ student.inscription.siteClassCode }}</td>
-                     </tr>
-                  </table>
-                  <div style="width: 40%; border-left: 1px solid black; padding-left: 5px">
-                     <p style="text-align: justify; font-size: 1em; font-weight: normal">{{ message }}</p>
-                  </div>
-               </div>
-               <table id="table-fees">
-                  <tr>
-                     <td class="bg-th">Description</td>
-                     <td class="bg-th" style="width: 100px">Montant</td>
-                     <td class="bg-th" style="width: 100px">Payé</td>
-                     <td class="bg-th" style="width: 100px">Reste</td>
-                     <!--td>Reste à Payer</td-->                  
-                  </tr>
-                  {% for line in student.fees %}                   
-                  <tr>
-                     <td>{{ line.transactionTypeTitle }}</td>
-                     <td>{{ line.standardAmount }}</td>
-                     <td>{{ line.totalAmountPaid }}</td>
-                     <td>{{ line.restToPay }}</td>
-                  </tr>
-                  {% endfor %}                   
-                  <tr>
-                     <td class="bg-th" style="text-align: end; padding-right: 2em">Total</td>
-                     <td class="bg-th" style="width: 100px">{{ student.inscription.totalAmountPlanned }}</td>
-                     <td class="bg-th" style="width: 100px">{{ student.inscription.totalAmountReceived }}</td>
-                     <td class="bg-th" style="width: 100px">{{ student.inscription.totalAmountExpected }}</td>
-                     <!--td>Reste à Payer</td-->                  
-                  </tr>
-               </table>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Relevé de Notes</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+        }
+        .text-center{
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-right: 20px;
+        }
+
+        .info-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+ 
+
+        .info-label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .info-value {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div style="display: flex; justify-content-between">
+        <div class="container">
+            <!-- Affichage du logo à gauche -->
+            <div class="logo-container">
+                <img src="{{ group.groupeLogo }}" alt="Logo du groupe" class="logo">
             </div>
-            <hr/>
-         </div>
-      </section>
-      {% endfor %}   
-   </body>
+    
+            <!-- Informations du groupe à droite -->
+            <div class="info-container">
+                <div class="info-row">
+                    <span class="info-value">{{ group.groupeName }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-value">{{ group.groupDevise }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-value">{{ group.siteName }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-value">{{ group.siteContact }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-value">{{ group.siteAddress }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-value">{{ group.schoolYear }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="info-container">
+                <div class="info-row">
+                    <span class="info-label">Classe :</span>
+                    <span class="info-value">{{ classe }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Matière :</span>
+                    <span class="info-value">{{ matiere }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Enseignant :</span>
+                    <span class="info-value">{{ teacher }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Trimestre :</span>
+                    <span class="info-value">{{ trimestre }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <h2 class="text-center">Relevé de Notes {% if with_note == False %} à remplir  {% endif %}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Matricule</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                {% for eval in evaluation %}
+                    <th>{{ eval.code }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for eleve in eleves %}
+                <tr>
+                    <td>{{ eleve.eleveMatricule }}</td>
+                    <td>{{ eleve.eleveNom }}</td>
+                    <td>{{ eleve.elevePrenom }}</td>
+                    {% for eval in evaluation %}
+                        <td class="text-center">
+                            {% if with_note == True %}
+                                {% for noteItem in note %}
+                                    {% if noteItem.inscriptionId == eleve.inscriptionId and noteItem.evaluationId == eval.id %}
+                                        {% if noteItem.noteStatus == 0 %} <!--non saisie--> 
+
+                                        {% elif noteItem.noteStatus == 1 %} <!--saisie--> 
+                                            {{ noteItem.value }}
+                                        {% elif noteItem.noteStatus == 2 %} <!--ABSENCE_JUSTIFIEE--> 
+                                            AJ
+                                        {% elif noteItem.noteStatus == 3 %} <!--ABSENCE_NON_JUSTIFIEE--> 
+                                            ANJ
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+
+                {% if forloop.counter|divisibleby:12 %}
+                <tr style="page-break-after: always;">
+                    <td colspan="N"> <!-- N est le nombre de colonnes -->
+                        &nbsp; <!-- Cela insère une ligne vide pour le saut de page -->
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
 </html>
+
+

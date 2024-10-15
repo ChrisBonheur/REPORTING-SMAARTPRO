@@ -1,6 +1,6 @@
 from rest_framework import routers
 from django.urls import path, include
-from .views import FicheAgentView, DefaultDataListView, RecuCaisseView, JournalCaisseView, RecuFraisView, TimeSlotView, ClosedCashView, FicheEleveView, FicheTeacherView, BulletinView, StudentCardView, AvisPaiementView, AgentCardView
+from .views import FicheAgentView, DefaultDataListView, RecuCaisseView, JournalCaisseView, RecuFraisView, TimeSlotView, ClosedCashView, FicheEleveView, FicheTeacherView, BulletinView, StudentCardView, AvisPaiementView, AgentCardView, CertifcatView, GenerateNoteReportView
 
 urlpatterns = [
     path('fiche-agent', FicheAgentView.as_view()),
@@ -16,4 +16,8 @@ urlpatterns = [
     path('carte-scolaire-eleve', StudentCardView.as_view()),
     path('carte-agent', AgentCardView.as_view()),
     path('avis-paiement', AvisPaiementView.as_view()),
+    path('certificat-create', CertifcatView.as_view({'post': 'post'})),
+    path('certificat', CertifcatView.as_view({'post': 'get_certificat'})),
+    path('certificat/<int:pk>', CertifcatView.as_view({'get': 'get_type_certificat'})),
+    path('releve-note', GenerateNoteReportView.as_view(), name='generate_note_report'),
 ]

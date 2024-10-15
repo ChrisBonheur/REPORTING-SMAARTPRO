@@ -209,6 +209,7 @@ class EleveFeesSerializer(Serializer):
 
 
 class RecuFraisScolaireSerializer(Serializer):
+    show_resum = serializers.BooleanField(allow_null=True, default=False)
     groupid = serializers.IntegerField(allow_null=True, default=0)
     receipt_type = serializers.IntegerField(allow_null=True, default=0)
     groupeLogo = serializers.CharField(allow_null=True, allow_blank=True)
@@ -367,3 +368,67 @@ class AvisPaiementSerializer(Serializer):
     message = serializers.CharField(allow_null=True, default=' ')
     groupid = serializers.IntegerField(allow_null=True, default=0)
     data_avis = dataAvisSerializer(many=True)
+    
+class TypeCertificat:
+    FREQUENTATION = 1
+    SCOLARITE = 2
+    
+    CHOICES = [
+        (FREQUENTATION, 1),
+        (SCOLARITE, 2),
+    ]
+    
+class CreateCertifcatSerializer(Serializer):
+    content = serializers.CharField(allow_null=True, allow_blank=True, default='')
+    groupid = serializers.IntegerField()
+    type = serializers.ChoiceField(choices=TypeCertificat.CHOICES)
+    
+class GetCertifcatSerializer(Serializer):
+    groupid = serializers.IntegerField()
+    type = serializers.ChoiceField(choices=TypeCertificat.CHOICES)
+    students = StudentSerializer(many=True)
+    
+    
+class EvaluationSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    title = serializers.CharField(max_length=255)
+    code = serializers.CharField(max_length=50)
+    sortingId = serializers.IntegerField()
+    parentEvaluationId = serializers.IntegerField()
+    noteMaximale = serializers.FloatField()
+    weight = serializers.FloatField()
+    isAverage = serializers.BooleanField()
+    averageType = serializers.IntegerField()
+    
+    
+class NoteSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    evaluationId = serializers.IntegerField()
+    inscriptionId = serializers.IntegerField()
+    enseignantMatiereId = serializers.IntegerField()
+    ranking = serializers.IntegerField()
+    value = serializers.FloatField()
+    noteStatus = serializers.IntegerField()
+    isEditable = serializers.BooleanField()
+    noteMaximale = serializers.FloatField()
+    manualNoteMention = serializers.CharField(max_length=255, allow_blank=True)  
+    
+class StudentNote(serializers.Serializer):
+    inscriptionId = serializers.IntegerField()
+    eleveMatricule = serializers.CharField(allow_null=True),
+    eleveNom = serializers.CharField(allow_null=True)
+    elevePrenom = serializers.CharField(allow_null=True)
+    classeId = serializers.IntegerField()
+    classeTitle = serializers.CharField(allow_null=True)
+
+class ReleveNoteSerializer(Serializer):
+    group = GroupSerializer()
+    teacher = serializers.CharField(allow_null=True)
+    matiere = serializers.CharField(allow_null=True)
+    classe = serializers.CharField(allow_null=True)
+    trimestre = serializers.CharField(allow_null=True)
+    groupid = serializers.IntegerField()
+    with_note = serializers.BooleanField(default=True)
+    eleves = StudentNote(many=True)
+    evaluation = EvaluationSerializer(many=True)
+    note = NoteSerializer(many=True)

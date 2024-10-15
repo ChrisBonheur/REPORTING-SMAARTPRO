@@ -2,7 +2,7 @@ from io import BytesIO
 import pandas as pd
 from django.http import JsonResponse, HttpResponse
 import json
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -11,7 +11,8 @@ import base64
 from django.http import HttpResponse
 from .contentPrincipal import get_profile
 from rest_framework.views import APIView
-from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, StudentCardSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer, AvisPaiementSerializer, AgentCardSerializer
+from rest_framework.viewsets import ModelViewSet
+from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, StudentCardSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer, AvisPaiementSerializer, AgentCardSerializer, CreateCertifcatSerializer, GetCertifcatSerializer, ReleveNoteSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .templatepdf.agent_default_profil import default_profile
@@ -26,11 +27,13 @@ from .templatepdf.enseignant_fiche import default_profile_teacher
 from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
-from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, StudentCard, TimeTable, TypeReceiptEnum, Bulletin, AgentCard, AvisPaiement
+from .templatepdf.quillsnow import quillsnow
+from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, StudentCard, TimeTable, TypeReceiptEnum, Bulletin, AgentCard, AvisPaiement, Certificat, ReleveNote
 from smaartpro.utils import traitement_html, generate_qr_code, AGENT_PREFIX, TEACHER_PREFIX,STUDENT_PREFIX, RECEIPT_FEES_PREFIX, RECEIPT_TRANSACTION_PREFIX
 import pickle
 from django.views.decorators.csrf import csrf_exempt
-
+from rest_framework.decorators import action
+from django.template.loader import render_to_string
 
 class FicheAgentView(APIView):
     @swagger_auto_schema(
@@ -383,6 +386,104 @@ class AgentCardView(APIView):
             return Response({"base64_data": encoded_data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
+class CertifcatView(ModelViewSet):
+    serializer_class = CreateCertifcatSerializer
+    
+    @swagger_auto_schema(
+        request_body=CreateCertifcatSerializer
+    )
+    def post(self, request, format=None):
+        serializer = CreateCertifcatSerializer(data=request.data)
+        if serializer.is_valid():
+            data_ser = serializer.data
+            data_ser['title'] = "Certificat de frequentation" if data_ser['type'] == 1 else "Certificat de scolarite"
+            templates, is_created = Certificat.objects.get_or_create(groupid=data_ser['groupid'], type=data_ser['type'], defaults=data_ser)
+            templates.content = data_ser['content']
+            templates.save()
+            return Response({}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+    
+    
+
+    @swagger_auto_schema(
+        request_body=GetCertifcatSerializer
+    )
+    def get_certificat(self, request, format=None):
+        serializer = GetCertifcatSerializer(data=request.data)
+        if serializer.is_valid():
+            templates = get_object_or_404(Certificat, groupid=serializer.data['groupid'], type=serializer.data['type'])
+            dataHTML = templates.content.replace('\n', '')
+            dataHTML = templates.content.replace('None', '')
+            pdf_pages = []
+
+            for student in serializer.data['students']:
+                certificat = dataHTML.replace('NOM_ELEVE', student['firstName'] if student.get('firstName') else '')\
+                    .replace('PRENOM_ELEVE', student['lastName'] if student.get('lastName') else '')\
+                    .replace('DATE_NAISSANCE_ELEVE', student['dateOfBirth'] if student.get('') else '')\
+                    .replace('GENRE_ELEVE', student['civility'] if student.get('civility') else '')\
+                    .replace('ADRESSE_ELEVE', student['address'] if student.get('address') else '')\
+                    .replace('CLASSE_ELEVE', student['siteClassTitle'] if student.get('siteClassTitle') else '')\
+                    .replace('LIEU_NAISSANCE_ELEVE', student['birthCity'] if student.get('birthCity') else '')\
+                    .replace('NATIONNALITE_ELEVE', student['nationalityTitle'] if student.get('nationalityTitle') else '')
+                # Ajoutez un style pour forcer un saut de page après chaque certificat
+                certificat = f'<div class="ql-editor" style="page-break-after: always;">{certificat}</div>'
+                pdf_pages.append(certificat)
+
+            # Joindre toutes les pages dans une seule chaîne
+            finaldata = ''.join(pdf_pages)
+            finaldata = f"<style>{quillsnow}</style> {finaldata}"
+            print(finaldata)
+            pdf_data = pdfkit.from_string(finaldata, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            encoded_data = base64.b64encode(pdf_data).decode()
+            return Response({"base64_data": encoded_data})
+            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def get_type_certificat(self, request, pk):
+        certificat = Certificat.objects.filter(groupid=pk)
+        serializer = CreateCertifcatSerializer(certificat, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+class GenerateNoteReportView(APIView):
+    @swagger_auto_schema(
+        request_body=ReleveNoteSerializer
+    )
+    def post(self, request):
+        serializer = ReleveNoteSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                # Générer le contenu HTML pour le PDF
+                templates = ReleveNote.objects.last()
+                if templates:
+                    templates = templates.content
+                else:
+                    templates = ''
+                    
+                    
+                data = serializer.data
+                data['eleves'] = request.data.get('eleves', [])
+                data['note'] = request.data.get('note', [])
+                dataHTML = traitement_html(templates, data)
+                #set booth for agent and beneficiare
+                dataHTML = dataHTML.replace('\n', '')
+                dataHTML = dataHTML.replace('None', '')
+                
+                pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True, 'orientation': 'Landscape'})
+                encoded_data = base64.b64encode(pdf_data).decode()
+                return Response({"base64_data": encoded_data})           
+            
+            except Exception as e:
+                return Response({
+                    'status': 'error',
+                    'message': str(e)
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 

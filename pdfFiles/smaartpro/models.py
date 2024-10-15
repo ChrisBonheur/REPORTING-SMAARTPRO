@@ -15,7 +15,7 @@ class ReportingBase(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     groupid = models.IntegerField(default=0)
-    type = models.IntegerField(default=0, unique=True)
+    type = models.IntegerField(default=0)
     
     class Meta:
         abstract = True
@@ -64,4 +64,11 @@ class AvisPaiement(ReportingBase):
     pass
 
 class AgentCard(ReportingBase):
+    pass
+
+class Certificat(ReportingBase):
+    pass
+
+
+class ReleveNote(ReportingBase):
     pass
