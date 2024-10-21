@@ -432,3 +432,17 @@ class ReleveNoteSerializer(Serializer):
     eleves = StudentNote(many=True)
     evaluation = EvaluationSerializer(many=True)
     note = NoteSerializer(many=True)
+    
+    
+class ReceiptTransfertSerializer(Serializer):
+    group = GroupSerializer()
+    groupid = serializers.IntegerField()
+    caisse = serializers.CharField(allow_null=True, allow_blank=True)
+    dateRecu = serializers.CharField(allow_null=True, allow_blank=True)
+    recuNumber = serializers.CharField(allow_null=True, allow_blank=True)
+    description = serializers.CharField(allow_null=True, allow_blank=True)
+    montant = serializers.CharField(allow_null=True, allow_blank=True) 
+    initiateur = serializers.CharField(allow_null=True, allow_blank=True)
+    receptionist = serializers.CharField(allow_null=True, allow_blank=True)
+    idTransaction = serializers.IntegerField()
+    printerAgent = serializers.CharField(allow_null=True, allow_blank=True)

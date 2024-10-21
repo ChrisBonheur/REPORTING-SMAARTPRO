@@ -30,6 +30,9 @@ class RecuCaisse(ReportingBase):
     pass
 
 
+class RecuTransfert(ReportingBase):
+    pass
+
 class DataList(ReportingBase):
     pass
 

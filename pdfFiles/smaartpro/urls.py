@@ -1,9 +1,10 @@
 from rest_framework import routers
 from django.urls import path, include
-from .views import FicheAgentView, DefaultDataListView, RecuCaisseView, JournalCaisseView, RecuFraisView, TimeSlotView, ClosedCashView, FicheEleveView, FicheTeacherView, BulletinView, StudentCardView, AvisPaiementView, AgentCardView, CertifcatView, GenerateNoteReportView
+from .views import FicheAgentView, DefaultDataListView, RecuCaisseView, JournalCaisseView, RecuFraisView, TimeSlotView, ClosedCashView, FicheEleveView, FicheTeacherView, BulletinView, StudentCardView, AvisPaiementView, AgentCardView, CertifcatView, GenerateNoteReportView, RecuTransfertView
 
 urlpatterns = [
     path('fiche-agent', FicheAgentView.as_view()),
+    path('recu-transfert', RecuTransfertView.as_view()),
     path('default-list', DefaultDataListView.as_view()),
     path('bulletin', BulletinView.as_view()),
     path('recu-caisse', RecuCaisseView.as_view()),

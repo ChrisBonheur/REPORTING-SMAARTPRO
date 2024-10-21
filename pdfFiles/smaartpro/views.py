@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from .contentPrincipal import get_profile
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, StudentCardSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer, AvisPaiementSerializer, AgentCardSerializer, CreateCertifcatSerializer, GetCertifcatSerializer, ReleveNoteSerializer
+from .serializers import FicheAgentSerializer, DefaultDataListSerializer, RecuCaisseSerializer, JournalCaisseSerializer, RecuFraisScolaireSerializer, StudentCardSerializer, TimeTableSerializer, ClosedCashSerializer, FicheEleveSerializer, FicheTeacherSerializer, BulletinPaieSerializer, AvisPaiementSerializer, AgentCardSerializer, CreateCertifcatSerializer, GetCertifcatSerializer, ReleveNoteSerializer, ReceiptTransfertSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .templatepdf.agent_default_profil import default_profile
@@ -28,8 +28,8 @@ from drf_yasg.utils import swagger_auto_schema
 import base64
 from .templatepdf.bootstrap import bootstrap
 from .templatepdf.quillsnow import quillsnow
-from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, StudentCard, TimeTable, TypeReceiptEnum, Bulletin, AgentCard, AvisPaiement, Certificat, ReleveNote
-from smaartpro.utils import traitement_html, generate_qr_code, AGENT_PREFIX, TEACHER_PREFIX,STUDENT_PREFIX, RECEIPT_FEES_PREFIX, RECEIPT_TRANSACTION_PREFIX
+from smaartpro.models import FeesReceipt, DataList, FicheAgent, FicheEleve, FicheTeacher, RecuCaisse, CloseCash, StudentCard, TimeTable, TypeReceiptEnum, Bulletin, AgentCard, AvisPaiement, Certificat, ReleveNote, RecuTransfert
+from smaartpro.utils import traitement_html, generate_qr_code, AGENT_PREFIX, TEACHER_PREFIX,STUDENT_PREFIX, RECEIPT_FEES_PREFIX, RECEIPT_TRANSACTION_PREFIX, RECEIPT_TRANSFERT_INTERCASH
 import pickle
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import action
@@ -485,6 +485,33 @@ class GenerateNoteReportView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class RecuTransfertView(APIView):
+    @swagger_auto_schema(
+        request_body=ReceiptTransfertSerializer
+    )
+    def post(self, request, format=None):
+        serializer = ReceiptTransfertSerializer(data=request.data)
+        if serializer.is_valid():
+            templates = RecuTransfert.objects.filter(groupid=serializer.data['groupid'])
+            if(templates.exists()):
+                templates = templates[0].content
+            else:
+                templates = RecuTransfert.objects.get(groupid=0).content
+            #add bootstrap
+            data = serializer.data
+            data['bootstrap'] = bootstrap
+            data['qrcode'] = generate_qr_code(RECEIPT_TRANSFERT_INTERCASH + str(data['idTransaction']))
+                
+            dataHTML = traitement_html(templates, data)
+            
+             #set booth for agent and beneficiare
+            dataHTML = dataHTML.replace('\n', '')
+            dataHTML = dataHTML.replace('None', '')
+            dataHTML = dataHTML + "<div style='margin-bottom: 3em'></div>" + dataHTML
+            pdf_data = pdfkit.from_string(dataHTML, False, options={'encoding': 'UTF-8', 'enable-local-file-access': True})
+            encoded_data = base64.b64encode(pdf_data).decode()
+            return Response({"base64_data": encoded_data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def home(request):
@@ -498,33 +525,17 @@ def home(request):
     "siteAddress": "string",
     "schoolYear": "string"
   },
-  "message": "",
-  "groupid": 0,
-  "data_avis": [
-    {
-      "inscription": {
-        "eleveNom": "string",
-        "elevePrenom": "string",
-        "eleveMatricule": "string",
-        "siteClassCode": "string",
-        "totalAmountPlanned": "string",
-        "totalAmountReceived": "string",
-        "totalAmountExpected": "string"
-      },
-      "fees": [
-        {
-          "standardAmount": "string",
-          "discountAmount": "string",
-          "increaseAmount": "string",
-          "totalAmountPaid": "string",
-          "transactionTypeTitle": "string",
-          "amountNet": "string",
-          "restToPay": "string"
-        }
-      ]
-    }
-  ]
+  "caisse": "string",
+  "dateRecu": "string",
+  "recuNumber": "string",
+  "description": "string",
+  "montant": "string",
+  "initiateur": "string",
+  "receptionist": "string",
+  "idTransaction": 0,
+  "printerAgent": "string"
 }
+    data['bootstrap'] = bootstrap
     return render(request, 'work.html', data)
 
 
