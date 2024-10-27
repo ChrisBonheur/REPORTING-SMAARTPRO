@@ -48,6 +48,7 @@ class StudentSerializer(Serializer):
     bloodGroup = serializers.CharField(allow_null=True, allow_blank=True)
     inscriptionStatus = serializers.CharField(allow_null=True, allow_blank=True)
     siteClassTitle = serializers.CharField(allow_null=True, allow_blank=True)
+    siteClassCode = serializers.CharField(allow_null=True, allow_blank=True)
     birthCity = serializers.CharField(allow_null=True, allow_blank=True)
     nationalityTitle = serializers.CharField(allow_null=True, allow_blank=True)
     # cityArea = serializers.CharField(allow_null=True, allow_blank=True)
@@ -446,3 +447,77 @@ class ReceiptTransfertSerializer(Serializer):
     receptionist = serializers.CharField(allow_null=True, allow_blank=True)
     idTransaction = serializers.IntegerField()
     printerAgent = serializers.CharField(allow_null=True, allow_blank=True)
+    
+    
+###############Bulletin
+from rest_framework import serializers
+
+class MatiereSerializer(serializers.Serializer):
+    id = serializers.IntegerField(allow_null=True)
+    code = serializers.CharField(allow_null=True, allow_blank=True)
+    title = serializers.CharField(allow_null=True, allow_blank=True)
+    siteId = serializers.IntegerField(allow_null=True)
+
+
+class EvaluationSerializer(serializers.Serializer):
+    id = serializers.IntegerField(allow_null=True)
+    title = serializers.CharField(allow_null=True, allow_blank=True)
+    code = serializers.CharField(allow_null=True, allow_blank=True)
+    sortingId = serializers.IntegerField(allow_null=True)
+    siteLevelId = serializers.IntegerField(allow_null=True)
+    siteSerieId = serializers.IntegerField(allow_null=True)
+    parentEvaluationId = serializers.IntegerField(allow_null=True)
+    siteSequenceId = serializers.IntegerField(allow_null=True)
+    noteMaximale = serializers.IntegerField(allow_null=True)
+    weight = serializers.IntegerField(allow_null=True)
+    isAverage = serializers.IntegerField(allow_null=True)
+    averageType = serializers.IntegerField(allow_null=True)
+  
+
+class GroupMatiereSerializer(serializers.Serializer):
+    id = serializers.IntegerField(allow_null=True)
+    groupeId = serializers.IntegerField(allow_null=True)
+    matiereNiveauId = serializers.IntegerField(allow_null=True)
+    categoryId = serializers.IntegerField(allow_null=True)
+
+class NoteSerializer(serializers.Serializer):
+    id = serializers.IntegerField(allow_null=True)
+    evaluationId = serializers.IntegerField(allow_null=True)
+    inscriptionId = serializers.IntegerField(allow_null=True)
+    matiereNiveauId = serializers.IntegerField(allow_null=True)
+    noteMentionId = serializers.IntegerField(allow_null=True)
+    ranking  = serializers.IntegerField(allow_null=True)
+    value  = serializers.IntegerField(allow_null=True)
+    noteStatus = serializers.IntegerField(allow_null=True)
+    isEditable = serializers.IntegerField(allow_null=True)
+    noteMaximale = serializers.IntegerField(allow_null=True)
+    manualNoteMention = serializers.IntegerField(allow_null=True)
+
+class EleveNoteSerializer(serializers.Serializer):
+    totalPoints = serializers.FloatField()
+    totalVoefficient = serializers.FloatField()
+    moyenne = serializers.FloatField()
+    rang = serializers.IntegerField()
+    notesGroupe = NoteSerializer(many=True)
+    groupe = GroupMatiereSerializer()
+
+class MoyenneTrimestrielleSerializer(serializers.Serializer):
+    totalPoints = serializers.FloatField()
+    totalCoeff = serializers.FloatField()
+    rang = serializers.IntegerField()
+    moyenne = serializers.FloatField()
+
+class YearlyResultSerializer(serializers.Serializer):
+    moyenne = serializers.FloatField()
+    rang = serializers.IntegerField()
+
+class EleveSerializer(serializers.Serializer):
+    eleve = StudentSerializer()
+    notes = EleveNoteSerializer(many=True)
+    moyennetrimestrielle = MoyenneTrimestrielleSerializer(many=True)
+    yearlyResult = YearlyResultSerializer()
+
+class BulletinSerializer(serializers.Serializer):
+    matieres = MatiereSerializer(many=True)
+    evaluations = EvaluationSerializer(many=True)
+    eleves = EleveSerializer(many=True)

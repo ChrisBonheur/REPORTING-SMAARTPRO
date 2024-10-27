@@ -1,91 +1,107 @@
 <!DOCTYPE html>
-<html>
-   <title>Caisse</title>
-   <head>
-      <style>      {{bootstrap}}      body{          width: 100%;      }      .text-danger strong {              color: #9f181c;          }          .receipt-main {              background: #ffffff none repeat scroll 0 0;              border-bottom: 3px solid #333333;              border-top: 3px solid #9f181c;              margin-top: 50px;              margin-bottom: 50px;              padding: 40px 30px ;              box-shadow: 0 1px 21px #acacac;              color: #333333;              font-family: open sans;          }          .receipt-main p {              color: #333333;              font-family: open sans;              line-height: 1.42857;          }          .receipt-footer h1 {              font-size: 15px;              font-weight: 400 ;              margin: 0 ;          }          .receipt-main thead {              background: #414143 none repeat scroll 0 0;          }          .receipt-main thead th {              color:#fff;              background: gray;          }          .receipt-right h5 {              font-size: 16px;              font-weight: bold;              margin: 0 0 7px 0;          }          .receipt-right p {              font-size: 12px;              margin: 0px;          }          .receipt-right p i {              text-align: center;              width: 18px;          }          .receipt-main td {              padding: 9px 20px ;          }          .receipt-main th {              padding: 5px 20px ;          }          .receipt-main td {              font-size: 13px;              font-weight: initial ;          }          .receipt-main td p:last-child {              margin: 0;              padding: 0;          }          .receipt-main td h2 {              font-size: 20px;              font-weight: 900;              margin: 0;              text-transform: uppercase;          }          .receipt-header-mid .receipt-left h1 {              font-weight: 100;              text-align: right;              text-transform: uppercase;          }          .receipt-header-mid {              margin: 10px 0;              overflow: hidden;          }          #container {              background-color: #dcdcdc;          }          th{            padding: 2px !important;            padding-left: 10px !important;            font-size: 0.8em !important;          }          td{            padding: 5px !important;          }    </style>
-   </head>
-   <body>
-      <div class="container col">
-         <div class="receipt-main m-auto mt-0">
-            <div class="row mb-0">
-               <div class="receipt-header row mt-0">
-                  <div class="col-12 d-flex">
-                     <div class="receipt-left">                <img                  class="img-responsive mr-4"                  alt="iamgurdeeposahan"                  src="{{group.groupeLogo}}"                  style="width: 71px; border-radius: 43px; margin-left: 1em"                />              </div>
-                     <div class="">
-                        <div class="receipt-right">
-                           <h4 class="text-end mb-0">{{ group.groupeName }}</h4>
-                           <p>{{group.groupeDevise}} <i class="fa fa-envelope-o"></i></p>
-                           <p>{{group.siteContact}} <i class="fa fa-phone"></i></p>
-                           <h5>{{group.siteName}} <i class="fa fa-location-arrow"></i></h5>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <hr class="my-0 mt-1" />
-            <div class="row">
-               <div class="receipt-header receipt-header-mid row pl-1 w-100">
-                  <div class="col-7 text-left">
-                     <div class="receipt-right">
-                        <p>Site : <b>{{group.siteName}}</b></p>
-                        <p>Adresse : <b>{{group.siteAddress}} </b></p>
-                        <p>Tél : <b>{{group.siteContact}} </b></p>
-                        <p>Annee : <b>{{group.schoolYear}} </b></p>
-                     </div>
-                  </div>
-                  <div class="col-5">
-                     <div class="w-100 row">
-                        <div class="col-9">
-                           <h5 class="text-uppercase text-end w-100">Transfert  inter-caisse</h5>
-                           <small>Bénéficiaire</small>
-                           <div class="receipt-right">
-                              <p>Agent : <b>{{printerAgent}}</b></p>
-                              <p>Caisse : <b>{{ caisse }}</b></p>
-                              <p>Validé le <b>{{dateRecu }}</b></p>
-                           </div>
-                        </div>
-                        <div class="col-3">                           <img width="65" src="data:image/png;base64,{{ qrcode }}" alt="QR Code">                          </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <table class="table table-bordered">
-               <tr style="background-color: gray !important; color: white">
-                  <th style="background-color: gray !important; color: white">                MVT            </th>
-                  <th style="background-color: gray !important; color: white">                Libellé de l\'opération            </th>
-                  <th style="background-color: gray !important; color: white">                Montant            </th>
-               </tr>                       
-               <tr>
-                  <td style="width: 50px">{{ recuNumber }}</td>
-                  <td style="width: 50% !important">{{ description }}</td>
-                  <td style="width: 100px">{{ montant }}</td>
-               </tr>    
-            </table>
-            <div class="row">
-                <div class="col-9 d-flex justify-content-end">
-                    <table class="table table-bordered">
-                       <tr>
-                           <th>Caisse initiatrice : {{ initiateur }}</th>
-                           <th>Caisse réceptionniste : {{ receptionist }}</th>
-                       </tr>
-                       <tr style="height: 100px">
-                          <td></td>
-                          <td></td>
-                       </tr>
-                    </table>
-                 </div>
-               <div            class="col-3 receipt-header receipt-header-mid receipt-footer row w-100"          >
-                  <div class="col-6">
-                     <div class="col-12 text-left">
-                        <div class="receipt-right">
-                           <h5 style="color: rgb(140, 140, 140)">smaartschool</h5>
-                        </div>
-                     </div>
-                     <div class="col-12"></div>
-                  </div>
-               </div>
-            </div>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulletin du Premier Trimestre</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .school-info {
+            width: 60%;
+        }
+        .bulletin-title {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .student-photo {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            background-color: lightgray;
+        }
+        .bulletin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        .bulletin-table th, .bulletin-table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    {% for eleveData in bulletin.eleves %}
+      <div class="header">
+         <div class="school-info">
+               <img src="/path/to/logo.png" alt="Logo" width="100">
+               <p>Nom de l'École</p>
+               <p>Adresse : XYZ</p>
+               <p>Téléphone : 123456789</p>
+         </div>
+         <div class="bulletin-title">
+               BULLETIN DU PREMIER TRIMESTRE
          </div>
       </div>
-   </body>
+
+      <div class="student-info">
+         <div class="student-details">
+               <p>Nom : {{ eleveData.eleve.firstName }} {{ eleveData.eleve.lastName }}</p>
+               <p>Matricule : {{ eleveData.eleve.matricule }}</p>
+         </div>
+         <div class="student-photo">
+               <img src="{{ eleveData.eleve.photo }}" alt="Photo de l'élève" width="100" height="100">
+         </div>
+      </div>
+
+      <table class="bulletin-table">
+         <thead>
+               <tr>
+                  <th>Matière</th>
+                  {% for evaluation in bulletin.evaluations %}
+                     <th>{{ evaluation.title }}</th>
+                  {% endfor %}
+                  <th>Rang</th>
+               </tr>
+         </thead>
+         <tbody>
+               {% for groupe in bulletin.notes %}
+                  <tr>
+
+                     <td>{{ groupe.matiere.title }}</td>
+
+
+                     {% for evaluation in bulletin.evaluations %}
+                           <td>
+                              {% for eleve in bulletin.eleves %}
+                                 {% for note in eleve.notes %}
+                                       {% if note.evaluationId == evaluation.id and note.matiereNiveauId == groupe.matiere.id %}
+                                          {{ note.value }}
+                                       {% endif %}
+                                 {% endfor %}
+                              {% endfor %}
+                           </td>
+                     {% endfor %}
+                     <td>{{ eleve.notes.0.rang }}</td>
+                  </tr>
+               {% endfor %}
+         </tbody>
+      </table>
+    {% endfor %}
+</body>
 </html>
