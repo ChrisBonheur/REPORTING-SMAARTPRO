@@ -1,227 +1,101 @@
 <!DOCTYPE html>
 <html>
-  <title>Caisse</title>
-  <head>
-    <style>
-      {{bootstrap}}
-      body{
-          width: 100%;
-      }
-      .text-danger strong {
-              color: #9f181c;
-          }
-          .receipt-main {
-              background: #ffffff none repeat scroll 0 0;
-              border-bottom: 3px solid #333333;
-              border-top: 3px solid #9f181c;
-              margin-top: 50px;
-              margin-bottom: 50px;
-              padding: 40px 30px ;
-              box-shadow: 0 1px 21px #acacac;
-              color: #333333;
-              font-family: open sans;
-          }
-          .receipt-main p {
-              color: #333333;
-              font-family: open sans;
-              line-height: 1.42857;
-          }
-          .receipt-footer h1 {
-              font-size: 15px;
-              font-weight: 400 ;
-              margin: 0 ;
-          }
-
-          .receipt-main thead {
-              background: #414143 none repeat scroll 0 0;
-          }
-          .receipt-main thead th, th {
-              color:#fff;
-              background: gray ;
-          }
-          .receipt-right h5 {
-              font-size: 16px;
-              font-weight: bold;
-              margin: 0 0 7px 0;
-          }
-          .receipt-right p {
-              font-size: 12px;
-              margin: 0px;
-          }
-          .receipt-right p i {
-              text-align: center;
-              width: 18px;
-          }
-          .receipt-main td {
-              padding: 9px 20px ;
-          }
-          .receipt-main th {
-              padding: 5px 20px ;
-          }
-          .receipt-main td {
-              font-size: 13px;
-              font-weight: initial ;
-          }
-          .receipt-main td p:last-child {
-              margin: 0;
-              padding: 0;
-          }
-          .receipt-main td h2 {
-              font-size: 20px;
-              font-weight: 900;
-              margin: 0;
-              text-transform: uppercase;
-          }
-          .receipt-header-mid .receipt-left h1 {
-              font-weight: 100;
-              text-align: right;
-              text-transform: uppercase;
-          }
-          .receipt-header-mid {
-              margin: 10px 0;
-              overflow: hidden;
-          }
-
-          #container {
-              background-color: #dcdcdc;
-          }
-
-          th{
-            padding: 2px !important;
-            padding-left: 10px !important;
-            font-size: 0.8em !important;
-          }
-          td{
-            padding: 5px !important;
-          }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <section class="border p-2">
-        <div class="Facture">
-          <div class="header">
-            <div class="row">
-              <div class="logo col-6" style="display: flex">
-                <img
-                  class="img-responsive"
-                  
-                  alt="logo"
-                  src="{{groupeLogo}}"
-                  style="width: 71px;border: 1px solid gray; margin-right: 1em"
-                />
-                <div class="info-school">
-                  <h4 class="text-end mb-0"> {{ group.groupeName }}</h4>
-                  <h5>{{ group.groupeDevise }}</p>
-                  <h5>{{ group.siteContact}} </p>
-                  <h5>{{ group.siteName}} </h5>
-                </div>
-              </div>
-  
-              <div class="title col-6">
-                <h2>BULLETIN DE PAIE</h2>
-                <div class="col-7 text-left">
-                  <div class="receipt-right py-0">
-                     <p>Mois : <b>{{month}}</b></p>
-                     <p>Année scolaire : <b>{{group.schoolYear}} </b></p>
-                     <p>Date de paiement : <b>{{date}} </b></p>
-                     <p>AgentPayeur : <b>{{agent}} </b></p>
+   <title>Caisse</title>
+   <head>
+      <style>        {{bootstrap}}        body{            width: 100%;        }        .text-danger strong {                color: #9f181c;            }            .receipt-main {                background: #ffffff none repeat scroll 0 0;                border-bottom: 3px solid #333333;                border-top: 3px solid #9f181c;                margin-top: 50px;                margin-bottom: 50px;                padding: 40px 30px ;                box-shadow: 0 1px 21px #acacac;                color: #333333;                font-family: open sans;            }            .receipt-main p {                color: #333333;                font-family: open sans;                line-height: 1.42857;            }            .receipt-footer h1 {                font-size: 15px;                font-weight: 400 ;                margin: 0 ;            }            .receipt-main thead {                background: #414143 none repeat scroll 0 0;            }            .receipt-main thead th {                color:#fff;                background: gray;            }            .receipt-right h5 {                font-size: 16px;                font-weight: bold;                margin: 0 0 7px 0;            }            .receipt-right p {                font-size: 12px;                margin: 0px;            }            .receipt-right p i {                text-align: center;                width: 18px;            }            .receipt-main td {                padding: 9px 20px ;            }            .receipt-main th {                padding: 5px 20px ;            }            .receipt-main td {                font-size: 13px;                font-weight: initial ;            }            .receipt-main td p:last-child {                margin: 0;                padding: 0;            }\t            .receipt-main td h2 {                font-size: 20px;                font-weight: 900;                margin: 0;                text-transform: uppercase;            }            .receipt-header-mid .receipt-left h1 {                font-weight: 100;                text-align: right;                text-transform: uppercase;            }            .receipt-header-mid {                margin: 10px 0;                overflow: hidden;            }                        #container {                background-color: #dcdcdc;            }    </style>
+   </head>
+   <body>
+      <div class="container col">
+      <div class="receipt-main m-auto mt-0 ">
+         <div class="row mb-0">
+            <div class="receipt-header row mt-0">
+               <div class="col-12 d-flex">
+                  <div class="receipt-left ">                    <img class="img-responsive mr-4" alt="iamgurdeeposahan" src="{{group.groupeLogo }}" style="width: 71px; border-radius: 43px; margin-left: 1em;">                </div>
+                  <div class="">
+                     <div class="receipt-right">
+                        <h4 class="text-end mb-0">{{ group.groupeName }}</h4>
+                        <p>{{ group.groupDevise }} <i class="fa fa-envelope-o"></i></p>
+                        <p><span class=""></span>Tél:  {{ group.siteContact }} <i class="fa fa-phone"></i></p>
+                        <h5>{{group.siteName }} <i class="fa fa-location-arrow"></i></h5>
+                     </div>
                   </div>
                </div>
-                </p>
-              </div>
             </div>
-            <hr class="my-4">
+         </div>
+         <hr class="my-0 mt-1">
+         <div class="">
+            <div class="text-center">
+               <h2 class="text-center border p-2 bg-light">Fiche individuelle de l\'élève</h2>
+            </div>
+            <div class="row ">
+               <div class="col-4 border-right bg-light">
+                  <div class="d-flex justify-content-center bg-light">                <img                    style="max-width: 200px; min-height: 220px;"                    src="{{ student.photo }}"                    class="card-img-top border rounded"                    alt="photo agent"                />                </div>
+                  <div class="d-flex justify-content-center mt-4">                    <img                    width="150px"                    src="data:image/png;base64,{{ student.qrCode }}"                    class="border rounded-0"                    alt="Qr-code"                    />                </div>
+               </div>
+               <div class="col-8">
+                  <div class="row">
+                     <div class="form-group mb-4 col-12 row">
+                        <div class="col-4"><label for="" class="mb-0 text-secondary">Nom(s) </label></div>
+                        <div class="col-8">: <strong>{{ student.firstName }}</strong></div>
+                     </div>
+                     <div class="form-group mb-4 col-12 row">
+                        <div class="col-4"><label for="" class="mb-0 text-secondary">Prénom(s) </label></div>
+                        <div class="col-8">: <strong>{{ student.lastName }}</strong></div>
+                     </div>
+                     <div class="form-group mb-4 col-12 row">
+                        <div class="col-4"><label for="" class="mb-0 text-secondary">Classe  </label></div>
+                        <div class="col-8">: <strong>{{ student.siteClassTitle }}</strong></div>
+                     </div>
+                     <div class="form-group mb-4 col-12 row">
+                        <div class="col-4"><label for="" class="mb-0 text-secondary">Date de naissance  </label></div>
+                        <div class="col-8">: <strong>{{ student.dateOfBirth }}</strong></div>
+                     </div>
+                     <div class="form-group mb-4 col-12 row">
+                        <div class="col-4"><label for="" class="mb-0 text-secondary">Lieu de naissance </label></div>
+                        <div class="col-8">: <strong>{{ student.birthCity }}</strong></div>
+                     </div>
+                     <div class="form-group mb-4 col-12 row">
+                        <div class="col-4"><label for="" class="mb-0 text-secondary">Genre </label></div>
+                        <div class="col-8">:
+                          {{ student.civility }}     
+                        </div>
+                     </div>
+                     <div class="form-group mb-4 col-12 row">
+                        <div class="col-4"><label for="" class="mb-0 text-secondary">Email </label></div>
+                        <div class="col-8">: {{ student.email }}</div>
+                     </div>
+                     <div class="form-group mb-4 col-12 row">
+                        <div class="col-4"><label for="" class="mb-0 text-secondary">Nationalité (Pays) </label></div>
+                        <div class="col-8">: {{ student.nationalityTitle }}</div>
+                     </div>
+                     <div class="form-group mb-4 col-12 row">
+                        <div class="col-4"><label for="" class="mb-0 text-secondary">Adresse </label></div>
+                        <div class="col-8">: {{ student.address }}</div>
+                     </div>
+                     <div class="form-group mb-4 col-12 row">
+                        <div class="col-4"><label for="" class="mb-0 text-secondary">Contact </label></div>
+                        <div class="col-8">: {{ student.phone1 }} {{ student.phone2 }}</div>
+                     </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                     <div class="col-6 text-end"> <a target="_blank" href="https://student.smaartschool.com/" title="ouvrir managersmaartpro">https://student.smaartschool.com/</a> </div>
+                  </div>
+               </div>
+            </div>
             <div class="row">
-                <div class="col-md-6">
-                  <div class="card border-secondary h-100 mb-3 rounded-0" style="width: 100%">
-                    <div class="card-header">BASE CALCUL</div>
-                    <div class="card-body text-secondary">
-                      {% for rem in  base_calcul  %}
-                        <div class="row">
-                            <div class="col-6 card-text text-end">{{ rem.label }}</div>
-                            <div class="col-6 card-text text-end">{{ rem.amount }}</div>
+               <div class="receipt-header receipt-header-mid receipt-footer row w-100">
+                  <div class="col-6">
+                     <div class="col-12 text-left">
+                        <div class="receipt-right">
+                           <h5 style="color: rgb(140, 140, 140);">Smaartschool</h5>
                         </div>
-                      {% endfor %}
-                    </div>
-                  </div>            
-                </div>
-      
-                <div class="col-md-6">
-                  <div class="card border-secondary mb-3 h-100 rounded-0" style="width: 100%">
-                    <div class="card-header">AGENT/ENSEIGNANT</div>
-                    <div class="card-body text-secondary py-0">
-                        <div class="row py-0">
-                          <div class="col-12 card-text text-end">Nom et Prénoms: <strong>{{ recipient.fullname }}</strong></div>
-                          <div class="col-12 card-text text-end">Fonction: <strong>{{ recipient.fonction }}</strong></div>
-                          <div class="col-12 card-text text-end">Matricule: <strong>{{ recipient.matricule }}</strong></div>
-                        </div>
-                    </div>
-                  </div>             
-                </div>
+                     </div>
+                     <div class="col-12">                </div>
+                  </div>
+               </div>
             </div>
-          </div>
-          <div class="container">
-            <div class="row mt-3" style="border: 2px solid black;">
-              <div class="col-6 p-0" style="border-right: 2px solid black;">
-                <table class="table table-bordered" >
-                  <tr>
-                    <th colspan="2" class="text-center">REMUNERATIONS</th>
-                  </tr>
-                  <tr>
-                    <td class="bg-warning">RUBRIQUE</td>
-                    <td class="bg-warning">MONTANT</td>
-                  </tr>
-                  {% for rem in  remunerations  %}
-                  <tr>
-                    <td>{{ rem.label }}</td>
-                    <td>{{ rem.amount }}</td>
-                  </tr>
-                  {% endfor %}
-
-                  <tr>
-                    <td class="bg-warning">TOTAL DES REMUNERATIONS</td>
-                    <td class=""><strong>{{ total_remuneration }}</strong></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-warning">SALAIRE BRUT</td>
-                    <td class=""><strong>{{ brut_salary }}</strong></td>
-                  </tr>
-                </table>
-              </div>
-              <div class="col-6 p-0">
-                <table class="table table-bordered">
-                  <tr>
-                    <th colspan="2" class="text-center">DEDUCTIONS</th>
-                  </tr>
-                  <tr>
-                    <td class="bg-warning">RUBRIQUE</td>
-                    <td class="bg-warning">MONTANT</td>
-                  </tr>
-                  {% for rem in  deductions  %}
-                  <tr>
-                    <td>{{ rem.label }}</td>
-                    <td>{{ rem.amount }}</td>
-                  </tr>
-                  {% endfor %}
-    
-                  <tr>
-                    <td class="bg-warning">TOTAL DES DEDUCTIONS</td>
-                    <td class=""><strong>{{ total_deduction }}</strong></td>
-                  </tr>
-                  <tr>
-                    <td colspan="2"></td>
-                  </tr>
-                  <tr>
-                    <td class=""><strong>SALAIRE NET (A PAYER):</strong></td>
-                    <td class="text-danger"><strong>{{ net_to_pay }}</strong></td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </body>
+         </div>
+      </div>
+   </body>
 </html>
