@@ -6,7 +6,7 @@ urlpatterns = [
     path('fiche-agent', FicheAgentView.as_view()),
     path('recu-transfert', RecuTransfertView.as_view()),
     path('default-list', DefaultDataListView.as_view()),
-    path('bulletin', BulletinView.as_view()),
+    path('bulletin-salaire', BulletinView.as_view()),
     path('recu-caisse', RecuCaisseView.as_view()),
     path('operations-caisse', JournalCaisseView.as_view()),
     path('recu-frais', RecuFraisView.as_view()),

@@ -311,13 +311,10 @@ class BulletinDetailsSerializer(Serializer):
     label = serializers.CharField(allow_null=True, allow_blank=True)
     amount = serializers.CharField(allow_null=True, allow_blank=True)
     
-class BulletinPaieSerializer(Serializer):
-    group = GroupSerializer()
-    groupid = serializers.IntegerField(allow_null=True, default=0)
-    recipient = serializers.CharField(allow_null=True, default=0)
-    month = serializers.CharField(allow_null=True, allow_blank=True)
+class OneDataSalarySerializer(Serializer):
+    createdBy = serializers.CharField(allow_null=True, allow_blank=True)
+    paidBy = serializers.CharField(allow_null=True, allow_blank=True)
     date = serializers.CharField(allow_null=True, allow_blank=True)
-    agent = serializers.CharField(allow_null=True, allow_blank=True)
     recipient = BulletinRecipientAgentOrEnsignantSerializer()
     remunerations = BulletinDetailsSerializer(many=True)
     deductions = BulletinDetailsSerializer(many=True)
@@ -327,6 +324,11 @@ class BulletinPaieSerializer(Serializer):
     brut_salary = serializers.CharField(allow_null=True, allow_blank=True)
     net_to_pay = serializers.CharField(allow_null=True, allow_blank=True)
     
+class BulletinPaieSerializer(Serializer):
+    group = GroupSerializer()
+    groupid = serializers.IntegerField(allow_null=True, default=0)
+    month = serializers.CharField(allow_null=True, allow_blank=True)
+    recipients = OneDataSalarySerializer(many=True)
     
 
 class StudentCardSerializer(Serializer):

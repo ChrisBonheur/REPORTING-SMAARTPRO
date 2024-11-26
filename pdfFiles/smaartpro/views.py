@@ -389,6 +389,7 @@ class AgentCardView(APIView):
 
 class CertifcatView(ModelViewSet):
     serializer_class = CreateCertifcatSerializer
+    queryset = Certificat.objects.all()
     
     @swagger_auto_schema(
         request_body=CreateCertifcatSerializer
@@ -529,160 +530,55 @@ class GenerateBulletinAPIView(APIView):
 
 
 def home(request):
-    data = {
-  "matieres": [
+    data ={
+  "group": {
+    "groupeLogo": "string",
+    "groupeName": "string",
+    "groupDevise": "string",
+    "siteName": "string",
+    "siteContact": "string",
+    "siteAddress": "string",
+    "schoolYear": "string"
+  },
+  "groupid": 0,
+  "recipient": "0",
+  "month": "string",
+  "date": "string",
+  "agent": "string",
+  "recipients": [
     {
-      "id": 1,
-      "code": "MATH001",
-      "title": "Mathématiques",
-      "siteId": 101
-    },
-    {
-      "id": 2,
-      "code": "PHY001",
-      "title": "ique",
-      "siteId": 101
-    }
-  ],
-  "evaluations": [
-    {
-      "id": 1,
-      "title": "Devoir 1",
-      "code": "DEV001",
-      "sortingId": 1,
-      "siteLevelId": 1,
-      "siteSerieId": 2,
-      "parentEvaluationId": 0,
-      "siteSequenceId": 1,
-      "noteMaximale": 20,
-      "weight": 1,
-      "isAverage": 1,
-      "averageType": 1
-    },
-    {
-      "id": 2,
-      "title": "Devoir 2",
-      "code": "DEV002",
-      "sortingId": 2,
-      "siteLevelId": 1,
-      "siteSerieId": 2,
-      "parentEvaluationId": 0,
-      "siteSequenceId": 1,
-      "noteMaximale": 20,
-      "weight": 1,
-      "isAverage": 1,
-      "averageType": 1
-    }
-  ],
-  "eleves": [
-    {
-      "eleve": {
-        "id": 1001,
-        "inscriptionDate": "2023-09-01",
-        "eleveId": 2001,
-        "scholarYearId": 2023,
-        "siteId": 101,
-        "siteBrancheId": 3,
-        "inscriptionStatusId": 1,
-        "qrCode": "QR123456789",
-        "passageStatusId": 1,
-        "firstName": "Jean",
-        "lastName": "Dupont",
-        "dateOfBirth": "2010-03-15",
-        "civility": 1,
-        "adnNumber": 987654321,
-        "address": "123 Rue des Ecoles",
-        "familyId": 5001,
-        "photo": "/photos/jean_dupont.png",
-        "email": "jean.dupont@example.com",
-        "cityId": 15,
-        "nationalityId": 33,
-        "phone1": "+33 612345678",
-        "phone2": "+33 698765432",
-        "bloodGroup": 1,
-        "lifeStatusId": 1,
-        "siteSerieId": 2,
-        "siteClassId": 4,
-        "birthCity": "Paris",
-        "creatorAgentId": 3001,
-        "matricule": "MTR123456",
-        "inscriptionCode": 123456,
-        "aptitude": 1,
-        "inscriptionStatus": 1,
-        "siteClassTitle": 'mclasse seconce',
-        "siteClassCode": '3eme G',
-        "nationalityTitle": "Congoloamise"
+      "recipient": {
+        "fullname": "string",
+        "fonction": "string",
+        "matricule": "string"
       },
-      "notes": [
+      "remunerations": [
         {
-            "totalPoints": 35,
-            "totalVoefficient": 2,
-            "moyenne": 17.5,
-            "rang": 3,
-            "groupe": {
-                "id": 1,
-                "groupeId": 1,
-                "matiereNiveauId": 1,
-                "categoryId": 1
-            },
-            "notesGroupe": [
-                {
-                    "id": 1,
-                    "evaluationId": 1,
-                    "inscriptionId": 1001,
-                    "matiereNiveauId": 1,
-                    "noteMentionId": 1,
-                    "ranking": 2,
-                    "value": 18,
-                    "noteStatus": 1,
-                    "isEditable": 1,
-                    "noteMaximale": 20,
-                    "manualNoteMention": 1
-                },
-                {
-                    "id": 2,
-                    "evaluationId": 2,
-                    "inscriptionId": 1001,
-                    "matiereNiveauId": 1,
-                    "noteMentionId": 1,
-                    "ranking": 4,
-                    "value": 17,
-                    "noteStatus": 1,
-                    "isEditable": 1,
-                    "noteMaximale": 20,
-                    "manualNoteMention": 1
-                }
-                
-            ]
+          "label": "string",
+          "amount": "string"
         }
       ],
-      "moyennetrimestrielle": [
+      "deductions": [
         {
-          "totalPoints": 35,
-          "totalCoeff": 2,
-          "rang": 3,
-          "moyenne": 17.5
+          "label": "string",
+          "amount": "string"
         }
       ],
-      "yearlyResult": {
-        "moyenne": 17.5,
-        "rang": 3
-      }
+      "base_calcul": [
+        {
+          "label": "string",
+          "amount": "string"
+        }
+      ],
+      "total_remuneration": "string",
+      "total_deduction": "string",
+      "brut_salary": "string",
+      "net_to_pay": "string"
     }
   ]
 }
-
-    serializer = BulletinSerializer(data=data)
-    if serializer.is_valid():
-        bulletin_data = serializer.validated_data
-        
-        # Render the HTML template
-        #html_content = render_to_string('work.html', {'bulletin': bulletin_data})
-        return render(request, 'work.html', {'bulletin': bulletin_data})
-        # Return the rendered HTML as response
-        #return HttpResponse(html_content, content_type='text/html')
-    print(serializer.errors)
-    return HttpResponse(serializer.errors, content_type='text/html')
+    data['bootstrap'] = bootstrap
+    return render(request, 'index.html', data)
 
 
 
