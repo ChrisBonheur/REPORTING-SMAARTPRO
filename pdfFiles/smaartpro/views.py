@@ -530,7 +530,7 @@ class GenerateBulletinAPIView(APIView):
 
 
 def home(request):
-    data ={
+    data = {
   "group": {
     "groupeLogo": "string",
     "groupeName": "string",
@@ -541,44 +541,52 @@ def home(request):
     "schoolYear": "string"
   },
   "groupid": 0,
-  "recipient": "0",
-  "month": "string",
-  "date": "string",
-  "agent": "string",
-  "recipients": [
+  "students": [
     {
-      "recipient": {
-        "fullname": "string",
-        "fonction": "string",
-        "matricule": "string"
-      },
-      "remunerations": [
+      "matricule": "string",
+      "id": "0",
+      "firstName": "string",
+      "lastName": "string",
+      "dateOfBirth": "string",
+      "civility": "string",
+      "address": "string",
+      "photo": "string",
+      "email": "string",
+      "phone1": "string",
+      "phone2": "string",
+      "bloodGroup": "string",
+      "inscriptionStatus": "string",
+      "siteClassTitle": "string",
+      "siteClassCode": "string",
+      "birthCity": "string",
+      "nationalityTitle": "string",
+      "qrCode": ""
+    },
         {
-          "label": "string",
-          "amount": "string"
-        }
-      ],
-      "deductions": [
-        {
-          "label": "string",
-          "amount": "string"
-        }
-      ],
-      "base_calcul": [
-        {
-          "label": "string",
-          "amount": "string"
-        }
-      ],
-      "total_remuneration": "string",
-      "total_deduction": "string",
-      "brut_salary": "string",
-      "net_to_pay": "string"
+      "matricule": "string",
+      "id": "0",
+      "firstName": "string",
+      "lastName": "string",
+      "dateOfBirth": "string",
+      "civility": "string",
+      "address": "string",
+      "photo": "string",
+      "email": "string",
+      "phone1": "string",
+      "phone2": "string",
+      "bloodGroup": "string",
+      "inscriptionStatus": "string",
+      "siteClassTitle": "string",
+      "siteClassCode": "string",
+      "birthCity": "string",
+      "nationalityTitle": "string",
+      "qrCode": ""
     }
   ]
 }
+    
     data['bootstrap'] = bootstrap
-    return render(request, 'index.html', data)
+    return render(request, 'work.html', data)
 
 
 
